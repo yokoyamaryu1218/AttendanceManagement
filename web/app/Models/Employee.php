@@ -11,6 +11,7 @@ class Employee extends Authenticatable
     use HasFactory;
 
     protected $table = 'employee';
+    protected $primaryKey = 'emplo_id';
         /**
      * The attributes that are mass assignable.
      *
