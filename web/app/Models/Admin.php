@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Employee extends Authenticatable
+class Admin extends Authenticatable
 {
     use HasFactory;
 
-    protected $table = 'employee';
+    protected $table = 'admins';
         /**
      * The attributes that are mass assignable.
      *

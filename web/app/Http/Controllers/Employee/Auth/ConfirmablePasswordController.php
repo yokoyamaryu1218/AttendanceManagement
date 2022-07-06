@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Employee\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
@@ -18,7 +18,7 @@ class ConfirmablePasswordController extends Controller
      */
     public function show(Request $request)
     {
-        return view('auth.confirm-password');
+        return view('employee.auth.confirm-password');
     }
 
     /**
@@ -29,7 +29,7 @@ class ConfirmablePasswordController extends Controller
      */
     public function store(Request $request)
     {
-        if (! Auth::guard('web')->validate([
+        if (! Auth::guard('employee')->validate([
             'email' => $request->user()->email,
             'password' => $request->password,
         ])) {
@@ -40,6 +40,6 @@ class ConfirmablePasswordController extends Controller
 
         $request->session()->put('auth.password_confirmed_at', time());
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        return redirect()->intended(RouteServiceProvider::EMPLOYEE_HOME);
     }
 }
