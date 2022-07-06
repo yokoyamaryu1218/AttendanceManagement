@@ -29,7 +29,7 @@ class LoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'email' => 'required|string|email',
+            'emplo_id' => 'required',
             'password' => 'required|string',
         ];
     }
@@ -45,23 +45,25 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        if($this->routeIs('employee.*')){
+        if ($this->routeIs('employee.*')) {
             $guard = 'employee';
-        } elseif($this->routeIs('admin.*')){
+        } elseif ($this->routeIs('admin.*')) {
             $guard = 'admin';
         } else {
             $guard = 'users';
         }
 
-        if (! Auth::guard($guard)->attempt($this->only('email', 'password'), $this->filled('remember'))) {
+        if (!Auth::guard($guard)->attempt($this->only('emplo_id', 'password'), $this->filled('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'email' => __('auth.failed'),
+                'emplo_id' => __('auth.failed'),
             ]);
         }
 
-        RateLimiter::clear($this->throttleKey());
+        RateLimiter::clear($this->throttleKey(
+
+        ));
     }
 
     /**
@@ -73,7 +75,7 @@ class LoginRequest extends FormRequest
      */
     public function ensureIsNotRateLimited()
     {
-        if (! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
+        if (!RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
             return;
         }
 
@@ -82,10 +84,10 @@ class LoginRequest extends FormRequest
         $seconds = RateLimiter::availableIn($this->throttleKey());
 
         throw ValidationException::withMessages([
-            'email' => trans('auth.throttle', [
+            'emplo_id' => trans('auth.throttle', [
                 'seconds' => $seconds,
                 'minutes' => ceil($seconds / 60),
-            ]),
+            ],),
         ]);
     }
 
@@ -96,6 +98,6 @@ class LoginRequest extends FormRequest
      */
     public function throttleKey()
     {
-        return Str::lower($this->input('email')).'|'.$this->ip();
+        return Str::lower($this->input('emplo_id')) . '|' . $this->ip();
     }
 }

@@ -14,13 +14,17 @@ class CreateEmployeeTable extends Migration
     public function up()
     {
         Schema::create('employee', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
+            $table->primary(['emplo_id']);
+            $table->string('emplo_id','10')->unique()
+            ->comment('社員ID');
+            $table->string('name','32')
+            ->comment('社員名');
+            $table->string('password','256')
+            ->comment('パスワード');
+            $table->string('management_emplo_id','10')
+            ->comment('上司社員ID');
+            $table->char('subord_authority','1')
+            ->comment('部下参照権限');
         });
     }
 
