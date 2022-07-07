@@ -21,21 +21,21 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('employee.work')">
+                    <x-nav-link :href="route('employee.monthly')">
                         {{ __('月別勤怠一覧') }}
                     </x-nav-link>
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('employee.work')">
+                    <x-nav-link :href="route('employee.subord')">
                         {{ __('部下一覧') }}
                     </x-nav-link>
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('employee.work')">
+                    <x-nav-link :href="route('employee.change_password')">
                         {{ __('パスワード変更') }}
                     </x-nav-link>
                 </div>

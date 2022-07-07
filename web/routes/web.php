@@ -1,8 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ComponentTestController;
-use App\Http\Controllers\LifeCycleTestController;
+use App\Http\Controllers\MenuController;
 
 
 /*
@@ -23,6 +22,8 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('user.dashboard');
 })->middleware(['auth:users'])->name('dashboard');
+
+
 
 
 require __DIR__.'/auth.php';

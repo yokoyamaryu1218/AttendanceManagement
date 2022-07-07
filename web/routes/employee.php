@@ -10,6 +10,7 @@ use App\Http\Controllers\Employee\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Employee\Auth\RegisteredUserController;
 use App\Http\Controllers\Employee\Auth\VerifyEmailController;
 use App\Http\Controllers\AttendanceContoroller;
+use App\Http\Controllers\MenuController;
 
 /*
 |--------------------------------------------------------------------------
@@ -85,3 +86,11 @@ Route::get('/top1', [AttendanceContoroller::class, 'index'])->name('work');;
 
 //DailyContorollerに関するルーティング
 Route::get('/top2', [DailyController::class, 'index'])->name('daily');;
+
+//DailyContorollerに関するルーティング
+//月別一覧へのroute
+Route::get('/monthly', [MenuController::class, 'monthly'])->name('monthly');
+//部下一覧へのroute
+Route::get('/subord', [MenuController::class, 'subord'])->name('subord');
+
+Route::get('/change_password', [MenuController::class, 'change_password'])->name('change_password');
