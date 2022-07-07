@@ -1,12 +1,4 @@
 <style>
-    #child1 {
-        background-color: lightblue;
-    }
-
-    #child2 {
-        background-color: lightgreen;
-    }
-
     @media (min-width: 600px) {
         #parent {
             display: flex;
