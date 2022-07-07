@@ -9,6 +9,7 @@ use App\Http\Controllers\Employee\Auth\NewPasswordController;
 use App\Http\Controllers\Employee\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Employee\Auth\RegisteredUserController;
 use App\Http\Controllers\Employee\Auth\VerifyEmailController;
+use App\Http\Controllers\AttendanceContoroller;
 
 /*
 |--------------------------------------------------------------------------
@@ -78,3 +79,9 @@ Route::post('/confirm-password', [ConfirmablePasswordController::class, 'store']
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
                 ->middleware('auth:employee')
                 ->name('logout');
+
+//AttendanceContorollerに関するルーティング
+Route::get('/top1', [AttendanceContoroller::class, 'index'])->name('work');;
+
+//DailyContorollerに関するルーティング
+Route::get('/top2', [DailyController::class, 'index'])->name('daily');;
