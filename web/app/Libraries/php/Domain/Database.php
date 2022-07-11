@@ -33,4 +33,24 @@ class Database
 
         return $data;
     }
+
+    /**
+     *
+     * @param $client 顧客ID
+     * 
+     * @var   $data 取得データ
+     * 
+     * @return  array $data
+     */
+    public static function getSubord($emplo_id)
+    {
+
+        $data = DB::select('SELECT em1.emplo_id, em1.name,
+        em2.emplo_id AS subord_id, em2.name AS subord_name FROM employee AS em1
+        LEFT JOIN hierarchy on em1.emplo_id = hierarchy.high_id
+        LEFT JOIN employee AS em2 on hierarchy.lower_id = em2.emplo_id
+        where em1.emplo_id = ? order by em1.emplo_id', [$emplo_id]);
+
+        return $data;
+    }
 }

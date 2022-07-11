@@ -18,6 +18,7 @@ class DatabaseSeeder extends Seeder
             EmployeeSeeder::class,
             DailySeeder::class,
             WorksSeeder::class,
+            HierarchySeeder::class,
         ]);
     }
 }

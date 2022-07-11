@@ -24,9 +24,6 @@ class MenuController extends Controller
 
         $monthly = new DataBase();
         $monthly_data = $monthly->getAll($emplo_id);
-        $monthly_data = array_merge($monthly_data);
-        // dd($monthly_data);
-
 
         return view('menu.monthly', compact('monthly_data'));
     }
@@ -38,7 +35,12 @@ class MenuController extends Controller
      */
     public function subord()
     {
-        return view('menu.subord');
+        $emplo_id = '1001';
+
+        $subord = new DataBase();
+        $subord_data = $subord->getSubord($emplo_id);
+
+        return view('menu.subord', compact('subord_data'));
     }
 
     /**

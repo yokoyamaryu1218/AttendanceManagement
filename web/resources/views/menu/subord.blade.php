@@ -19,48 +19,14 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach($subord_data as $subord)
                             <tr>
-                                <td class="px-4 py-3">2007</td>
-                                <td class="px-4 py-3">横山　隆</td>
+                                <td class="px-4 py-3">{{$subord->subord_id}}</td>
+                                <td class="px-4 py-3">{{$subord->subord_name}}</td>
                                 <td class="px-4 py-3"><a href="#">開く</a></td>
                                 <td class="px-4 py-3 text-lg text-gray-900"><a href="#">開く</a></td>
                             </tr>
-                            <tr>
-                                <td class="px-4 py-3">2007</td>
-                                <td class="px-4 py-3">横山　隆</td>
-                                <td class="px-4 py-3"><a href="#">開く</a></td>
-                                <td class="px-4 py-3 text-lg text-gray-900"><a href="#">開く</a></td>
-                            </tr>
-                            <tr>
-                                <td class="px-4 py-3">2007</td>
-                                <td class="px-4 py-3">横山　隆</td>
-                                <td class="px-4 py-3"><a href="#">開く</a></td>
-                                <td class="px-4 py-3 text-lg text-gray-900"><a href="#">開く</a></td>
-                            </tr>
-                            <tr>
-                                <td class="px-4 py-3">2007</td>
-                                <td class="px-4 py-3">横山　隆</td>
-                                <td class="px-4 py-3"><a href="#">開く</a></td>
-                                <td class="px-4 py-3 text-lg text-gray-900"><a href="#">開く</a></td>
-                            </tr>
-                            <tr>
-                                <td class="px-4 py-3">2007</td>
-                                <td class="px-4 py-3">横山　隆</td>
-                                <td class="px-4 py-3"><a href="#">開く</a></td>
-                                <td class="px-4 py-3 text-lg text-gray-900"><a href="#">開く</a></td>
-                            </tr>
-                            <tr>
-                                <td class="px-4 py-3">2007</td>
-                                <td class="px-4 py-3">横山　隆</td>
-                                <td class="px-4 py-3"><a href="#">開く</a></td>
-                                <td class="px-4 py-3 text-lg text-gray-900"><a href="#">開く</a></td>
-                            </tr>
-                            <tr>
-                                <td class="px-4 py-3">2007</td>
-                                <td class="px-4 py-3">横山　隆</td>
-                                <td class="px-4 py-3"><a href="#">開く</a></td>
-                                <td class="px-4 py-3 text-lg text-gray-900"><a href="#">開く</a></td>
-                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
