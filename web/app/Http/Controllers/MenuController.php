@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
+use App\Libraries\php\Domain\DataBase;
 use Illuminate\Http\Request;
 
 class MenuController extends Controller
@@ -15,10 +17,18 @@ class MenuController extends Controller
     {
         //
     }
-    
+
     public function monthly()
     {
-        return view('menu.monthly');
+        $emplo_id = '1001';
+
+        $monthly = new DataBase();
+        $monthly_data = $monthly->getAll($emplo_id);
+        $monthly_data = array_merge($monthly_data);
+        // dd($monthly_data);
+
+
+        return view('menu.monthly', compact('monthly_data'));
     }
 
     /**

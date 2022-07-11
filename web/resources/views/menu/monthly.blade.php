@@ -20,30 +20,28 @@
                         <thead>
                             <tr>
                                 <th class="px-1 py-1 title-font tracking-wider font-medium text-gray-800 text-sm bg-gray-100 rounded-tl rounded-bl">日</th>
-                                <th class="px-1 py-1 title-font tracking-wider font-medium text-gray-800 text-sm bg-gray-100"></th>
                                 <th class="px-1 py-1 title-font tracking-wider font-medium text-gray-800 text-sm bg-gray-100">出勤</th>
                                 <th class="px-1 py-1 title-font tracking-wider font-medium text-gray-800 text-sm bg-gray-100">退勤</th>
                                 <th class="px-1 py-1 title-font tracking-wider font-medium text-gray-800 text-sm bg-gray-100">休憩</th>
                                 <th class="px-1 py-1 title-font tracking-wider font-medium text-gray-800 text-sm bg-gray-100">実績</th>
-                                <th class="px-1 py-1 title-font tracking-wider font-medium text-gray-800 text-sm bg-gray-100">残業</th>
                                 <th class="px-1 py-1 title-font tracking-wider font-medium text-gray-800 text-sm bg-gray-100">業務内容</th>
                                 <th class="w-1 title-font tracking-wider font-medium text-gray-800 text-sm bg-gray-100 rounded-tr rounded-br"></th>
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach($monthly_data as $monthly)
                             <tr>
-                                <td class="px-1 py-1">6月1日</td>
-                                <td class="px-1 py-1">水</td>
-                                <td class="px-1 py-1">10：00</td>
-                                <td class="px-1 py-1">16：00</td>
-                                <td class="px-1 py-1">1：00</td>
-                                <td class="px-1 py-1">5：00</td>
-                                <td class="px-1 py-1">0：00</td>
-                                <td class="px-1 py-1">帰りたい</td>
+                                <td class="px-1 py-1">{{$monthly->date}}</td>
+                                <td class="px-1 py-1">{{$monthly->start_time}}</td>
+                                <td class="px-1 py-1">{{$monthly->end_time}}</td>
+                                <td class="px-1 py-1">{{$monthly->lest_time}}</td>
+                                <td class="px-1 py-1">{{$monthly->achievement_time}}</td>
+                                <td class="px-1 py-1">{{$monthly->daily}}</td>
                                 <td class="w-1 text-center">
                                     <a href="#">✏</a>
                                 </td>
                             </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>

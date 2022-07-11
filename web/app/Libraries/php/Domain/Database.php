@@ -1,0 +1,36 @@
+<?php
+
+namespace App\Libraries\php\Domain;
+
+use App\Models\Date;
+use Illuminate\Support\Facades\DB;
+
+/**
+ * データベース動作クラス
+ */
+
+class Database
+{
+    /**
+     *
+     * @param $client 顧客ID
+     * 
+     * @var   $data 取得データ
+     * 
+     * @return  array $data
+     */
+    public static function getAll($emplo_id)
+    {
+
+        $data = DB::select('SELECT wk1.id, wk1.emplo_id, wk1.date, wk1.start_time, wk1.end_time, 
+            wk1.lest_time, wk1.achievement_time, daily.daily,wk1.created_at, wk1.updated_at FROM works AS wk1
+            LEFT JOIN daily ON wk1.id = daily.id
+            WHERE wk1.emplo_id = ? ORDER BY daily.date', [$emplo_id]);
+
+        //登録日・修正日のフォーマットを変換
+        $date = new Date();
+        $date->date($data);
+
+        return $data;
+    }
+}
