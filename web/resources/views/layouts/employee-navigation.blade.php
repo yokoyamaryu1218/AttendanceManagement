@@ -27,11 +27,13 @@
                 </div>
 
                 <!-- Navigation Links -->
+                @if (Auth::guard('employee')->user()->subord_authority == "1")
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('employee.subord')">
                         {{ __('部下一覧') }}
                     </x-nav-link>
                 </div>
+                @endif
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">

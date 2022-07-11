@@ -53,4 +53,14 @@ class Database
 
         return $data;
     }
+
+    public static function subord_authority($emplo_id)
+    {
+
+        $data = DB::select('SELECT subord_authority FROM `employee` WHERE emplo_id = ?', [$emplo_id]);
+
+        return $data;
+    }
+
+
 }

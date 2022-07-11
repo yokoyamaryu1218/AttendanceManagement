@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Libraries\php\Domain\DataBase;
 use Illuminate\Http\Request;
 
@@ -20,7 +21,7 @@ class MenuController extends Controller
 
     public function monthly()
     {
-        $emplo_id = '1001';
+        $emplo_id = Auth::guard('employee')->user()->emplo_id;
 
         $monthly = new DataBase();
         $monthly_data = $monthly->getAll($emplo_id);
@@ -35,9 +36,10 @@ class MenuController extends Controller
      */
     public function subord()
     {
-        $emplo_id = '1001';
+        $emplo_id = Auth::guard('employee')->user()->emplo_id;
 
         $subord = new DataBase();
+        $subord_authority = $subord->subord_authority($emplo_id);
         $subord_data = $subord->getSubord($emplo_id);
 
         return view('menu.subord', compact('subord_data'));
@@ -51,6 +53,8 @@ class MenuController extends Controller
      */
     public function change_password(Request $request)
     {
+        $emplo_id = Auth::guard('employee')->user()->emplo_id;
+
         return view('employee.auth.change-password');
     }
 
