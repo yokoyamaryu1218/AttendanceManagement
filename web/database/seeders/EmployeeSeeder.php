@@ -20,6 +20,7 @@ class EmployeeSeeder extends Seeder
         $employee_holder = '?,?,?,?,?,?,?,?';
         // @var array employeeの挿入データ
         $employee_insert_data_list = [
+            [ '1000', '上司次郎', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2', 'test@yahoo.co.jp', '1000', 1, NULL, NULL], //パスワード：password
             [ '1001', '田中太郎', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2', 'yokoyamaryu1218@yahoo.co.jp', '1000', 1, NULL, NULL], //パスワード：password
         ];
 
