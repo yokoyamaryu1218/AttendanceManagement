@@ -46,19 +46,6 @@ class MenuController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function change_password(Request $request)
-    {
-        $emplo_id = Auth::guard('employee')->user()->emplo_id;
-
-        return view('employee.auth.change-password');
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param  int  $id

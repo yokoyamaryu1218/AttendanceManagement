@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
+// パスワード変更のコントローラー
 class NewPasswordController extends Controller
 {
     /**
@@ -36,6 +37,14 @@ class NewPasswordController extends Controller
         ]);
     }
 
+    public function messages()
+    {
+        return [
+            'password.confirmed' => '新しいパスワードが合致しません。',
+            'password.min' => '新しいパスワードが6文字以下です。',
+        ];
+    }
+
     public function store(Request $request)
     {
         // 現在のパスワードを確認
@@ -44,7 +53,13 @@ class NewPasswordController extends Controller
                 ->with('warning', '現在のパスワードが違います。');
         }
 
-        // Validation（6文字以上あるか，2つが一致しているかなどのチェック）
+        // 新しいパスワードを確認
+        if (!password_verify($request->password, $request->password_confirmation)) {
+            return redirect()->route('employee.change_password')
+                ->with('warning', '新しいパスワードが合致しません。');
+        }
+
+        // パスワードは6文字以上あるか，2つが一致しているかなどのチェック
         $this->validator($request->all())->validate();
 
         // パスワードを保存

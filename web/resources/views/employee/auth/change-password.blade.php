@@ -20,6 +20,7 @@
                             {{ session('status') }}
                         </div>
                         @endif
+
                         <!-- Password -->
                         <div class="mt-4">
                             <x-label for="old_password" :value="__('現在のパスワード')" />
