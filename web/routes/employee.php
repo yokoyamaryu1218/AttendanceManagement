@@ -50,13 +50,13 @@ Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
     ->middleware('guest')
     ->name('password.email');
 
-Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])
-    ->middleware('guest')
-    ->name('password.reset');
+// Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])
+//     ->middleware('guest')
+//     ->name('password.reset');
 
-Route::post('/reset-password', [NewPasswordController::class, 'store'])
-    ->middleware('guest')
-    ->name('password.update');
+// Route::post('/reset-password', [NewPasswordController::class, 'store'])
+//     ->middleware('guest')
+//     ->name('password.update');
 
 Route::get('/verify-email', [EmailVerificationPromptController::class, '__invoke'])
     ->middleware('auth:employee')
@@ -93,4 +93,11 @@ Route::get('/monthly', [MenuController::class, 'monthly'])->middleware(['auth:em
 //部下一覧へのroute
 Route::get('/subord', [MenuController::class, 'subord'])->middleware(['auth:employee'])->name('subord');
 
-Route::get('/change_password', [MenuController::class, 'change_password'])->middleware(['auth:employee'])->name('change_password');
+//パスワード変更
+Route::get('/change_password', [NewPasswordController::class, 'create'])
+    ->middleware(['auth:employee'])
+    ->name('change_password');
+
+Route::post('/reset-password', [NewPasswordController::class, 'store'])
+    ->middleware(['auth:employee'])
+    ->name('password.update');
