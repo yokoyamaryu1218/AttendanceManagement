@@ -81,23 +81,23 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->middleware('auth:employee')
     ->name('logout');
 
-//AttendanceContorollerに関するルーティング
-Route::get('/top1', [AttendanceContoroller::class, 'index'])->middleware(['auth:employee'])->name('work');;
+Route::group(['middleware' => 'auth:employee'], function () {
+    //AttendanceContorollerに関するルーティング
+    Route::get('/top1', [AttendanceContoroller::class, 'index'])->name('work');;
 
-//DailyContorollerに関するルーティング
-Route::get('/top2', [DailyController::class, 'index'])->middleware(['auth:employee'])->name('daily');;
+    //DailyContorollerに関するルーティング
+    Route::get('/top2', [DailyController::class, 'index'])->name('daily');;
 
-//DailyContorollerに関するルーティング
-//月別一覧へのroute
-Route::get('/monthly', [MenuController::class, 'monthly'])->middleware(['auth:employee'])->name('monthly');
-//部下一覧へのroute
-Route::get('/subord', [MenuController::class, 'subord'])->middleware(['auth:employee'])->name('subord');
+    //DailyContorollerに関するルーティング
+    //月別一覧へのroute
+    Route::get('/monthly', [MenuController::class, 'monthly'])->name('monthly');
+    //部下一覧へのroute
+    Route::get('/subord', [MenuController::class, 'subord'])->name('subord');
 
-//パスワード変更
-Route::get('/change_password', [NewPasswordController::class, 'create'])
-    ->middleware(['auth:employee'])
-    ->name('change_password');
+    //パスワード変更
+    Route::get('/change_password', [NewPasswordController::class, 'create'])
+        ->name('change_password');
 
-Route::post('/reset-password', [NewPasswordController::class, 'store'])
-    ->middleware(['auth:employee'])
-    ->name('password.update');
+    Route::post('/reset-password', [NewPasswordController::class, 'store'])
+        ->name('password.update');
+});

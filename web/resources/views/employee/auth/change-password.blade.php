@@ -1,17 +1,25 @@
 <x-app-layout>
     <x-slot name="header">
     </x-slot>
-
-    <!-- Validation Errors -->
-    <x-auth-validation-errors class="mb-4" :errors="$errors" />
-
     <form method="POST" action="{{ route('employee.password.update') }}">
         @csrf
+
         <body>
             <section class="text-gray-600 body-font relative">
                 <div class="container px-5 py-24 mx-auto">
                     <div class="flex flex-col text-center w-full mb-12">
                         <h1 class="sm:text-4xl text-3xl font-medium title-font mb-2 text-gray-900">パスワード変更画面</h1>
+                        <!-- フラッシュメッセージの表示 -->
+                        @if (session('warning'))
+                        <div class="alert alert-warning">
+                            {{ session('warning') }}
+                        </div>
+                        @endif
+                        @if (session('status'))
+                        <div class="alert alert-info">
+                            {{ session('status') }}
+                        </div>
+                        @endif
                         <!-- Password -->
                         <div class="mt-4">
                             <x-label for="old_password" :value="__('現在のパスワード')" />
