@@ -31,7 +31,7 @@
                         <div class="mt-4">
                             <x-label for="password" :value="__('新パスワード')" />
 
-                            <x-input id="password" class="mt-1 w-4/12 bg-gray-100" type="password" name="password" placeholder="新しいパスワード" required />
+                            <x-input id="c" class="mt-1 w-4/12 bg-gray-100" type="password" name="password" placeholder="新しいパスワード" required />
                         </div>
 
                         <!-- Confirm Password -->

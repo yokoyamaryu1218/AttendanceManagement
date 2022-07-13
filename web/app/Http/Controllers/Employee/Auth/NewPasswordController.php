@@ -37,14 +37,6 @@ class NewPasswordController extends Controller
         ]);
     }
 
-    public function messages()
-    {
-        return [
-            'password.confirmed' => '新しいパスワードが合致しません。',
-            'password.min' => '新しいパスワードが6文字以下です。',
-        ];
-    }
-
     public function store(Request $request)
     {
         // 現在のパスワードを確認
@@ -54,12 +46,12 @@ class NewPasswordController extends Controller
         }
 
         // 新しいパスワードを確認
-        if (!password_verify($request->password, $request->password_confirmation)) {
+        if (!password_verify($request->password, password_hash($request->password_confirmation,PASSWORD_DEFAULT))) {
             return redirect()->route('employee.change_password')
                 ->with('warning', '新しいパスワードが合致しません。');
         }
 
-        // パスワードは6文字以上あるか，2つが一致しているかなどのチェック
+        // パスワードは6文字以上あるか，2つが一致しているかなどのチェックF
         $this->validator($request->all())->validate();
 
         // パスワードを保存
