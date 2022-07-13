@@ -2,13 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Libraries\php\Domain\DataBase;
-use Illuminate\Http\Request;
 
-class MenuController extends Controller
+class MonthlyController extends Controller
 {
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth:employee');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -16,23 +25,33 @@ class MenuController extends Controller
      */
     public function index()
     {
-        //
+        $emplo_id = Auth::guard('employee')->user()->emplo_id;
+
+        $monthly = new DataBase();
+        $monthly_data = $monthly->getMonthly($emplo_id);
+
+        return view('menu.monthly', compact('monthly_data'));
     }
-    
+
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function subord()
+    public function create()
     {
-        $emplo_id = Auth::guard('employee')->user()->emplo_id;
+        //
+    }
 
-        $subord = new DataBase();
-        $subord_authority = $subord->subord_authority($emplo_id);
-        $subord_data = $subord->getSubord($emplo_id);
-
-        return view('menu.subord', compact('subord_data'));
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        //
     }
 
     /**

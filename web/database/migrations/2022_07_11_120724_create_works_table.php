@@ -21,9 +21,9 @@ class CreateWorksTable extends Migration
                 ->comment('社員ID');
             $table->date('date')
                 ->comment('日付');
-            $table->dateTime('start_time')->nullable()
+            $table->Time('start_time')->nullable()
                 ->comment('出勤時間');
-            $table->dateTime('end_time')->nullable()
+                $table->Time('end_time')->nullable()
                 ->comment('退勤時間');
             $table->string('lest_time')->nullable()
                 ->comment('休憩時間');

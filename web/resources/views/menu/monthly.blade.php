@@ -12,7 +12,7 @@
                         <option>7月度</option>
                     </select>
                 </label>
-                　横山　隆さん
+                {{ Auth::guard('employee')->user()->name }}さん
             </div>
             <div class="container px-5 py-5 mx-auto">
                 <div class="lg:w-2/3 w-full mx-auto overflow-auto">

@@ -11,6 +11,7 @@ use App\Http\Controllers\Employee\Auth\RegisteredUserController;
 use App\Http\Controllers\Employee\Auth\VerifyEmailController;
 use App\Http\Controllers\AttendanceContoroller;
 use App\Http\Controllers\MenuController;
+use App\Http\Controllers\MonthlyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -90,7 +91,7 @@ Route::group(['middleware' => 'auth:employee'], function () {
 
     //DailyContorollerに関するルーティング
     //月別一覧へのroute
-    Route::get('/monthly', [MenuController::class, 'monthly'])->name('monthly');
+    Route::get('/monthly', [MonthlyController::class, 'index'])->name('monthly');
     //部下一覧へのroute
     Route::get('/subord', [MenuController::class, 'subord'])->name('subord');
 
