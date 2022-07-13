@@ -24,7 +24,7 @@ class Database
 
         $data = DB::select('SELECT wk1.id, wk1.emplo_id, wk1.date, wk1.start_time, wk1.end_time,
             wk1.lest_time, wk1.achievement_time, daily.daily,wk1.created_at, wk1.updated_at FROM works AS wk1
-            LEFT JOIN daily ON wk1.id = daily.id
+            LEFT JOIN daily ON wk1.date = daily.date
             WHERE wk1.emplo_id = ? ORDER BY daily.date', [$emplo_id]);
 
         //登録日・修正日のフォーマットを変換
@@ -47,9 +47,8 @@ class Database
 
         $data = DB::select('SELECT wk1.emplo_id, wk1.date, wk1.start_time, wk1.end_time,
             wk1.lest_time, wk1.achievement_time, daily.daily,wk1.created_at, wk1.updated_at FROM works AS wk1
-            LEFT JOIN daily ON wk1.id = daily.id
-            WHERE wk1.emplo_id = ? AND DATE_FORMAT(wk1.date, "%Y-%m")
-            ORDER BY daily.date', [$emplo_id]);
+            LEFT JOIN daily ON wk1.date = daily.date
+            WHERE wk1.emplo_id = ?', [$emplo_id]);
 
         //登録日・修正日のフォーマットを変換
         $date = new Date();
