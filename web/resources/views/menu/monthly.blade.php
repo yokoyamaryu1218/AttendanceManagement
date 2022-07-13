@@ -29,19 +29,18 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($monthly_data as $monthly)
-                            <tr>
-                                <td class="px-1 py-1">{{$monthly->date}}</td>
-                                <td class="px-1 py-1">{{$monthly->start_time}}</td>
-                                <td class="px-1 py-1">{{$monthly->end_time}}</td>
-                                <td class="px-1 py-1">{{$monthly->lest_time}}</td>
-                                <td class="px-1 py-1">{{$monthly->achievement_time}}</td>
-                                <td class="px-1 py-1">{{$monthly->daily}}</td>
+                            @for ($i = 1; $i <= $day_count; $i++) <tr>
+                                <th class="px-1 py-1">{{$ym . '-' . $i}}</th>
+                                <td class="px-1 py-1"></td>
+                                <td class="px-1 py-1"></td>
+                                <td class="px-1 py-1"></td>
+                                <td class="px-1 py-1"></td>
+                                <td class="px-1 py-1"></td>
                                 <td class="w-1 text-center">
                                     <a href="#">✏</a>
                                 </td>
-                            </tr>
-                            @endforeach
+                                </tr>
+                                @endfor
                         </tbody>
                     </table>
                 </div>
