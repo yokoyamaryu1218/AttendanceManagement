@@ -49,13 +49,7 @@ class MonthlyController extends Controller
         $today = date('Y-m-j');
         $day_count = date('t', strtotime($ym));
 
-        $monthly_data = DataBase::getMonthly($emplo_id, $ym, $session_user);        $i = 1;
-        $work = $monthly_data[date('Y-m-d', strtotime($ym . '-' . $i))];
-        $start_time = $work['start_time'];
-        $end_time = $work['end_time'];
-        $lest_time = $work['lest_time'];
-        $achievement_time = $work['achievement_time'];
-        $daily = $work['daily'];
+        $monthly_data = DataBase::getMonthly($emplo_id, $ym, $session_user);    
 
         return view('menu.monthly', compact(
             'monthly_data',

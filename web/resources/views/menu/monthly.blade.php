@@ -16,34 +16,7 @@
             </div>
             <div class="container px-5 py-5 mx-auto">
                 <div class="lg:w-2/3 w-full mx-auto overflow-auto">
-                    <table class="table-auto w-full text-left whitespace-no-wrap">
-                        <thead>
-                            <tr>
-                                <th class="px-1 py-1 title-font tracking-wider font-medium text-gray-800 text-sm bg-gray-100 rounded-tl rounded-bl">日</th>
-                                <th class="px-1 py-1 title-font tracking-wider font-medium text-gray-800 text-sm bg-gray-100">出勤</th>
-                                <th class="px-1 py-1 title-font tracking-wider font-medium text-gray-800 text-sm bg-gray-100">退勤</th>
-                                <th class="px-1 py-1 title-font tracking-wider font-medium text-gray-800 text-sm bg-gray-100">休憩</th>
-                                <th class="px-1 py-1 title-font tracking-wider font-medium text-gray-800 text-sm bg-gray-100">実績</th>
-                                <th class="px-1 py-1 title-font tracking-wider font-medium text-gray-800 text-sm bg-gray-100">業務内容</th>
-                                <th class="w-1 title-font tracking-wider font-medium text-gray-800 text-sm bg-gray-100 rounded-tr rounded-br"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        @for ($i = 1; $i <= $day_count; $i++)
-                            <tr>
-                                <th class="px-1 py-1">{{$ym . '-' . $i}}</th>
-                                <td class="px-1 py-1"></td>
-                                <td class="px-1 py-1"></td>
-                                <td class="px-1 py-1"></td>
-                                <td class="px-1 py-1"></td>
-                                <td class="px-1 py-1"></td>
-                                <td class="w-1 text-center">
-                                    <a href="#">✏</a>
-                                </td>
-                            </tr>
-                            @endfor
-                        </tbody>
-                    </table>
+                    @include('menu.daily')
                 </div>
             </div>
         </section>
