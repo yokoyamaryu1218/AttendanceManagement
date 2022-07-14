@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Libraries\php\Domain\DataBase;
-use App\Libraries\php\Domain\ConnectDB;
+use App\Libraries\php\Domain\Format;
 
 class MonthlyController extends Controller
 {
@@ -45,14 +45,11 @@ class MonthlyController extends Controller
             $timestamp = strtotime($ym . '-01');
         }
 
-        // 今日の日付 フォーマット　例）2021-06-3
+        // 今日の日付 フォーマット
         $today = date('Y-m-j');
-        $day_count = date('t', $timestamp);
+        $day_count = date('t', strtotime($ym));
 
-        $monthly = new DataBase();
-        $monthly_data = $monthly->getMonthly($emplo_id, $ym, $session_user);
-
-        $i = 1;
+        $monthly_data = DataBase::getMonthly($emplo_id, $ym, $session_user);        $i = 1;
         $work = $monthly_data[date('Y-m-d', strtotime($ym . '-' . $i))];
         $start_time = $work['start_time'];
         $end_time = $work['end_time'];
@@ -64,11 +61,6 @@ class MonthlyController extends Controller
             'monthly_data',
             'day_count',
             'ym',
-            'start_time',
-            'end_time',
-            'lest_time',
-            'achievement_time',
-            'daily',
         ));
     }
 

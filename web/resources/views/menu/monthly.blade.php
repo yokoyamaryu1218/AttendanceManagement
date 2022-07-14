@@ -29,7 +29,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @for ($i = 1; $i <= $day_count; $i++) <tr>
+                        @for ($i = 1; $i <= $day_count; $i++)
+                            <tr>
                                 <th class="px-1 py-1">{{$ym . '-' . $i}}</th>
                                 <td class="px-1 py-1"></td>
                                 <td class="px-1 py-1"></td>
@@ -39,8 +40,8 @@
                                 <td class="w-1 text-center">
                                     <a href="#">✏</a>
                                 </td>
-                                </tr>
-                                @endfor
+                            </tr>
+                            @endfor
                         </tbody>
                     </table>
                 </div>

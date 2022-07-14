@@ -58,7 +58,7 @@ class Database
         $stmt->bindValue(':date', $ym, PDO::PARAM_STR);
         $stmt->execute();
         $data = $stmt->fetchAll(PDO::FETCH_UNIQUE);
-
+        
         return $data;
     }
 
