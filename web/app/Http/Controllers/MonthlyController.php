@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Libraries\php\Domain\DataBase;
+use App\Libraries\php\Domain\ConnectDB;
 
 class MonthlyController extends Controller
 {
@@ -27,6 +29,7 @@ class MonthlyController extends Controller
     public function index()
     {
         $emplo_id = Auth::guard('employee')->user()->emplo_id;
+        $session_user =  Auth::guard('employee')->user();
 
         // https://codeforfun.jp/php-calendar/
         if (isset($_GET['ym'])) {
@@ -47,10 +50,7 @@ class MonthlyController extends Controller
         $day_count = date('t', $timestamp);
 
         $monthly = new DataBase();
-        $monthly_data = $monthly->getMonthly($emplo_id, $ym);
-        echo('<pre>');
-        var_dump($monthly_data);
-        echo('</pre>');
+        $monthly_data = $monthly->getMonthly($emplo_id, $ym, $session_user);
 
         $i = 1;
         $work = $monthly_data[date('Y-m-d', strtotime($ym . '-' . $i))];
@@ -59,8 +59,6 @@ class MonthlyController extends Controller
         $lest_time = $work['lest_time'];
         $achievement_time = $work['achievement_time'];
         $daily = $work['daily'];
-
-        dd($start_time, $end_time, $lest_time, $achievement_time, $daily);
 
         return view('menu.monthly', compact(
             'monthly_data',

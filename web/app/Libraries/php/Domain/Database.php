@@ -2,8 +2,10 @@
 
 namespace App\Libraries\php\Domain;
 
+use PDO;
 use App\Models\Date;
 use Illuminate\Support\Facades\DB;
+use App\Libraries\php\Domain\ConnectDB;
 
 /**
  * データベース動作クラス
@@ -38,15 +40,24 @@ class Database
      *
      * @return  array $data
      */
-    public static function getMonthly($emplo_id, $ym)
+    public static function getMonthly($emplo_id, $ym, $session_user)
     {
 
-        $data = DB::select('SELECT wk1.id, wk1.emplo_id, wk1.date, wk1.start_time, wk1.end_time,
-            wk1.lest_time, wk1.achievement_time, daily.daily,wk1.created_at, wk1.updated_at FROM works AS wk1
-            LEFT JOIN daily ON wk1.date = daily.date
-            WHERE wk1.emplo_id = ?
-            AND DATE_FORMAT(wk1.date, "%Y-%m") = ? 
-            ORDER BY wk1.date', [$emplo_id, $ym]);
+        $connect = new ConnectDB();
+        $pdo = $connect->connect_db();
+
+        $sql = "SELECT wk1.date, wk1.emplo_id, wk1.start_time, wk1.end_time,
+        wk1.lest_time, wk1.achievement_time, dl1.daily FROM works AS wk1
+        LEFT JOIN daily AS dl1 ON wk1.date = dl1.date
+        WHERE wk1.emplo_id = :emplo_id
+        AND DATE_FORMAT(wk1.date, '%Y-%m') = :date
+        ORDER BY date";
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':emplo_id', (int)$session_user['emplo_id'], PDO::PARAM_INT);
+        $stmt->bindValue(':date', $ym, PDO::PARAM_STR);
+        $stmt->execute();
+        $data = $stmt->fetchAll(PDO::FETCH_UNIQUE);
 
         return $data;
     }
