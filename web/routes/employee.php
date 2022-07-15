@@ -92,6 +92,7 @@ Route::group(['middleware' => 'auth:employee'], function () {
     //DailyContorollerに関するルーティング
     //月別一覧へのroute
     Route::get('/monthly', [MonthlyController::class, 'index'])->name('monthly');
+    Route::post('/monthly/change', [MonthlyController::class, 'store'])->name('monthly_change');
     //部下一覧へのroute
     Route::get('/subord', [MenuController::class, 'subord'])->name('subord');
 

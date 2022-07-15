@@ -76,7 +76,24 @@ class MonthlyController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $emplo_id = Auth::guard('employee')->user()->emplo_id;
+        $session_user =  Auth::guard('employee')->user();
+
+        if (isset($request->monthly_change)) {
+            $ym = $request->monthly_change;
+            $day_count = date('t', strtotime($ym));
+        } else {
+            $ym = date('Y-m');
+            $day_count = date('t');
+        }
+
+        $monthly_data = DataBase::getMonthly($emplo_id, $ym, $session_user);
+
+        return view('menu.monthly', compact(
+            'monthly_data',
+            'day_count',
+            'ym',
+        ));
     }
 
     /**

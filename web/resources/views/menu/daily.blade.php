@@ -42,12 +42,12 @@
             ?>
 
             <tr>
-                <th class="px-1 py-1">{{ time_format_dw($ym . '-' . $i) }}</th>
-                <td class="px-1 py-1">{{ $start_time }}</td>
-                <td class="px-1 py-1">{{ $end_time }}</td>
-                <td class="px-1 py-1">{{ $lest_time }}</td>
-                <td class="px-1 py-1">{{ $achievement_time }}</td>
-                <td class="px-1 py-1">{{ $daily }}</td>
+                <th class="fix-col">{{ time_format_dw($ym . '-' . $i) }}</th>
+                <td class="fix-col">{{ $start_time }}</td>
+                <td class="fix-col">{{ $end_time }}</td>
+                <td class="fix-col">{{ $lest_time }}</td>
+                <td class="fix-col">{{ $achievement_time }}</td>
+                <td>{{ $daily }}</td>
                 <td class="w-1 text-center">
                     <a href="#">✏</a>
                 </td>
