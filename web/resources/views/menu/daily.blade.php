@@ -1,3 +1,4 @@
+<?php require_once(dirname(__FILE__) . '/function.php'); ?>
 <table class="table-auto w-full text-left whitespace-no-wrap">
     <thead>
         <tr>
@@ -37,10 +38,11 @@
                 if ($work['daily']) {
                     $daily = mb_strimwidth($work['daily'], 0, 40, '...');
                 }
-            } ?>
+            }
+            ?>
 
             <tr>
-                <th class="px-1 py-1">{{$ym . '-' . $i}}</th>
+                <th class="px-1 py-1">{{ time_format_dw($ym . '-' . $i) }}</th>
                 <td class="px-1 py-1">{{ $start_time }}</td>
                 <td class="px-1 py-1">{{ $end_time }}</td>
                 <td class="px-1 py-1">{{ $lest_time }}</td>

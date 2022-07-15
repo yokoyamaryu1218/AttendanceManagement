@@ -49,7 +49,7 @@ class MonthlyController extends Controller
         $today = date('Y-m-j');
         $day_count = date('t', strtotime($ym));
 
-        $monthly_data = DataBase::getMonthly($emplo_id, $ym, $session_user);    
+        $monthly_data = DataBase::getMonthly($emplo_id, $ym, $session_user);
 
         return view('menu.monthly', compact(
             'monthly_data',
