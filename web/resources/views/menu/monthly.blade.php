@@ -10,6 +10,8 @@
                     <select class="form-control rounded-pill mb-3" name="m" onchange="submit(this.form)">
                         <option value="{{ date('Y-m') }}">
                         {{ date('Y年m月') }}</option>
+                        <!-- $i<12の12を変えることで表示する月数を変更することができる -->
+                        <!-- strtotimeの+で設定することで当月後1年、-で当月後1年の表示になる -->
                         @for ($i = 1; $i < 12; $i++) {{ $target_ym = strtotime("- {$i}months"); }}
                         <option value="{{ date('Y-m', $target_ym) }}" @if ($ym==date('Y-m', $target_ym)) selected @endif>
                         {{ date('Y年m月', $target_ym) }}
