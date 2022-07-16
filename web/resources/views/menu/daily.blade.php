@@ -49,7 +49,7 @@
                 <td>{{ $daily }}</td>
                 <td class="w-1 text-center">
                     <div id="button">
-                        <button type="button" data-modal-toggle="default-modal">✐</button>
+                        <button type="button" onclick="openModal()">✐</button>
                     </div>
                 </td>
             </tr>
