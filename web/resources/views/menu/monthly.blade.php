@@ -24,7 +24,7 @@
                             @endfor
                         </select>
                         <!-- 名前表示部分 -->
-                        {{ Auth::guard('employee')->user()->name }}さん
+                        {{ Auth::guard('employee')->user()->name }}
                         <!-- 名前表示部分ここまで -->
                     </form>
                 </label>
