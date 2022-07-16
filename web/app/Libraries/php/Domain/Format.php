@@ -10,7 +10,7 @@ use PDO;
 
 class Format
 {
-    public static function time_format_dw($date)
+    function time_format_dw($date)
     {
         $format_date = NULL;
         $week = array('日', '月', '火', '水', '木', '金', '土');

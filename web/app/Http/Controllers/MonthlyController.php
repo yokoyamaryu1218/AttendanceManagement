@@ -51,10 +51,13 @@ class MonthlyController extends Controller
 
         $monthly_data = DataBase::getMonthly($emplo_id, $ym, $session_user);
 
+        $format = new Format();
+
         return view('menu.monthly', compact(
             'monthly_data',
             'day_count',
             'ym',
+            'format'
         ));
     }
 

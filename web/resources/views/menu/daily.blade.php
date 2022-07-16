@@ -1,4 +1,3 @@
-<?php require_once(dirname(__FILE__) . '/function.php'); ?>
 <table class="table-auto w-full text-left whitespace-no-wrap">
     <thead>
         <tr>
@@ -42,7 +41,7 @@
             ?>
 
             <tr>
-                <th class="fix-col">{{ time_format_dw($ym . '-' . $i) }}</th>
+                <th class="fix-col">{{ $format->time_format_dw($ym . '-' . $i) }}</th>
                 <td class="fix-col">{{ $start_time }}</td>
                 <td class="fix-col">{{ $end_time }}</td>
                 <td class="fix-col">{{ $lest_time }}</td>
