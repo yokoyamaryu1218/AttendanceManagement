@@ -7,7 +7,7 @@
             <th class="px-1 py-1 title-font tracking-wider font-medium text-gray-800 text-sm bg-gray-100">休憩</th>
             <th class="px-1 py-1 title-font tracking-wider font-medium text-gray-800 text-sm bg-gray-100">実績</th>
             <th class="px-1 py-1 title-font tracking-wider font-medium text-gray-800 text-sm bg-gray-100">業務内容</th>
-            <th class="w-1 title-font tracking-wider font-medium text-gray-800 text-sm bg-gray-100 rounded-tr rounded-br"></th>
+            <th class="px-1 py-1 title-font tracking-wider font-medium text-gray-800 text-sm bg-gray-100 rounded-tr rounded-br"></th>
         </tr>
     </thead>
     <tbody>
@@ -47,9 +47,11 @@
                 <td class="fix-col">{{ $lest_time }}</td>
                 <td class="fix-col">{{ $achievement_time }}</td>
                 <td>{{ $daily }}</td>
-                <td class="w-1 text-center">
+                <td>
                     <div id="button">
-                        <button type="button" onclick="openModal()">✐</button>
+                        <button onclick="openModal()">
+                            <img src="data:image/png;base64,{{Config::get('base64.pen')}}">
+                        </button>
                     </div>
                 </td>
             </tr>
