@@ -48,7 +48,9 @@
                 <td class="fix-col">{{ $achievement_time }}</td>
                 <td>{{ $daily }}</td>
                 <td class="w-1 text-center">
-                    <a href="#">✏</a>
+                    <div id="button">
+                        <button type="button" data-modal-toggle="default-modal">✐</button>
+                    </div>
                 </td>
             </tr>
         <?php endfor; ?>

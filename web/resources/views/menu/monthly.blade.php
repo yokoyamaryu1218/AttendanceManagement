@@ -5,7 +5,7 @@
     <body>
         <section class="text-gray-600 body-font">
             <!-- レスポンシブはhttps://tailwindcss.jp/docs/marginを参照にする -->
-            <div class="pt-20 xl:ml-64 sm:py-6">
+            <div class="pt-20 ml-64">
                 <!-- 月度プルダウン部分 -->
                 <label>
                     <!-- プルダウンの月度を変更すれば、下の一覧も変わる -->
@@ -31,11 +31,17 @@
                 <!-- 月度プルダウン部分ここまで -->
 
             </div>
+            <!-- ここから月別勤怠一覧部分 -->
             <div class="container px-5 py-5 mx-auto">
                 <div class="lg:w-2/3 w-full mx-auto overflow-auto">
                     @include('menu.daily')
                 </div>
             </div>
+            <!-- 月別勤怠一覧部分ここまで -->
+            <!-- ここからモーダル -->
+            <script src="{{ asset('js/modal/modal.js') }}" defer></script>
+            @include('menu.modal')
+            <!-- モーダルここまで -->
         </section>
     </body>
 </x-app-layout>
