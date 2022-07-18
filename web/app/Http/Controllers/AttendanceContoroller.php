@@ -40,6 +40,7 @@ class AttendanceContoroller extends Controller
         return view('employee.dashboard', compact(
             'ym',
             'today',
+            'time',
             'format',
             'message',
             'daily_data'
