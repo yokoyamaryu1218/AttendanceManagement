@@ -39,7 +39,7 @@
             </div>
             <!-- 月別勤怠一覧部分ここまで -->
             <!-- ここからモーダル -->
-            <script src="{{ asset('js/modal/modal.js') }}" defer></script>
+            <script src="{{ asset('js/modal/modall.js') }}" defer></script>
             @include('menu.modal')
             <!-- モーダルここまで -->
         </section>
