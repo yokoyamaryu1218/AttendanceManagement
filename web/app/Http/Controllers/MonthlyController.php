@@ -31,18 +31,10 @@ class MonthlyController extends Controller
         $emplo_id = Auth::guard('employee')->user()->emplo_id;
         $session_user =  Auth::guard('employee')->user();
 
-        // https://codeforfun.jp/php-calendar/
-        if (isset($_GET['ym'])) {
-            $ym = $_GET['ym'];
-        } else {
-            // 今月の年月を表示
-            $ym = date('Y-m');
-        }
-
-        $day_count = date('t', strtotime($ym));
-
         $format = new Format();
-        
+        $ym = $format->to_monthly();
+         
+        $day_count = date('t', strtotime($ym));
         $monthly_data = DataBase::getMonthly($emplo_id, $ym, $session_user);
 
         return view('menu.monthly', compact(

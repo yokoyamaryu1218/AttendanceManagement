@@ -14,17 +14,10 @@ class AttendanceContoroller extends Controller
      */
     public function index()
     {
-        // https://codeforfun.jp/php-calendar/
-        if (isset($_GET['ym'])) {
-            $ym = $_GET['ym'];
-        } else {
-            // 今月の年月を表示
-            $ym = date('Y-m');
-        }
-
         // 今日の日付 フォーマット
         $today = date('Y-m-j');
         $format = new Format();
+        $ym = $format->to_monthly();
 
         return view('employee.dashboard', compact(
             'ym',
