@@ -30,6 +30,7 @@ class Format
         if (isset($_GET['ym'])) {
             $ym = $_GET['ym'];
         } else {
+            // 今月の年月を表示
             $ym = date('Y-m');
         }
 

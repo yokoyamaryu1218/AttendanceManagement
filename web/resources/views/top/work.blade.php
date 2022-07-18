@@ -6,7 +6,7 @@
             <div class="font-bold text-left text-2xl mb-5">{{ $ym }}-{{ $format->time_format_dw($today) }}</div>
             <!-- 日付表示ここまで -->
             <!-- メッセージ表示部分 -->
-            <div class="text-right mb-5">おはようございます、{{ Auth::guard('employee')->user()->name }}さん</div>
+            <div class="text-right mb-5">{{ $message }}</div>
             <!-- メッセージ表示部分ここまで -->
             <!-- 時間表示部分 -->
             <h1 class="font-bold text-center text-2xl mb-5" id="RealtimeClockArea2"></h1>

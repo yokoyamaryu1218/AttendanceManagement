@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Libraries\php\Domain\Format;
 
 class AttendanceContoroller extends Controller
@@ -19,10 +20,23 @@ class AttendanceContoroller extends Controller
         $format = new Format();
         $ym = $format->to_monthly();
 
+        // 参照先：https://on-ze.com/archives/1838
+        $time = intval(date('H'));
+        // ユーザーの名前表示
+        $name = Auth::guard('employee')->user()->name;
+        if (4 <= $time && $time <= 11) { //4時～11時まで
+            $message = "おはようございます、" . $name . "さん";
+        } elseif (11 <= $time && $time <= 15) { //11時～15時まで
+            $message = "こんにちは、" . $name . "さん";
+        } else { // それ以外の時間帯のとき 
+            $message = "お疲れ様です、" . $name . "さん";
+        };
+
         return view('employee.dashboard', compact(
             'ym',
             'today',
-            'format'
+            'format',
+            'message'
         ));
     }
 
