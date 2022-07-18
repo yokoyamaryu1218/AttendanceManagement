@@ -62,6 +62,14 @@ class Database
         return $data;
     }
 
+    /**
+     *
+     * @param $client 顧客ID
+     *
+     * @var   $data 取得データ
+     *
+     * @return  array $data
+     */
     public static function getDaily($emplo_id, $today)
     {
 
@@ -70,6 +78,14 @@ class Database
         return $data;
     }
 
+    /**
+     *
+     * @param $client 顧客ID
+     *
+     * @var   $data 取得データ
+     *
+     * @return  array $data
+     */
     public static function getId($emplo_id)
     {
 
@@ -79,6 +95,30 @@ class Database
         return $id;
     }
 
+    /**
+     *
+     * @param $client 顧客ID
+     *
+     * @var   $data 取得データ
+     *
+     * @return  array $data
+     */
+    public static function updateDaily($emplo_id, $today, $daily)
+    {
+
+        $data = DB::select('UPDATE daily SET daily = ? WHERE emplo_id = ? AND date = ?', [$daily, $emplo_id, $today]);
+
+        return $data;
+    }
+
+    /**
+     *
+     * @param $client 顧客ID
+     *
+     * @var   $data 取得データ
+     *
+     * @return  array $data
+     */
     public static function insertDaily($id, $emplo_id, $today, $daily)
     {
 
@@ -107,6 +147,14 @@ class Database
         return $data;
     }
 
+    /**
+     *
+     * @param $client 顧客ID
+     *
+     * @var   $data 取得データ
+     *
+     * @return  array $data
+     */
     public static function subord_authority($emplo_id)
     {
 

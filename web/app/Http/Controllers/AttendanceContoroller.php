@@ -37,7 +37,6 @@ class AttendanceContoroller extends Controller
         $emplo_id = Auth::guard('employee')->user()->emplo_id;
         $daily_data = DataBase::getDaily($emplo_id, $today);
 
-
         return view('employee.dashboard', compact(
             'ym',
             'today',
@@ -68,12 +67,23 @@ class AttendanceContoroller extends Controller
         $emplo_id = Auth::guard('employee')->user()->emplo_id;
         $daily = $request->daily;
         $today = date('Y-m-j');
-        $old_id = DataBase:: getId($emplo_id);
-        $new_id = ($old_id[0]->id) + "1";
 
-        DataBase::insertDaily($new_id,$emplo_id,$today,$daily);
-        
-        return back();
+        // 重複クリック対策
+        $request->session()->regenerateToken();
+
+        //最新のIDを取得して、そのIDに+1する
+        $id = DataBase::getId($emplo_id);
+
+        //登録する番号を作成
+        if (empty($id)) {
+            $id = "1";
+        } else {
+            $id = ($id[0]->id) + "1";
+        }
+
+        DataBase::insertDaily($id, $emplo_id, $today, $daily);
+
+        return back()->with('status', '日報を登録しました');;
     }
 
     /**
@@ -105,9 +115,18 @@ class AttendanceContoroller extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function daily_update(Request $request)
     {
-        //
+        $emplo_id = Auth::guard('employee')->user()->emplo_id;
+        $daily = $request->daily;
+
+        // 重複クリック対策
+        $request->session()->regenerateToken();
+
+        $today = date('Y-m-j');
+        DataBase::updateDaily($emplo_id, $today, $daily);
+
+        return back()->with('status', '日報を更新しました');;
     }
 
     /**

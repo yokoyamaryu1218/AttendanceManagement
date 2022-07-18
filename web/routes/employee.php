@@ -86,9 +86,13 @@ Route::get('/dashboard', [AttendanceContoroller::class, 'index'])
     ->middleware(['auth:employee'])
     ->name('dashboard');
 
-Route::post('/dashboard/store', [AttendanceContoroller::class, 'daily_store'])
+Route::post('/dashboard/daily/store', [AttendanceContoroller::class, 'daily_store'])
     ->middleware(['auth:employee'])
     ->name('daily.store');
+
+    Route::post('/dashboard/daily/update', [AttendanceContoroller::class, 'daily_update'])
+    ->middleware(['auth:employee'])
+    ->name('daily.update');
 
 Route::group(['middleware' => 'auth:employee'], function () {
     //月別一覧へのroute
