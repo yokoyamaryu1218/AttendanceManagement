@@ -1,4 +1,5 @@
 <script src="{{ asset('js/time/time.js') }}" defer></script>
+<script src="{{ asset('js/switch/switch.js') }}" defer></script>
 <section class="text-gray-600 body-font relative">
     <div class="container px-5 py-24 mx-auto ">
         <div class="lg:w-1/2 md:w-2/3 mx-auto">
@@ -16,7 +17,7 @@
                 <button class="flex mx-auto text-white bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-lg">退勤</button>
             </div>
             <div class="pt-6 w-full text-right">
-                <button class="text-white bg-indigo-500 border-0 py-1 px-4 focus:outline-none hover:bg-indigo-600 rounded text-lg">出退勤切替</button>
+                <button  class="text-white bg-indigo-500 border-0 py-1 px-4 focus:outline-none hover:bg-indigo-600 rounded text-lg">出退勤切替</button>
             </div>
         </div>
 </section>
