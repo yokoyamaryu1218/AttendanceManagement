@@ -1,7 +1,7 @@
 <section class="text-gray-600 body-font relative">
     <div class="container px-5 py-24 mx-auto ">
         <div class="lg:w-1/2 md:w-2/3 mx-auto">
-            <div class="font-bold text-left text-2xl mb-5">{{ $ym }}-{{ $format->time_format_dw($today) }}</div>
+            <div class="font-bold text-left text-2xl mb-5">{{ $today }}</div>
             <h3 class="text-right text-2xl mb-5">おはようございます、〇〇さん</h3>
             <h1 class="font-bold text-center text-2xl mb-5">16：05：00</h1>
             <div class="flex justify-center">

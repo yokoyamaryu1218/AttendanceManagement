@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Libraries\php\Domain\Format;
 
 class AttendanceContoroller extends Controller
 {
@@ -13,7 +14,23 @@ class AttendanceContoroller extends Controller
      */
     public function index()
     {
-        return view('top.work');
+        // https://codeforfun.jp/php-calendar/
+        if (isset($_GET['ym'])) {
+            $ym = $_GET['ym'];
+        } else {
+            // 今月の年月を表示
+            $ym = date('Y-m');
+        }
+
+        // 今日の日付 フォーマット
+        $today = date('Y-m-j');
+        $format = new Format();
+
+        return view('employee.dashboard', compact(
+            'ym',
+            'today',
+            'format'
+        ));
     }
 
     /**

@@ -39,19 +39,11 @@ class MonthlyController extends Controller
             $ym = date('Y-m');
         }
 
-        $timestamp = strtotime($ym . '-01');
-        if ($timestamp === false) {
-            $ym = date('Y-m');
-            $timestamp = strtotime($ym . '-01');
-        }
-
-        // 今日の日付 フォーマット
-        $today = date('Y-m-j');
         $day_count = date('t', strtotime($ym));
 
-        $monthly_data = DataBase::getMonthly($emplo_id, $ym, $session_user);
-
         $format = new Format();
+        
+        $monthly_data = DataBase::getMonthly($emplo_id, $ym, $session_user);
 
         return view('menu.monthly', compact(
             'monthly_data',

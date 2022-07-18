@@ -24,10 +24,10 @@ use App\Http\Controllers\MonthlyController;
 |
 */
 
-Route::get('/dashboard', function () {
-    return view('employee.dashboard');
-})->middleware(['auth:employee'])->name('dashboard');
 
+Route::get('/dashboard', [AttendanceContoroller::class, 'index'])
+    ->middleware(['auth:employee'])
+    ->name('dashboard');
 
 Route::get('/register', [RegisteredUserController::class, 'create'])
     ->middleware('guest')
@@ -84,7 +84,7 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
 
 Route::group(['middleware' => 'auth:employee'], function () {
     //AttendanceContorollerに関するルーティング
-    Route::get('/top1', [AttendanceContoroller::class, 'index'])->name('work');;
+
 
     //DailyContorollerに関するルーティング
     Route::get('/top2', [DailyController::class, 'index'])->name('daily');;
