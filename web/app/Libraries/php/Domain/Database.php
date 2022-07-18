@@ -62,6 +62,14 @@ class Database
         return $data;
     }
 
+    public static function getDaily($emplo_id,$today)
+    {
+
+        $data = DB::select('SELECT daily FROM daily WHERE emplo_id = ? AND date = ?', [$emplo_id,$today]);
+
+        return $data;
+    }
+
     /**
      *
      * @param $client 顧客ID

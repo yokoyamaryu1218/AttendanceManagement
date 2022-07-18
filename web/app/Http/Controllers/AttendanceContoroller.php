@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Libraries\php\Domain\Format;
+use App\Libraries\php\Domain\DataBase;
 
 class AttendanceContoroller extends Controller
 {
@@ -32,11 +33,15 @@ class AttendanceContoroller extends Controller
             $message = "お疲れ様です、" . $name . "さん";
         };
 
+        $emplo_id = Auth::guard('employee')->user()->emplo_id;
+        $daily_data = DataBase::getDaily($emplo_id, $today);
+
         return view('employee.dashboard', compact(
             'ym',
             'today',
             'format',
-            'message'
+            'message',
+            'daily_data'
         ));
     }
 
