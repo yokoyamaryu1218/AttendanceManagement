@@ -62,10 +62,27 @@ class Database
         return $data;
     }
 
-    public static function getDaily($emplo_id,$today)
+    public static function getDaily($emplo_id, $today)
     {
 
-        $data = DB::select('SELECT daily FROM daily WHERE emplo_id = ? AND date = ?', [$emplo_id,$today]);
+        $data = DB::select('SELECT daily FROM daily WHERE emplo_id = ? AND date = ?', [$emplo_id, $today]);
+
+        return $data;
+    }
+
+    public static function getId($emplo_id)
+    {
+
+        $id = DB::select('select id from daily where emplo_id = ?
+            order by emplo_id desc limit 1', [$emplo_id]);
+
+        return $id;
+    }
+
+    public static function insertDaily($id, $emplo_id, $today, $daily)
+    {
+
+        $data = DB::select('INSERT INTO daily (id,emplo_id,date,daily) VALUE (?,?,?,?)', [$id, $emplo_id, $today, $daily]);
 
         return $data;
     }

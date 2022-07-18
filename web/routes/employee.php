@@ -82,14 +82,15 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->middleware('auth:employee')
     ->name('logout');
 
+Route::get('/dashboard', [AttendanceContoroller::class, 'index'])
+    ->middleware(['auth:employee'])
+    ->name('dashboard');
+
+Route::post('/dashboard/store', [AttendanceContoroller::class, 'daily_store'])
+    ->middleware(['auth:employee'])
+    ->name('daily.store');
+
 Route::group(['middleware' => 'auth:employee'], function () {
-    //AttendanceContorollerに関するルーティング
-
-
-    //DailyContorollerに関するルーティング
-    Route::get('/top2', [DailyController::class, 'index'])->name('daily');;
-
-    //DailyContorollerに関するルーティング
     //月別一覧へのroute
     Route::get('/monthly', [MonthlyController::class, 'index'])->name('monthly');
     Route::post('/monthly/change', [MonthlyController::class, 'store'])->name('monthly_change');

@@ -29,7 +29,7 @@
                     <!-- ここに日報が入る -->
                     <!-- textareaの枠はh-〇で調節ができる -->
                     <div class="relative">
-                        <textarea id="message" name="message" class="w-full h-32 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="ここに日報が入る"></textarea>
+                        <textarea id="message" name="message" cols="40" rows="10" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="ここに日報が入る"></textarea>
                     </div>
 
                     <!-- 日報部分ここまで -->

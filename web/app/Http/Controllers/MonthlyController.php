@@ -32,8 +32,7 @@ class MonthlyController extends Controller
         $session_user =  Auth::guard('employee')->user();
 
         $format = new Format();
-        $ym = $format->to_monthly();
-         
+        $ym = $format->to_monthly(); 
         $day_count = date('t', strtotime($ym));
         $monthly_data = DataBase::getMonthly($emplo_id, $ym, $session_user);
 

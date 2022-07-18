@@ -33,8 +33,10 @@ class AttendanceContoroller extends Controller
             $message = "お疲れ様です、" . $name . "さん";
         };
 
+        //日報の表示
         $emplo_id = Auth::guard('employee')->user()->emplo_id;
         $daily_data = DataBase::getDaily($emplo_id, $today);
+
 
         return view('employee.dashboard', compact(
             'ym',
@@ -61,9 +63,17 @@ class AttendanceContoroller extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function daily_store(Request $request)
     {
-        //
+        $emplo_id = Auth::guard('employee')->user()->emplo_id;
+        $daily = $request->daily;
+        $today = date('Y-m-j');
+        $old_id = DataBase:: getId($emplo_id);
+        $new_id = ($old_id[0]->id) + "1";
+
+        DataBase::insertDaily($new_id,$emplo_id,$today,$daily);
+        
+        return back();
     }
 
     /**
@@ -95,7 +105,7 @@ class AttendanceContoroller extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         //
     }
