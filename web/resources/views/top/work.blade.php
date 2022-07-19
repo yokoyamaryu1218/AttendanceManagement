@@ -17,6 +17,17 @@
             <!-- 時間表示部分 -->
             <h1 class="font-bold text-center text-2xl mb-5" id="RealtimeClockArea2"></h1>
             <!-- 時間表示ここまで -->
+            <!-- フラッシュメッセージの表示 -->
+            @if (session('warning'))
+            <div class="alert text-center alert-warning">
+                {{ session('warning') }}
+            </div>
+            @endif
+            @if (session('status'))
+            <div class="alert text-center alert-info">
+                {{ session('status') }}
+            </div>
+            @endif
             <!-- 出勤ボタンここから -->
             <form method="POST" action="{{ route('employee.start_time_store')}}" name="start_time_store">
                 @csrf

@@ -69,7 +69,6 @@ class AttendanceContoroller extends Controller
         // 入力値をPOSTパラメーターから取得
         $target_date = date('Y-m-d');
         $start_time = $_POST['modal_start_time'];
-        $end_time = '';
 
         $format = new Format();
         $ym = $format->to_monthly();
@@ -82,12 +81,11 @@ class AttendanceContoroller extends Controller
 
         if ($check_date) {
             // 重複登録の場合
-            return back();
+            return back()->with('warning', 'すで打刻済みです。');
         } else {
-
+            // 勤務開始時間をデータベースに登録する
             DataBase::insertStartTime($emplo_id, $target_date, $start_time);
-
-            return back();
+            return back()->with('status', '出勤時間を登録しました');;
         }
     }
 
@@ -117,7 +115,7 @@ class AttendanceContoroller extends Controller
         // データベースに登録する
         DataBase::insertEndTime($end_time, $lest_time, $achievement_time, $emplo_id, $target_date);
 
-        return back();
+        return back()->with('status', '退勤時間を登録しました');;
     }
 
     /**
