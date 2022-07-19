@@ -14,8 +14,7 @@ class CreateWorksTable extends Migration
     public function up()
     {
         Schema::create('works', function (Blueprint $table) {
-            $table->primary(['id']);
-            $table->string('id', '10')
+            $table->bigIncrements('id', '10')
                 ->comment('ID');
             $table->string('emplo_id', '10')
                 ->comment('社員ID');
@@ -23,11 +22,11 @@ class CreateWorksTable extends Migration
                 ->comment('日付');
             $table->Time('start_time')->nullable()
                 ->comment('出勤時間');
-                $table->Time('end_time')->nullable()
+            $table->Time('end_time')->nullable()
                 ->comment('退勤時間');
-            $table->string('lest_time')->nullable()
+            $table->Time('lest_time')->nullable()
                 ->comment('休憩時間');
-            $table->string('achievement_time')->nullable()
+            $table->Time('achievement_time')->nullable()
                 ->comment('実績時間');
             $table->timestamp('created_at')->useCurrent()
                 ->comment('新規登録日');

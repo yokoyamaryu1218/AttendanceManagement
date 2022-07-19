@@ -14,8 +14,7 @@ class CreateDailyTable extends Migration
     public function up()
     {
         Schema::create('daily', function (Blueprint $table) {
-            $table->primary(['id']);
-            $table->string('id', '10')
+            $table->bigIncrements('id', '10')
                 ->comment('ID');
             $table->string('emplo_id', '10')
                 ->comment('社員ID');

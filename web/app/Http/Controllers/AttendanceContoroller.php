@@ -83,19 +83,8 @@ class AttendanceContoroller extends Controller
             // 重複登録の場合
             return back();
         } else {
-            // 初めての登録の場合
-            $db_name = 'works';
-            //最新のIDを取得して、そのIDに+1する
-            $id = DataBase::getId($db_name, $emplo_id);
 
-            //登録する番号を作成
-            if (empty($id)) {
-                $id = "1";
-            } else {
-                $id = ($id[0]->id) + "1";
-            }
-
-            DataBase::insertStartTime($id, $emplo_id, $target_date, $start_time);
+            DataBase::insertStartTime($emplo_id, $target_date, $start_time);
 
             return back();
         }
@@ -112,12 +101,10 @@ class AttendanceContoroller extends Controller
         // 入力値をPOSTパラメーターから取得
         $target_date = date('Y-m-d');
         $end_time = $_POST['modal_end_time'];
-
-        $id = Database::CheckEndTime($target_date);
-
         $emplo_id = Auth::guard('employee')->user()->emplo_id;
+        $start_time = Database::getStartTime($emplo_id, $target_date);
 
-        DataBase::insertEndTime($end_time, $id[0]->id, $emplo_id, $target_date);
+        DataBase::insertEndTime($start_time[0]->start_time,$end_time, $emplo_id, $target_date);
         return back();
     }
 
@@ -136,18 +123,7 @@ class AttendanceContoroller extends Controller
         // 重複クリック対策
         $request->session()->regenerateToken();
 
-        //最新のIDを取得して、そのIDに+1する
-        $db_name = 'daily';
-        $id = DataBase::getId($db_name, $emplo_id);
-
-        //登録する番号を作成
-        if (empty($id)) {
-            $id = "1";
-        } else {
-            $id = ($id[0]->id) + "1";
-        }
-
-        DataBase::insertDaily($id, $emplo_id, $today, $daily);
+        DataBase::insertDaily($emplo_id, $today, $daily);
 
         return back()->with('status', '日報を登録しました');;
     }
