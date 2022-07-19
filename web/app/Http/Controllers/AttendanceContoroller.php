@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Libraries\php\Domain\Format;
 use App\Libraries\php\Domain\DataBase;
+use App\Libraries\php\Domain\Time;
 
 class AttendanceContoroller extends Controller
 {
@@ -102,9 +103,20 @@ class AttendanceContoroller extends Controller
         $target_date = date('Y-m-d');
         $end_time = $_POST['modal_end_time'];
         $emplo_id = Auth::guard('employee')->user()->emplo_id;
+        
+        //休憩時間を求めるため、総勤務時間を求める
         $start_time = Database::getStartTime($emplo_id, $target_date);
+        $total_time = Time::total_time($start_time[0]->start_time, $end_time);
 
-        DataBase::insertEndTime($start_time[0]->start_time,$end_time, $emplo_id, $target_date);
+        //休憩時間を求める
+        $lest_time = Time::lest_time($total_time);
+
+        //実績時間を求める
+        $achievement_time = Time::achievement_time($total_time, $lest_time);
+
+        // データベースに登録する
+        DataBase::insertEndTime($end_time, $lest_time, $achievement_time, $emplo_id, $target_date);
+
         return back();
     }
 
