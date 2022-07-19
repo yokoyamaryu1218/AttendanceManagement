@@ -86,11 +86,11 @@ class Database
      *
      * @return  array $data
      */
-    public static function getId($emplo_id)
+    public static function getId($db_name, $emplo_id)
     {
 
-        $id = DB::select('select id from daily where emplo_id = ?
-            order by emplo_id desc limit 1', [$emplo_id]);
+        $id = DB::select('select id from ' . $db_name . ' where emplo_id = ?
+            order by id desc limit 1', [$emplo_id]);
 
         return $id;
     }
@@ -107,6 +107,74 @@ class Database
     {
 
         $data = DB::select('UPDATE daily SET daily = ? WHERE emplo_id = ? AND date = ?', [$daily, $emplo_id, $today]);
+
+        return $data;
+    }
+
+    /**
+     * 対象日のデータがあるかどうかチェック
+     * @param $client 顧客ID
+     *
+     * @var   $data 取得データ
+     *
+     * @return  array $data
+     */
+    public static function checkDate($emplo_id, $ym, $session_user, $target_date)
+    {
+        $connect = new ConnectDB();
+        $pdo = $connect->connect_db();
+
+        $sql = "SELECT id FROM works WHERE emplo_id = :emplo_id AND date = :date LIMIT 1";
+        $stmt = $pdo->prepare($sql);
+        $stmt->bindValue(':emplo_id', (int)$session_user['emplo_id'], PDO::PARAM_INT);
+        $stmt->bindValue(':date', $target_date, PDO::PARAM_STR);
+        $stmt->execute();
+        $data = $stmt->fetch();
+
+        return $data;
+    }
+
+    /**
+     * 対象日のデータがあるかどうかチェック
+     * @param $client 顧客ID
+     *
+     * @var   $data 取得データ
+     *
+     * @return  array $data
+     */
+    public static function insertStartTime($id, $emplo_id, $target_date, $start_time)
+    {
+        $data =  DB::select('INSERT INTO works (id,emplo_id,date,start_time) VALUE (?,?,?,?)', [$id, $emplo_id, $target_date, $start_time]);
+
+        return $data;
+    }
+
+    /**
+     * 対象日のデータがあるかどうかチェック
+     * @param $client 顧客ID
+     *
+     * @var   $data 取得データ
+     *
+     * @return  array $data
+     */
+    public static function CheckEndTime($target_date)
+    {
+        $check = DB::select('SELECT id FROM works WHERE end_time IS NULL AND date = ?', [$target_date]);
+
+        return $check;
+    }
+
+    /**
+     * 対象日のデータがあるかどうかチェック
+     * @param $client 顧客ID
+     *
+     * @var   $data 取得データ
+     *
+     * @return  array $data
+     */
+    public static function insertEndTime($end_time, $id, $emplo_id, $target_date)
+    {
+        $data =  DB::select('UPDATE works SET end_time = ? WHERE id = ? AND emplo_id = ? AND date = ?', [$end_time, $id, $emplo_id, $target_date]);
 
         return $data;
     }

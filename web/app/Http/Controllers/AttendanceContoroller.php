@@ -29,7 +29,7 @@ class AttendanceContoroller extends Controller
             $message = "おはようございます、" . $name . "さん";
         } elseif (11 <= $time && $time <= 15) { //11時～15時まで
             $message = "こんにちは、" . $name . "さん";
-        } else { // それ以外の時間帯のとき 
+        } else { // それ以外の時間帯のとき
             $message = "お疲れ様です、" . $name . "さん";
         };
 
@@ -63,6 +63,70 @@ class AttendanceContoroller extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    public function start_time_store(Request $request)
+    {
+        // 入力値をPOSTパラメーターから取得
+        $target_date = date('Y-m-d');
+        $start_time = $_POST['modal_start_time'];
+        $end_time = '';
+
+        $format = new Format();
+        $ym = $format->to_monthly();
+
+        $emplo_id = Auth::guard('employee')->user()->emplo_id;
+        $session_user =  Auth::guard('employee')->user();
+
+        //対象日のデータがあるかどうかチェック
+        $check_date = Database::checkDate($emplo_id, $ym, $session_user, $target_date);
+
+        if ($check_date) {
+            // 重複登録の場合
+            return back();
+        } else {
+            // 初めての登録の場合
+            $db_name = 'works';
+            //最新のIDを取得して、そのIDに+1する
+            $id = DataBase::getId($db_name, $emplo_id);
+
+            //登録する番号を作成
+            if (empty($id)) {
+                $id = "1";
+            } else {
+                $id = ($id[0]->id) + "1";
+            }
+
+            DataBase::insertStartTime($id, $emplo_id, $target_date, $start_time);
+
+            return back();
+        }
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function end_time_store(Request $request)
+    {
+        // 入力値をPOSTパラメーターから取得
+        $target_date = date('Y-m-d');
+        $end_time = $_POST['modal_end_time'];
+
+        $id = Database::CheckEndTime($target_date);
+
+        $emplo_id = Auth::guard('employee')->user()->emplo_id;
+
+        DataBase::insertEndTime($end_time, $id[0]->id, $emplo_id, $target_date);
+        return back();
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function daily_store(Request $request)
     {
         $emplo_id = Auth::guard('employee')->user()->emplo_id;
@@ -73,7 +137,8 @@ class AttendanceContoroller extends Controller
         $request->session()->regenerateToken();
 
         //最新のIDを取得して、そのIDに+1する
-        $id = DataBase::getId($emplo_id);
+        $db_name = 'daily';
+        $id = DataBase::getId($db_name, $emplo_id);
 
         //登録する番号を作成
         if (empty($id)) {

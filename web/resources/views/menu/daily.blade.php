@@ -49,7 +49,9 @@
                 <td>{{ $daily }}</td>
                 <td>
                     <div id="button">
-                        <button onclick="openModal()">
+                        <button type="button" onclick="openModal()" class="btn btn-default h-auto py-0" data-toggle="modal" data-target="#inputModal"
+                        data-month="<?= date('n', strtotime($ym . '-' . $i)) ?>"
+                        data-day="<?= $ym . '-' . sprintf('%02d', $i) ?>">
                             <img src="data:image/png;base64,{{Config::get('base64.pen')}}">
                         </button>
                     </div>

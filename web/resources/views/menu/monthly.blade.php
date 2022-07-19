@@ -17,11 +17,10 @@
                             </option>
                             <!-- $i<12の12を変えることで表示する月数を変更することができる -->
                             <!-- strtotimeの+で設定することで当月以降1年、-で当月以前1年の表示になる -->
-                            @for ($i = 1; $i < 12; $i++) {{ $target_ym = strtotime("- {$i}months"); }}
-                            <option value="{{ date('Y-m', $target_ym) }}" @if ($ym==date('Y-m', $target_ym)) selected @endif>
+                            @for ($i = 1; $i < 12; $i++) {{ $target_ym = strtotime("- {$i}months"); }} <option value="{{ date('Y-m', $target_ym) }}" @if ($ym==date('Y-m', $target_ym)) selected @endif>
                                 {{ date('Y年m月', $target_ym) }}
-                            </option>
-                            @endfor
+                                </option>
+                                @endfor
                         </select>
                         <!-- 名前表示部分 -->
                         {{ Auth::guard('employee')->user()->name }}さん
@@ -40,6 +39,8 @@
             <!-- 月別勤怠一覧部分ここまで -->
             <!-- ここからモーダル -->
             <script src="{{ asset('js/modal/modal.js') }}" defer></script>
+            <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" defer></script>
+            <script src="{{ asset('js/modal/modal2.js') }}" defer></script>
             @include('menu.modal')
             <!-- モーダルここまで -->
         </section>

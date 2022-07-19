@@ -1,15 +1,15 @@
-document.getElementById("leaving").style.display = "none";
+document.getElementById("end_btn").style.display = "none";
 
 function toggle_onclick_inline() {
-    const p1 = document.getElementById("leaving");
+    const p1 = document.getElementById("end_btn");
 
-    if (leaving.style.display == "block") {
+    if (end_btn.style.display == "block") {
         // noneで非表示
-        attend.style.display = "block";
-        leaving.style.display = "none";
+        start_btn.style.display = "block";
+        end_btn.style.display = "none";
     } else {
         // blockで表示
-        attend.style.display = "none";
-        leaving.style.display = "block";
+        start_btn.style.display = "none";
+        end_btn.style.display = "block";
     }
 }
