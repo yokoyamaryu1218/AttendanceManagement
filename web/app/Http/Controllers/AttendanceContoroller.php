@@ -81,7 +81,7 @@ class AttendanceContoroller extends Controller
 
         if ($check_date) {
             // 重複登録の場合
-            return back()->with('warning', 'すで打刻済みです。');
+            return back()->with('warning', 'すでに打刻済みです。');
         } else {
             // 勤務開始時間をデータベースに登録する
             DataBase::insertStartTime($emplo_id, $target_date, $start_time);
