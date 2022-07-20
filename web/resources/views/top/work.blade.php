@@ -18,14 +18,14 @@
             <h1 class="font-bold text-center text-2xl mb-5" id="RealtimeClockArea2"></h1>
             <!-- 時間表示ここまで -->
             <!-- フラッシュメッセージの表示 -->
-            @if (session('warning'))
+            @if (session('works_warning'))
             <div class="alert text-center alert-warning">
-                {{ session('warning') }}
+                {{ session('works_warning') }}
             </div>
             @endif
-            @if (session('status'))
+            @if (session('works_status'))
             <div class="alert text-center alert-info">
-                {{ session('status') }}
+                {{ session('works_status') }}
             </div>
             @endif
             <!-- 出勤ボタンここから -->

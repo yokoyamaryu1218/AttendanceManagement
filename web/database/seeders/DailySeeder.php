@@ -20,12 +20,12 @@ class DailySeeder extends Seeder
         $daily_holder = '?,?,?,?,?';
         // @var array employeeの挿入データ
         $daily_insert_data_list = [
+            ['1001', '2022/06/20', 'ああ', NULL, NULL],
+            ['1001', '2022/06/21', 'ああ', NULL, NULL],
             ['1001', '2022/07/01', 'ああ', NULL, NULL],
             ['1001', '2022/07/06', 'ああ', NULL, NULL],
             ['1001', '2022/07/11', 'ああ', NULL, NULL],
             ['1001', '2022/07/18', 'ああ', NULL, NULL],
-            ['1001', '2022/07/21', 'ああ', NULL, NULL],
-            ['1001', '2022/07/20', 'ああ', NULL, NULL],
         ];
 
         foreach ($daily_insert_data_list as $insert_data) {

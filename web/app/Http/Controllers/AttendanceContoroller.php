@@ -81,11 +81,11 @@ class AttendanceContoroller extends Controller
 
         if ($check_date) {
             // 重複登録の場合
-            return back()->with('warning', 'すでに打刻済みです。');
+            return back()->with('works_warning', 'すでに打刻済みです。');
         } else {
             // 勤務開始時間をデータベースに登録する
             DataBase::insertStartTime($emplo_id, $target_date, $start_time);
-            return back()->with('status', '出勤時間を登録しました');;
+            return back()->with('works_status', '出勤時間を登録しました');;
         }
     }
 
@@ -101,7 +101,7 @@ class AttendanceContoroller extends Controller
         $target_date = date('Y-m-d');
         $end_time = $_POST['modal_end_time'];
         $emplo_id = Auth::guard('employee')->user()->emplo_id;
-        
+
         //休憩時間を求めるため、総勤務時間を求める
         $start_time = Database::getStartTime($emplo_id, $target_date);
         $total_time = Time::total_time($start_time[0]->start_time, $end_time);
@@ -115,7 +115,7 @@ class AttendanceContoroller extends Controller
         // データベースに登録する
         DataBase::insertEndTime($end_time, $lest_time, $achievement_time, $emplo_id, $target_date);
 
-        return back()->with('status', '退勤時間を登録しました');;
+        return back()->with('works_status', '退勤時間を登録しました');;
     }
 
     /**
