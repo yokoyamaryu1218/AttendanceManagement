@@ -41,20 +41,20 @@
             ?>
 
             <tr>
-                <th class="fix-col">{{ $format->time_format_dw($ym . '-' . $i) }}</th>
+                <th scope="row" class="fix-col">{{ $format->time_format_dw($ym . '-' . $i) }}</th>
                 <td class="fix-col">{{ $start_time }}</td>
                 <td class="fix-col">{{ $end_time }}</td>
                 <td class="fix-col">{{ $lest_time }}</td>
                 <td class="fix-col">{{ $achievement_time }}</td>
-                <td>{{ $daily }}</td>
                 <td>
-                    <div id="button">
-                        <button type="button" onclick="openModal()" class="btn btn-default h-auto py-0" data-toggle="modal" data-target="#inputModal"
-                        data-month="<?= date('n', strtotime($ym . '-' . $i)) ?>"
-                        data-day="<?= $ym . '-' . sprintf('%02d', $i) ?>">
+                    <div data-name="foo">{{ $daily }}</div>
+                </td>
+                <td>
+                    <button type="button" onclick="openModal()" class="input-modal btn btn-default h-auto py-0" data-toggle="modal" data-target="#inputModal" id="<?= $ym . '-' . sprintf('%02d', $i) ?>">
+                        <i class="fas fa-pencil-alt">
                             <img src="data:image/png;base64,{{Config::get('base64.pen')}}">
-                        </button>
-                    </div>
+                        </i>
+                    </button>
                 </td>
             </tr>
         <?php endfor; ?>

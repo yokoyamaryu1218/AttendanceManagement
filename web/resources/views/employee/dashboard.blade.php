@@ -23,7 +23,9 @@
             <div id="child1">
                 @include('top.work')
             </div>
-            <div id="child2">@include('top.daily')</div>
+            <div id="child2">
+                @include('top.daily')
+            </div>
         </div>
     </body>
 </x-app-layout>

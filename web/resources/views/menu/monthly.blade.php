@@ -33,14 +33,13 @@
             <!-- ここから月別勤怠一覧部分 -->
             <div class="container px-5 py-5 mx-auto">
                 <div class="lg:w-2/3 w-full mx-auto overflow-auto">
+                <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" defer></script>
+                    <script src="{{ asset('js/modal/modal.js') }}" defer></script>
                     @include('menu.daily')
                 </div>
             </div>
             <!-- 月別勤怠一覧部分ここまで -->
             <!-- ここからモーダル -->
-            <script src="{{ asset('js/modal/modal.js') }}" defer></script>
-            <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" defer></script>
-            <script src="{{ asset('js/modal/modal2.js') }}" defer></script>
             @include('menu.modal')
             <!-- モーダルここまで -->
         </section>

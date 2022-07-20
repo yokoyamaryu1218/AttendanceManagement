@@ -1,5 +1,7 @@
 const modal = document.querySelector('.main-modal');
 const closeButton = document.querySelectorAll('.modal-close');
+const inputModal = document.getElementById('.inputModal');
+
 
 const modalClose = () => {
     modal.classList.remove('fadeIn');
@@ -27,3 +29,11 @@ for (let i = 0; i < closeButton.length; i++) {
         if (event.target == modal) modalClose();
     }
 }
+
+
+// https://flowbite.com/docs/components/modal/#javascript-behaviour
+$('#inputModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget)
+    var target_day = button.data('day')
+    console.log(target_day)
+})
