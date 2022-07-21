@@ -50,7 +50,7 @@
                     <div data-name="foo">{{ $daily }}</div>
                 </td>
                 <td>
-                    <button type="button" onclick="openModal()" class="input-modal btn btn-default h-auto py-0" data-toggle="modal" data-target="#inputModal" id="<?= $ym . '-' . sprintf('%02d', $i) ?>">
+                    <button type="button" onclick="openModal()" class="input_modal" data-toggle="modal" data-target="#inputModal" data-day="<?= $ym . '-' . sprintf('%02d', $i) ?>">
                         <i class="fas fa-pencil-alt">
                             <img src="data:image/png;base64,{{Config::get('base64.pen')}}">
                         </i>
