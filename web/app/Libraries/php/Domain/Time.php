@@ -32,17 +32,17 @@ class Time
      *
      * @return \Illuminate\Http\Response
      */
-    public static function lest_time($total_time)
+    public static function rest_time($total_time)
     {
         if ($total_time > '8.0') { //8時間以上の場合は1時間
-            $lest_time = '01:00:00';
+            $rest_time = '01:00:00';
         } elseif ($total_time > '6.0') { //6時間を超える場合は45分
-            $lest_time = '00:45:00';
+            $rest_time = '00:45:00';
         } else {
-            $lest_time = '00:00:00';
+            $rest_time = '00:00:00';
         }
 
-        return $lest_time;
+        return $rest_time;
     }
 
     /**
@@ -51,9 +51,9 @@ class Time
      *
      * @return \Illuminate\Http\Response
      */
-    public static function achievement_time($total_time, $lest_time)
+    public static function achievement_time($total_time, $rest_time)
     {
-        $work_time_sec =  strtotime($total_time) - strtotime($lest_time);
+        $work_time_sec =  strtotime($total_time) - strtotime($rest_time);
         $work_time_hour = floor($work_time_sec / 3600);                              //勤務時間(秒)を3600で割ると、時間を求め、小数点を切り捨てる
         $work_time_min  = floor(($work_time_sec - ($work_time_hour * 3600)) / 60);       //勤務時間(秒)から時間を引いた余りを60で割ると、分を求め、小数点を切り捨てる
         $work_time_s    = $work_time_sec - ($work_time_hour * 3600 + $work_time_min * 60); //勤務時間(秒)から時間を引いた余りを60で割ると、分を求め、小数点を切り捨てる

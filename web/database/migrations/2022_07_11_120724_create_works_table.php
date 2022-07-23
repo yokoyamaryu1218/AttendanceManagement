@@ -24,7 +24,7 @@ class CreateWorksTable extends Migration
                 ->comment('出勤時間');
             $table->Time('end_time')->nullable()
                 ->comment('退勤時間');
-            $table->Time('lest_time')->nullable()
+            $table->Time('rest_time')->nullable()
                 ->comment('休憩時間');
             $table->Time('achievement_time')->nullable()
                 ->comment('実績時間');

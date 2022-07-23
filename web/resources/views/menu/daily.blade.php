@@ -16,7 +16,7 @@
             <?php
             $start_time = '';
             $end_time = '';
-            $lest_time = '';
+            $rest_time = '';
             $achievement_time = '';
             $daily = '';
 
@@ -28,8 +28,8 @@
                 if ($work['end_time']) {
                     $end_time = date('H:i', strtotime($work['end_time']));
                 }
-                if ($work['lest_time']) {
-                    $lest_time = date('H:i', strtotime($work['lest_time']));
+                if ($work['rest_time']) {
+                    $rest_time = date('H:i', strtotime($work['rest_time']));
                 }
                 if ($work['achievement_time']) {
                     $achievement_time = date('H:i', strtotime($work['achievement_time']));
@@ -44,16 +44,15 @@
                 <th scope="row" class="fix-col">{{ $format->time_format_dw($ym . '-' . $i) }}</th>
                 <td class="fix-col">{{ $start_time }}</td>
                 <td class="fix-col">{{ $end_time }}</td>
-                <td class="fix-col">{{ $lest_time }}</td>
+                <td class="fix-col">{{ $rest_time }}</td>
                 <td class="fix-col">{{ $achievement_time }}</td>
                 <td>
                     <div data-name="foo">{{ $daily }}</div>
                 </td>
                 <td>
-                    <button type="button" onclick="openModal()" class="input_modal" data-toggle="modal" data-target="#inputModal" data-day="<?= $ym . '-' . sprintf('%02d', $i) ?>">
-                        <i class="fas fa-pencil-alt">
-                            <img src="data:image/png;base64,{{Config::get('base64.musi')}}">
-                        </i>
+                    <button type="button" onclick="openModal()" class="input_modal" data-bs-toggle="modal" data-bs-target="#inputModal" data-bs-daily="{{ $daily }}">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">
+                        <img src="data:image/png;base64,{{Config::get('base64.musi')}}">
                     </button>
                 </td>
             </tr>

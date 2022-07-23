@@ -107,13 +107,13 @@ class AttendanceContoroller extends Controller
         $total_time = Time::total_time($start_time[0]->start_time, $end_time);
 
         //休憩時間を求める
-        $lest_time = Time::lest_time($total_time);
+        $rest_time = Time::rest_time($total_time);
 
         //実績時間を求める
-        $achievement_time = Time::achievement_time($total_time, $lest_time);
+        $achievement_time = Time::achievement_time($total_time, $rest_time);
 
         // データベースに登録する
-        DataBase::insertEndTime($end_time, $lest_time, $achievement_time, $emplo_id, $target_date);
+        DataBase::insertEndTime($end_time, $rest_time, $achievement_time, $emplo_id, $target_date);
 
         return back()->with('works_status', '退勤時間を登録しました');;
     }

@@ -15,7 +15,7 @@ class WorksSeeder extends Seeder
     public function run()
     {
         //@var string employeeのカラム列
-        $works_cloumns = 'emplo_id,date,start_time,end_time,lest_time,achievement_time,created_at,updated_at';
+        $works_cloumns = 'emplo_id,date,start_time,end_time,rest_time,achievement_time,created_at,updated_at';
         //@var string カラム列のホルダー
         $works_holder = '?,?,?,?,?,?,?,?';
         // @var array employeeの挿入データ
