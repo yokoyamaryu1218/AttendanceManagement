@@ -104,18 +104,22 @@ class AttendanceContoroller extends Controller
 
         //休憩時間を求めるため、総勤務時間を求める
         $start_time = Database::getStartTime($emplo_id, $target_date);
-        $total_time = Time::total_time($start_time[0]->start_time, $end_time);
 
-        //休憩時間を求める
-        $rest_time = Time::rest_time($total_time);
+        if ($start_time) {
+            $total_time = Time::total_time($start_time[0]->start_time, $end_time);
 
-        //実績時間を求める
-        $achievement_time = Time::achievement_time($total_time, $rest_time);
+            //休憩時間を求める
+            $rest_time = Time::rest_time($total_time);
 
-        // データベースに登録する
-        DataBase::insertEndTime($end_time, $rest_time, $achievement_time, $emplo_id, $target_date);
+            //実績時間を求める
+            $achievement_time = Time::achievement_time($total_time, $rest_time);
 
-        return back()->with('works_status', '退勤時間を登録しました');;
+            // データベースに登録する
+            DataBase::insertEndTime($end_time, $rest_time, $achievement_time, $emplo_id, $target_date);
+
+            return back()->with('works_status', '退勤時間を登録しました');
+        }
+        return back()->with('works_warning', '出勤時間が打刻されていません');
     }
 
     /**

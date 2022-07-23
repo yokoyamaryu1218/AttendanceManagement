@@ -36,6 +36,7 @@
                 }
                 if ($work['daily']) {
                     $daily = mb_strimwidth($work['daily'], 0, 40, '...');
+                    $daily_long = $work['daily'];
                 }
             }
             ?>
@@ -50,8 +51,7 @@
                     <div data-name="foo">{{ $daily }}</div>
                 </td>
                 <td>
-                    <button type="button" onclick="openModal()" class="input_modal" data-bs-toggle="modal" data-bs-target="#inputModal" data-bs-daily="{{ $daily }}">
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo">
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="{{ $daily_long }}">
                         <img src="data:image/png;base64,{{Config::get('base64.musi')}}">
                     </button>
                 </td>

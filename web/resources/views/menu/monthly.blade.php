@@ -11,7 +11,7 @@
                     <!-- プルダウンの月度を変更すれば、下の一覧も変わる -->
                     <form method="POST" action="{{ route('employee.monthly_change')}}" name="monthly_change">
                         @csrf
-                        <select class="form-control rounded-pill mb-3" name="monthly_change" onchange="submit(this.form)">
+                        <select class="rounded-pill mb-1" name="monthly_change" onchange="submit(this.form)">
                             <option value="{{ date('Y-m') }}">
                                 {{ date('Y年m月') }}
                             </option>
@@ -31,9 +31,8 @@
 
             </div>
             <!-- ここから月別勤怠一覧部分 -->
-            <div class="container px-5 py-5 mx-auto">
+            <div class="container px-5 py-4 mx-auto">
                 <div class="lg:w-2/3 w-full mx-auto overflow-auto">
-                <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" defer></script>
                     <script src="{{ asset('js/modal/modal.js') }}" defer></script>
                     @include('menu.daily')
                 </div>
@@ -42,6 +41,7 @@
             <!-- ここからモーダル -->
             @include('menu.modal')
             <!-- モーダルここまで -->
+
         </section>
     </body>
 </x-app-layout>

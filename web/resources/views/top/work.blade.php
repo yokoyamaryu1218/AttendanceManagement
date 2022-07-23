@@ -33,7 +33,7 @@
                 @csrf
                 <div class="flex">
                     <input type="hidden" class="form-control" id="modal_start_time" name="modal_start_time">
-                    <button id="start_btn" class="input-group-text flex mx-auto text-white bg-green-500 border-0 py-2 px-8 focus:outline-none hover:bg-green-600 rounded text-lg">出勤</button>
+                    <button id="start_btn" class="input-group-text flex mx-auto text-white btn btn-success border-0 py-2 px-8 focus:outline-none rounded text-lg">出勤</button>
                 </div>
             </form>
             <!-- 出勤ボタンここまで -->
@@ -42,7 +42,7 @@
                 @csrf
                 <div class="flex">
                     <input type="hidden" class="form-control" id="modal_end_time" name="modal_end_time">
-                    <button id="end_btn" class="input-group-text flex mx-auto text-white bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-lg">退勤</button>
+                    <button id="end_btn" class="input-group-text flex mx-auto text-white btn btn-info border-0 py-2 px-8 focus:outline-nonerounded text-lg">退勤</button>
                 </div>
             </form>
             <!-- 退勤ボタンここまで -->
