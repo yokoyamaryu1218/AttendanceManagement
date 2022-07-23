@@ -6,7 +6,7 @@
             <th class="px-1 py-1 title-font tracking-wider font-medium text-gray-800 text-sm bg-gray-100">退勤</th>
             <th class="px-1 py-1 title-font tracking-wider font-medium text-gray-800 text-sm bg-gray-100">休憩</th>
             <th class="px-1 py-1 title-font tracking-wider font-medium text-gray-800 text-sm bg-gray-100">実績</th>
-            <th class="px-1 py-1 title-font tracking-wider font-medium text-gray-800 text-sm bg-gray-100">業務内容</th>
+            <th class="px-1 py-1 title-font tracking-wider font-medium text-gray-800 text-sm bg-gray-100">日報</th>
             <th class="px-1 py-1 title-font tracking-wider font-medium text-gray-800 text-sm bg-gray-100 rounded-tr rounded-br"></th>
         </tr>
     </thead>
@@ -52,7 +52,7 @@
                 <td>
                     <button type="button" onclick="openModal()" class="input_modal" data-toggle="modal" data-target="#inputModal" data-day="<?= $ym . '-' . sprintf('%02d', $i) ?>">
                         <i class="fas fa-pencil-alt">
-                            <img src="data:image/png;base64,{{Config::get('base64.pen')}}">
+                            <img src="data:image/png;base64,{{Config::get('base64.musi')}}">
                         </i>
                     </button>
                 </td>
