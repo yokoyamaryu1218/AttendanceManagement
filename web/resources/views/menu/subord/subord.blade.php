@@ -21,15 +21,23 @@
                         <tbody>
                             @foreach($subord_data as $subord)
                             <tr>
-                                <th scope="row" class="fix-col">{{$subord->subord_id}}</td>
+                                <th class="fix-col">{{$subord->subord_id}}</td>
                                 <td class="fix-col">{{$subord->subord_name}}</td>
                                 <td class="fix-col">
-                                    <input type="hidden" class="form-control" id="modal_start_time" name="modal_start_time">
-                                    <button id="start_btn" class="input-group-text flex mx-auto text-white btn btn-success border-0 py-2 px-8 focus:outline-none rounded text-lg">開く</button>
+                                    <form method="POST" action="{{ route('employee.subord_monthly')}}">
+                                        @csrf
+                                        <input type="hidden" class="form-control" id="subord_id" name="subord_id" value="{{$subord->subord_id}}">
+                                        <input type="hidden" class="form-control" id="subord_name" name="subord_name" value="{{$subord->subord_name}}">
+                                        <button class="input-group-text flex mx-auto text-white btn btn-success border-0 py-2 px-8 focus:outline-none rounded text-lg">開く</button>
+                                    </form>
                                 </td>
                                 <td class="fix-col">
-                                    <input type="hidden" class="form-control" id="modal_start_time" name="modal_start_time">
-                                    <button id="start_btn" class="input-group-text flex mx-auto text-white btn btn-success border-0 py-2 px-8 focus:outline-none rounded text-lg">開く</button>
+                                <form method="POST" action="{{ route('employee.subord.change_password' )}}">
+                                        @csrf
+                                        <input type="hidden" class="form-control" id="subord_id" name="subord_id" value="{{$subord->subord_id}}">
+                                        <input type="hidden" class="form-control" id="subord_name" name="subord_name" value="{{$subord->subord_name}}">
+                                        <button class="input-group-text flex mx-auto text-white btn btn-success border-0 py-2 px-8 focus:outline-none rounded text-lg">開く</button>
+                                    </form>
                                 </td>
                             </tr>
                             @endforeach

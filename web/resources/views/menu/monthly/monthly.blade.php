@@ -11,6 +11,8 @@
                     <!-- プルダウンの月度を変更すれば、下の一覧も変わる -->
                     <form method="POST" action="{{ route('employee.monthly_change')}}" name="monthly_change">
                         @csrf
+                        <input type="hidden" class="form-control" id="emplo_id" name="emplo_id" value="{{$emplo_id}}">
+                        <input type="hidden" class="form-control" id="emplo_name" name="emplo_name" value="{{$emplo_name}}">
                         <select class="rounded-pill mb-1" name="monthly_change" onchange="submit(this.form)">
                             <option value="{{ date('Y-m') }}">
                                 {{ date('Y年m月') }}
@@ -23,7 +25,7 @@
                                 @endfor
                         </select>
                         <!-- 名前表示部分 -->
-                        {{ Auth::guard('employee')->user()->name }}さん
+                        {{ $emplo_name }}さん
                         <!-- 名前表示部分ここまで -->
                     </form>
                 </label>

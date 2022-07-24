@@ -40,7 +40,7 @@ class Database
      *
      * @return  array $data
      */
-    public static function getMonthly($emplo_id, $ym, $session_user)
+    public static function getMonthly($emplo_id, $ym)
     {
 
         $connect = new ConnectDB();
@@ -48,13 +48,13 @@ class Database
 
         $sql = "SELECT wk1.date, wk1.emplo_id, wk1.start_time, wk1.closing_time,
         wk1.rest_time, wk1.achievement_time, wk1.over_time,dl1.daily FROM works AS wk1
-        LEFT JOIN daily AS dl1 ON wk1.date = dl1.date
+        LEFT JOIN daily AS dl1 ON wk1.date = dl1.date AND wk1.emplo_id = dl1.emplo_id
         WHERE wk1.emplo_id = :emplo_id
         AND DATE_FORMAT(wk1.date, '%Y-%m') = :date
         ORDER BY date";
 
         $stmt = $pdo->prepare($sql);
-        $stmt->bindValue(':emplo_id', (int)$session_user['emplo_id'], PDO::PARAM_INT);
+        $stmt->bindValue(':emplo_id', $emplo_id, PDO::PARAM_INT);
         $stmt->bindValue(':date', $ym, PDO::PARAM_STR);
         $stmt->execute();
         $data = $stmt->fetchAll(PDO::FETCH_UNIQUE);

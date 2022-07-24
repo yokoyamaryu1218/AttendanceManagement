@@ -27,19 +27,31 @@ class MonthlyController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $emplo_id = Auth::guard('employee')->user()->emplo_id;
-        $session_user =  Auth::guard('employee')->user();
+        if ($request->subord_id) {
+            $emplo_id = $request->subord_id;
+        } else {
+            $emplo_id = Auth::guard('employee')->user()->emplo_id;
+        };
+
+
+        if ($request->subord_name) {
+            $emplo_name = $request->subord_name;
+        } else {
+            $emplo_name = Auth::guard('employee')->user()->name;
+        };
 
         $format = new Format();
         $ym = $format->to_monthly();
         $day_count = date('t', strtotime($ym));
-        $monthly_data = DataBase::getMonthly($emplo_id, $ym, $session_user);
+        $monthly_data = DataBase::getMonthly($emplo_id, $ym);
 
         return view('menu.monthly.monthly', compact(
             'monthly_data',
             'day_count',
+            'emplo_id',
+            'emplo_name',
             'ym',
             'format'
         ));
@@ -63,8 +75,8 @@ class MonthlyController extends Controller
      */
     public function store(Request $request)
     {
-        $emplo_id = Auth::guard('employee')->user()->emplo_id;
-        $session_user =  Auth::guard('employee')->user();
+        $emplo_id = $request->emplo_id;
+        $emplo_name = $request->emplo_name;
 
         if (isset($request->monthly_change)) {
             $ym = $request->monthly_change;
@@ -74,12 +86,14 @@ class MonthlyController extends Controller
             $day_count = date('t');
         }
 
-        $monthly_data = DataBase::getMonthly($emplo_id, $ym, $session_user);
+        $monthly_data = DataBase::getMonthly($emplo_id, $ym);
         $format = new Format();
 
         return view('menu.monthly.monthly', compact(
             'monthly_data',
             'day_count',
+            'emplo_name',
+            'emplo_id',
             'ym',
             'format'
         ));

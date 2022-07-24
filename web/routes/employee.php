@@ -103,16 +103,25 @@ Route::post('/dashboard/closingtime/store', [AttendanceContoroller::class, 'clos
     ->name('closing_time_store');
 
 Route::group(['middleware' => 'auth:employee'], function () {
-    //月別一覧へのroute
+    //勤怠一覧へのroute
     Route::get('/monthly', [MonthlyController::class, 'index'])->name('monthly');
     Route::post('/monthly/change', [MonthlyController::class, 'store'])->name('monthly_change');
-    //部下一覧へのroute
-    Route::get('/subord', [SubordController::class, 'index'])->name('subord');
 
     //パスワード変更
     Route::get('/change_password', [NewPasswordController::class, 'create'])
         ->name('change_password');
-
     Route::post('/reset-password', [NewPasswordController::class, 'store'])
         ->name('password.update');
+
+    //部下一覧へのroute
+    Route::get('/subord', [SubordController::class, 'index'])->name('subord');
+
+    //部下の勤怠一覧へのroute
+    Route::post('/subord/monthly', [MonthlyController::class, 'index'])->name('subord_monthly');
+
+    //部下のパスワード変更へのroute
+    Route::post('subord/change_password', [SubordController::class, 'create'])
+        ->name('subord.change_password');
+    Route::post('subord/reset-password', [SubordController::class, 'store'])
+        ->name('subord.password.update');
 });
