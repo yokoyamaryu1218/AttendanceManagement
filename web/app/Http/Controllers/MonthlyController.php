@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Libraries\php\Domain\DataBase;
 use App\Libraries\php\Domain\Format;
 
+// 勤怠一覧のコントローラー
 class MonthlyController extends Controller
 {
     /**
@@ -32,11 +33,11 @@ class MonthlyController extends Controller
         $session_user =  Auth::guard('employee')->user();
 
         $format = new Format();
-        $ym = $format->to_monthly(); 
+        $ym = $format->to_monthly();
         $day_count = date('t', strtotime($ym));
         $monthly_data = DataBase::getMonthly($emplo_id, $ym, $session_user);
 
-        return view('menu.monthly', compact(
+        return view('menu.monthly.monthly', compact(
             'monthly_data',
             'day_count',
             'ym',
@@ -74,10 +75,9 @@ class MonthlyController extends Controller
         }
 
         $monthly_data = DataBase::getMonthly($emplo_id, $ym, $session_user);
-
         $format = new Format();
 
-        return view('menu.monthly', compact(
+        return view('menu.monthly.monthly', compact(
             'monthly_data',
             'day_count',
             'ym',

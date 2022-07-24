@@ -15,10 +15,15 @@ class Time
      *
      * @return \Illuminate\Http\Response
      */
-    public static function total_time($start_time, $end_time)
+    public static function total_time($start_time, $closing_time, $restraint_start_time)
     {
 
-        $work_time_sec = strtotime($end_time) - strtotime($start_time);              //退勤時間から開始時間を引いて、勤務時間(秒)を求める
+        //就業開始時間よりも早く出勤していた場合は、就業開始時間から総勤務時間を求める
+        if ($start_time < $restraint_start_time) {
+            $start_time = $restraint_start_time;
+        };
+
+        $work_time_sec = strtotime($closing_time) - strtotime($start_time);              //退勤時間から開始時間を引いて、勤務時間(秒)を求める
         $work_time_hour = floor($work_time_sec / 3600);                              //勤務時間(秒)を3600で割ると、時間を求め、小数点を切り捨てる
         $work_time_min  = floor(($work_time_sec - ($work_time_hour * 3600)) / 60);       //勤務時間(秒)から時間を引いた余りを60で割ると、分を求め、小数点を切り捨てる
         $total_time = $work_time_hour . '.' . $work_time_min;
@@ -60,5 +65,27 @@ class Time
         $achievement_time = $work_time_hour . ':' . $work_time_min . ':' . $work_time_s;
 
         return $achievement_time;
+    }
+
+    /**
+     * 残業時間を求める
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public static function over_time($achievement_time, $restraint_total_time)
+    {
+        //退勤打刻時間と就業終業時間を比較する
+        if (strtotime($achievement_time) > strtotime($restraint_total_time)) {
+            $work_time_sec =  strtotime($achievement_time) - strtotime($restraint_total_time);
+            $work_time_hour = floor($work_time_sec / 3600);                              //勤務時間(秒)を3600で割ると、時間を求め、小数点を切り捨てる
+            $work_time_min  = floor(($work_time_sec - ($work_time_hour * 3600)) / 60);       //勤務時間(秒)から時間を引いた余りを60で割ると、分を求め、小数点を切り捨てる
+            $work_time_s    = $work_time_sec - ($work_time_hour * 3600 + $work_time_min * 60); //勤務時間(秒)から時間を引いた余りを60で割ると、分を求め、小数点を切り捨てる
+            $over_time = $work_time_hour . ':' . $work_time_min . ':' . $work_time_s;
+
+            return $over_time;
+        }
+        $over_time = '00:00:00';
+        return $over_time;
     }
 }

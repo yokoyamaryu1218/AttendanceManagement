@@ -10,7 +10,7 @@ use App\Http\Controllers\Employee\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Employee\Auth\RegisteredUserController;
 use App\Http\Controllers\Employee\Auth\VerifyEmailController;
 use App\Http\Controllers\AttendanceContoroller;
-use App\Http\Controllers\MenuController;
+use App\Http\Controllers\SubordController;
 use App\Http\Controllers\MonthlyController;
 
 /*
@@ -98,16 +98,16 @@ Route::post('/dashboard/starttime/store', [AttendanceContoroller::class, 'start_
     ->middleware(['auth:employee'])
     ->name('start_time_store');
 
-Route::post('/dashboard/endtime/store', [AttendanceContoroller::class, 'end_time_store'])
+Route::post('/dashboard/closingtime/store', [AttendanceContoroller::class, 'closing_time_store'])
     ->middleware(['auth:employee'])
-    ->name('end_time_store');
+    ->name('closing_time_store');
 
 Route::group(['middleware' => 'auth:employee'], function () {
     //月別一覧へのroute
     Route::get('/monthly', [MonthlyController::class, 'index'])->name('monthly');
     Route::post('/monthly/change', [MonthlyController::class, 'store'])->name('monthly_change');
     //部下一覧へのroute
-    Route::get('/subord', [MenuController::class, 'subord'])->name('subord');
+    Route::get('/subord', [SubordController::class, 'index'])->name('subord');
 
     //パスワード変更
     Route::get('/change_password', [NewPasswordController::class, 'create'])

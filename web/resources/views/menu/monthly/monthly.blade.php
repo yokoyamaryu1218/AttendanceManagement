@@ -34,12 +34,12 @@
             <div class="container px-5 py-4 mx-auto">
                 <div class="lg:w-2/3 w-full mx-auto overflow-auto">
                     <script src="{{ asset('js/modal/modal.js') }}" defer></script>
-                    @include('menu.daily')
+                    @include('menu.monthly.daily')
                 </div>
             </div>
             <!-- 月別勤怠一覧部分ここまで -->
             <!-- ここからモーダル -->
-            @include('menu.modal')
+            @include('menu.monthly.modal')
             <!-- モーダルここまで -->
 
         </section>

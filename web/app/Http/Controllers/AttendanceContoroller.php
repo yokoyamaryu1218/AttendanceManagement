@@ -8,8 +8,20 @@ use App\Libraries\php\Domain\Format;
 use App\Libraries\php\Domain\DataBase;
 use App\Libraries\php\Domain\Time;
 
+// ホーム画面のコントローラー
 class AttendanceContoroller extends Controller
 {
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth:employee');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -95,18 +107,20 @@ class AttendanceContoroller extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function end_time_store(Request $request)
+    public function closing_time_store(Request $request)
     {
         // 入力値をPOSTパラメーターから取得
         $target_date = date('Y-m-d');
-        $end_time = $_POST['modal_end_time'];
+        $closing_time = $_POST['modal_end_time'];
         $emplo_id = Auth::guard('employee')->user()->emplo_id;
 
         //休憩時間を求めるため、総勤務時間を求める
         $start_time = Database::getStartTime($emplo_id, $target_date);
+        $restraint_start_time = Database::getRestraintStartTime($emplo_id);
+        $restraint_total_time = Database::getRestraintTotalTime($emplo_id);
 
         if ($start_time) {
-            $total_time = Time::total_time($start_time[0]->start_time, $end_time);
+            $total_time = Time::total_time($start_time[0]->start_time, $closing_time, $restraint_start_time[0]->restraint_start_time);
 
             //休憩時間を求める
             $rest_time = Time::rest_time($total_time);
@@ -114,8 +128,11 @@ class AttendanceContoroller extends Controller
             //実績時間を求める
             $achievement_time = Time::achievement_time($total_time, $rest_time);
 
+            // 残業時間を求める
+            $over_time = Time::over_time($achievement_time, $restraint_total_time[0]->restraint_total_time);
+
             // データベースに登録する
-            DataBase::insertEndTime($end_time, $rest_time, $achievement_time, $emplo_id, $target_date);
+            DataBase::insertEndTime($closing_time, $rest_time, $achievement_time, $over_time, $emplo_id, $target_date);
 
             return back()->with('works_status', '退勤時間を登録しました');
         }

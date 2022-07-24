@@ -38,7 +38,7 @@
             </form>
             <!-- 出勤ボタンここまで -->
             <!-- 退勤ボタンここから -->
-            <form method="POST" action="{{ route('employee.end_time_store')}}" name="end_time_store">
+            <form method="POST" action="{{ route('employee.closing_time_store')}}" name="end_time_store">
                 @csrf
                 <div class="flex">
                     <input type="hidden" class="form-control" id="modal_end_time" name="modal_end_time">

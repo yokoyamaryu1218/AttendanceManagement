@@ -6,6 +6,7 @@
             <th class="px-1 py-1 title-font tracking-wider font-medium text-gray-800 text-sm bg-gray-100">退勤</th>
             <th class="px-1 py-1 title-font tracking-wider font-medium text-gray-800 text-sm bg-gray-100">休憩</th>
             <th class="px-1 py-1 title-font tracking-wider font-medium text-gray-800 text-sm bg-gray-100">実績</th>
+            <th class="px-1 py-1 title-font tracking-wider font-medium text-gray-800 text-sm bg-gray-100">残業</th>
             <th class="px-1 py-1 title-font tracking-wider font-medium text-gray-800 text-sm bg-gray-100">日報</th>
             <th class="px-1 py-1 title-font tracking-wider font-medium text-gray-800 text-sm bg-gray-100 rounded-tr rounded-br"></th>
         </tr>
@@ -15,24 +16,29 @@
 
             <?php
             $start_time = '';
-            $end_time = '';
+            $closing_time = '';
             $rest_time = '';
             $achievement_time = '';
+            $over_time = '';
             $daily = '';
+            $daily_long = '';
 
             if (isset($monthly_data[date('Y-m-d', strtotime($ym . '-' . $i))])) {
                 $work = $monthly_data[date('Y-m-d', strtotime($ym . '-' . $i))];
                 if ($work['start_time']) {
                     $start_time = date('H:i', strtotime($work['start_time']));
                 }
-                if ($work['end_time']) {
-                    $end_time = date('H:i', strtotime($work['end_time']));
+                if ($work['closing_time']) {
+                    $closing_time = date('H:i', strtotime($work['closing_time']));
                 }
                 if ($work['rest_time']) {
                     $rest_time = date('H:i', strtotime($work['rest_time']));
                 }
                 if ($work['achievement_time']) {
                     $achievement_time = date('H:i', strtotime($work['achievement_time']));
+                }
+                if ($work['over_time']) {
+                    $over_time = date('H:i', strtotime($work['over_time']));
                 }
                 if ($work['daily']) {
                     $daily = mb_strimwidth($work['daily'], 0, 40, '...');
@@ -44,9 +50,10 @@
             <tr>
                 <th scope="row" class="fix-col">{{ $format->time_format_dw($ym . '-' . $i) }}</th>
                 <td class="fix-col">{{ $start_time }}</td>
-                <td class="fix-col">{{ $end_time }}</td>
+                <td class="fix-col">{{ $closing_time }}</td>
                 <td class="fix-col">{{ $rest_time }}</td>
                 <td class="fix-col">{{ $achievement_time }}</td>
+                <td class="fix-col">{{ $over_time }}</td>
                 <td>
                     <div data-name="foo">{{ $daily }}</div>
                 </td>

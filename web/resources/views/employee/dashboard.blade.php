@@ -21,10 +21,10 @@
     <body>
         <div id="parent">
             <div id="child1">
-                @include('top.work')
+                @include('menu.top.work')
             </div>
             <div id="child2">
-                @include('top.daily')
+                @include('menu.top.daily')
             </div>
         </div>
     </body>

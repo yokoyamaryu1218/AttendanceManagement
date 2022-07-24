@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Auth;
+use App\Libraries\php\Domain\DataBase;
 use Illuminate\Http\Request;
 
-class DailyController extends Controller
+// 部下一覧のコントローラー
+class SubordController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,7 +16,15 @@ class DailyController extends Controller
      */
     public function index()
     {
-        return view('top.daily');
+        if (Auth::guard('employee')->user()->subord_authority == "1") {
+            $emplo_id = Auth::guard('employee')->user()->emplo_id;
+
+            $subord = new DataBase();
+            $subord_authority = $subord->subord_authority($emplo_id);
+            $subord_data = $subord->getSubord($emplo_id);
+
+            return view('menu.subord.subord', compact('subord_data'));
+        } dd("閲覧権限がありません");
     }
 
     /**

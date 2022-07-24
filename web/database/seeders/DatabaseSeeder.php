@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             DailySeeder::class,
             WorksSeeder::class,
             HierarchySeeder::class,
+            OverTimeSeeder::class,
         ]);
     }
 }

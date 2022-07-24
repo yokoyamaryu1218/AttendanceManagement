@@ -12,8 +12,8 @@
                     <table class="table-auto w-full text-left whitespace-no-wrap">
                         <thead>
                             <tr>
-                                <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl">社員番号</th>
-                                <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">名前</th>
+                                <th class="px-1 py-1 title-font tracking-wider font-medium text-gray-800 text-sm bg-gray-100 rounded-tl rounded-bl">社員番号</th>
+                                <th class="px-1 py-1 title-font tracking-wider font-medium text-gray-800 text-sm bg-gray-100">名前</th>
                                 <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">勤怠一覧</th>
                                 <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">パスワード変更</th>
                             </tr>
@@ -21,10 +21,16 @@
                         <tbody>
                             @foreach($subord_data as $subord)
                             <tr>
-                                <td class="px-4 py-3">{{$subord->subord_id}}</td>
-                                <td class="px-4 py-3">{{$subord->subord_name}}</td>
-                                <td class="px-4 py-3"><a href="#">開く</a></td>
-                                <td class="px-4 py-3 text-lg text-gray-900"><a href="#">開く</a></td>
+                                <th scope="row" class="fix-col">{{$subord->subord_id}}</td>
+                                <td class="fix-col">{{$subord->subord_name}}</td>
+                                <td class="fix-col">
+                                    <input type="hidden" class="form-control" id="modal_start_time" name="modal_start_time">
+                                    <button id="start_btn" class="input-group-text flex mx-auto text-white btn btn-success border-0 py-2 px-8 focus:outline-none rounded text-lg">開く</button>
+                                </td>
+                                <td class="fix-col">
+                                    <input type="hidden" class="form-control" id="modal_start_time" name="modal_start_time">
+                                    <button id="start_btn" class="input-group-text flex mx-auto text-white btn btn-success border-0 py-2 px-8 focus:outline-none rounded text-lg">開く</button>
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>
