@@ -262,4 +262,20 @@ class Database
 
         return $data;
     }
+
+    /**
+     *
+     * @param $client 顧客ID
+     *
+     * @var   $data 取得データ
+     *
+     * @return  array $data
+     */
+    public static function subord_updatepassword($password, $emplo_id)
+    {
+
+        $data = DB::select('UPDATE employee SET password = ?  WHERE emplo_id = ?', [$password, $emplo_id]);
+
+        return $data;
+    }
 }

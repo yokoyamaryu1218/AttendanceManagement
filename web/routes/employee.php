@@ -120,8 +120,11 @@ Route::group(['middleware' => 'auth:employee'], function () {
     Route::post('/subord/monthly', [MonthlyController::class, 'index'])->name('subord_monthly');
 
     //部下のパスワード変更へのroute
+    Route::get('subord/change_password', [SubordController::class, 'create'])
+        ->name('subord.change_password');
     Route::post('subord/change_password', [SubordController::class, 'create'])
         ->name('subord.change_password');
+
     Route::post('subord/reset-password', [SubordController::class, 'store'])
         ->name('subord.password.update');
 });

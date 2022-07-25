@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use App\Libraries\php\Domain\DataBase;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
 
 // 部下一覧のコントローラー
@@ -69,20 +71,29 @@ class SubordController extends Controller
      */
     public function store(Request $request)
     {
+        $subord_id = $request->subord_id;
+        $subord_name = $request->subord_name;
+        $password = Hash::make($request->password);
+        $password_confirmation = $request->password_confirmation;
+
         // 新しいパスワードを確認
-        if (!password_verify($request->password, password_hash($request->password_confirmation, PASSWORD_DEFAULT))) {
-            return redirect()->route('employee.subord.change_password')
-                ->with('warning', '新しいパスワードが合致しません。');
+        if (!password_verify($request->password, password_hash($password_confirmation, PASSWORD_DEFAULT))) {
+            return redirect()->route('employee.subord.change_password', compact(
+                'subord_id',
+                'subord_name',
+            ))->with('warning', '新しいパスワードが合致しません。');
         }
 
         // パスワードは6文字以上あるか，2つが一致しているかなどのチェックF
         $this->validator($request->all())->validate();
 
         // パスワードを保存
-        Auth::guard('employee')->user()->password = bcrypt($request->password);
-        Auth::guard('employee')->user()->save();
-        return redirect()->route('employee.subord_change_password')
-            ->with('status', 'パスワードを変更しました');
+        Database::subord_updatepassword($password, $subord_id);
+
+        return redirect()->route('employee.subord.change_password', compact(
+            'subord_id',
+            'subord_name',
+        ))->with('status', 'パスワードを変更しました');
     }
 
     /**
