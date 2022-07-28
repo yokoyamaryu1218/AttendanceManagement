@@ -58,9 +58,17 @@
                     <div data-name="foo">{{ $daily }}</div>
                 </td>
                 <td>
+                    @if (Auth::guard('employee')->user()->emplo_id == $emplo_id)
+                    <script src="{{ asset('js/modal/modal.js') }}" defer></script>
                     <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="{{ $daily_long }}">
                         <img src="data:image/png;base64,{{Config::get('base64.musi')}}">
                     </button>
+                    @else
+                    <script src="{{ asset('js/modal/modal2.js') }}" defer></script>
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#inputModal" data-bs-start="{{ $start_time }}" data-bs-closing="{{ $closing_time }}">
+                        <img src="data:image/png;base64,{{Config::get('base64.pen')}}">
+                    </button>
+                    @endif
                 </td>
             </tr>
         <?php endfor; ?>
