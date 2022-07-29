@@ -119,12 +119,15 @@ Route::group(['middleware' => 'auth:employee'], function () {
     //部下の勤怠一覧へのroute
     Route::post('/subord/monthly', [MonthlyController::class, 'index'])->name('subord_monthly');
 
+    //部下の勤怠修正のroute
+    Route::post('subord/monthly/update', [SubordController::class, 'update'])
+    ->name('subord_monthly.update');
+
     //部下のパスワード変更へのroute
     Route::get('subord/change_password', [SubordController::class, 'create'])
         ->name('subord.change_password');
     Route::post('subord/change_password', [SubordController::class, 'create'])
         ->name('subord.change_password');
-
     Route::post('subord/reset-password', [SubordController::class, 'store'])
         ->name('subord.password.update');
 });

@@ -82,14 +82,10 @@ class AttendanceContoroller extends Controller
         $target_date = date('Y-m-d');
         $start_time = $_POST['modal_start_time'];
 
-        $format = new Format();
-        $ym = $format->to_monthly();
-
         $emplo_id = Auth::guard('employee')->user()->emplo_id;
-        $session_user =  Auth::guard('employee')->user();
 
         //対象日のデータがあるかどうかチェック
-        $check_date = Database::checkDate($emplo_id, $ym, $session_user, $target_date);
+        $check_date = Database::checkDate($emplo_id, $target_date);
 
         if ($check_date) {
             // 重複登録の場合

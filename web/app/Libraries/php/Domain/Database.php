@@ -151,14 +151,14 @@ class Database
      *
      * @return  array $data
      */
-    public static function checkDate($emplo_id, $ym, $session_user, $target_date)
+    public static function checkDate($emplo_id, $target_date)
     {
         $connect = new ConnectDB();
         $pdo = $connect->connect_db();
 
         $sql = "SELECT id FROM works WHERE emplo_id = :emplo_id AND date = :date LIMIT 1";
         $stmt = $pdo->prepare($sql);
-        $stmt->bindValue(':emplo_id', (int)$session_user['emplo_id'], PDO::PARAM_INT);
+        $stmt->bindValue(':emplo_id', (int)$emplo_id, PDO::PARAM_INT);
         $stmt->bindValue(':date', $target_date, PDO::PARAM_STR);
         $stmt->execute();
         $data = $stmt->fetch();
@@ -197,7 +197,6 @@ class Database
     }
 
     /**
-     * 対象日のデータがあるかどうかチェック
      * @param $client 顧客ID
      *
      * @var   $data 取得データ
@@ -210,6 +209,36 @@ class Database
 
         return $data;
     }
+
+    /**
+     * @param $client 顧客ID
+     *
+     * @var   $data 取得データ
+     *
+     * @return  array $data
+     */
+    public static function updateTime($start_time, $closing_time, $rest_time, $achievement_time, $over_time, $emplo_id, $target_date)
+    {
+        $data =  DB::select('UPDATE works SET start_time = ?,closing_time = ?, rest_time = ?, achievement_time = ?, over_time = ? WHERE emplo_id = ? AND date = ?', [$start_time, $closing_time, $rest_time, $achievement_time, $over_time, $emplo_id, $target_date]);
+
+        return $data;
+    }
+
+    /**
+     * 対象日のデータがあるかどうかチェック
+     * @param $client 顧客ID
+     *
+     * @var   $data 取得データ
+     *
+     * @return  array $data
+     */
+    public static function insertTime($emplo_id, $target_date, $start_time, $closing_time, $rest_time, $achievement_time, $over_time)
+    {
+        $data =  DB::select('INSERT INTO works (emplo_id,date,start_time,closing_time,rest_time,achievement_time,over_time) VALUE (?,?,?,?,?,?,?)', [$emplo_id, $target_date, $start_time, $closing_time, $rest_time, $achievement_time, $over_time]);
+
+        return $data;
+    }
+
 
     /**
      *
