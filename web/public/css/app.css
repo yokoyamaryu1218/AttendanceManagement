@@ -182794,3 +182794,43 @@ select {
   }
 }
 
+/* ここから追加 */
+
+input.form-style {
+    color: #8a8a8a;
+    display: block;
+    width: 90%;
+    height: 44px;
+    padding: 5px 5%;
+    border: 1px solid #ccc;
+    -moz-border-radius: 27px;
+    -webkit-border-radius: 27px;
+    border-radius: 27px;
+    -moz-background-clip: padding;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    background-color: #fff;
+    font-family: 'HelveticaNeue', 'Arial', sans-serif;
+    font-size: 105%;
+    letter-spacing: .8px;
+}
+
+
+#eye {
+    display: flex;
+    align-items: center;
+    width: 25px;
+    height: 25px;
+    cursor: pointer;
+}
+
+.auth-field-icon {
+    color: #555;
+    float: right;
+    margin-right: 55px;
+    margin-top: -35px;
+    position: relative;
+    z-index: 2;
+}
+
+/* 追加ここまで */

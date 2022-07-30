@@ -187,7 +187,7 @@ class AttendanceContoroller extends Controller
     public function daily_update(Request $request)
     {
         $emplo_id = Auth::guard('employee')->user()->emplo_id;
-        $daily = $request->daily;
+        $daily = nl2br($request->daily);
 
         // 重複クリック対策
         $request->session()->regenerateToken();

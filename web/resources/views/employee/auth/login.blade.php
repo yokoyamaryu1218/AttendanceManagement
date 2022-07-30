@@ -1,6 +1,5 @@
 <x-guest-layout>
     <x-auth-card>
-        従業員用
         <x-slot name="logo">
             <img src="data:image/png;base64,{{Config::get('base64.login')}}" class="w-20 h-20 fill-current text-gray-500">
         </x-slot>
@@ -18,15 +17,17 @@
             <div>
                 <x-label for="id" :value="__('社員ID')" />
 
-                <x-input id="emplo_id" class="block mt-1 w-full" type="text" name="emplo_id" :value="old('emplo_id')" required autofocus />
+                <x-input id="emplo_id" class="form-style block mt-1 w-full" type="text" name="emplo_id" :value="old('emplo_id')" required autofocus />
             </div>
 
             <!-- Password -->
-            <div class="mt-4">
+            <div class="mt-4 form-item">
                 <x-label for="password" :value="__('Password')" />
-                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="current-password" />
+                <x-input id="password" class="form-style block mt-1 w-full" type="password" name="password" required autocomplete="current-password" />
+                <span class="auth-field-icon"><i id="eye" class="fa-solid fa-eye toggle-password" style="color:#8a8a8a"></i></span>
             </div>
-
+            <script src="{{ asset('/js/auth/auth.js') }}"></script>
+            
             <!-- Remember Me -->
             <div class="block mt-4">
                 <label for="remember_me" class="inline-flex items-center">
@@ -36,14 +37,8 @@
             </div>
 
             <div class="flex items-center justify-end mt-4">
-                @if (Route::has('employee.password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('employee.password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-                @endif
-
                 <x-button class="ml-3">
-                    {{ __('Log in') }}
+                    {{ __('ログイン') }}
                 </x-button>
             </div>
         </form>

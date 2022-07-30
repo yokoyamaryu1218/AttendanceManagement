@@ -51,6 +51,7 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/employee');
+        // RouteServiceProviderの書き換えに伴い変更
+        return redirect('/');
     }
 }

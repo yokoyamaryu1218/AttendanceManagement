@@ -17,8 +17,9 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string
      */
-    public const HOME = '/dashboard';
-    public const EMPLOYEE_HOME = '/employee/dashboard';
+    //この部分と下のbootを書き換えることでartisanしたときのルートが変わる
+    public const HOME = 'user/dashboard';
+    public const EMPLOYEE_HOME = '/dashboard';
     public const ADMIN_HOME = '/admin/dashboard';
 
     /**
@@ -51,13 +52,13 @@ class RouteServiceProvider extends ServiceProvider
                 ->namespace($this->namespace)
                 ->group(base_path('routes/admin.php'));
 
-            Route::prefix('employee')
+            Route::prefix('/')
                 ->as('employee.')
                 ->middleware('web')
                 ->namespace($this->namespace)
                 ->group(base_path('routes/employee.php'));
 
-            Route::prefix('/')
+            Route::prefix('user')
                 ->as('user.')
                 ->middleware('web')
                 ->namespace($this->namespace)
