@@ -38,7 +38,7 @@ class SubordController extends Controller
 
             return view('menu.subord.subord', compact('subord_data'));
         }
-        dd("閲覧権限がありません");
+        return redirect('/');
     }
 
     /**
