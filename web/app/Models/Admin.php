@@ -10,8 +10,9 @@ class Admin extends Authenticatable
 {
     use HasFactory;
 
-    protected $table = 'admins';
-        /**
+    protected $table = 'employee';
+    protected $primaryKey = 'emplo_id';
+    /**
      * The attributes that are mass assignable.
      *
      * @var array<int, string>
@@ -20,6 +21,14 @@ class Admin extends Authenticatable
         'name',
         'email',
         'password',
+    ];
+
+    /**追加
+     * The attributes that are gureded
+     * @var array
+     */
+    protected $guarded = [
+        'admin_authority'
     ];
 
     /**

@@ -27,7 +27,7 @@
                 <span class="auth-field-icon"><i id="eye" class="fa-solid fa-eye toggle-password" style="color:#8a8a8a"></i></span>
             </div>
             <script src="{{ asset('/js/auth/auth.js') }}"></script>
-            
+
             <!-- Remember Me -->
             <div class="block mt-4">
                 <label for="remember_me" class="inline-flex items-center">

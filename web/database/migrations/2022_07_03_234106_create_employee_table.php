@@ -21,12 +21,12 @@ class CreateEmployeeTable extends Migration
                 ->comment('社員名');
             $table->string('password', '256')
                 ->comment('パスワード');
-            $table->string('email')->unique()
-                ->comment('メールアドレス');;
             $table->string('management_emplo_id', '10')
                 ->comment('上司社員ID');
             $table->char('subord_authority', '1')
                 ->comment('部下参照権限');
+            $table->char('admin_authority', '1')
+                ->comment('管理画面閲覧権限');
             $table->timestamp('created_at')->useCurrent()
                 ->comment('新規登録日');
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))

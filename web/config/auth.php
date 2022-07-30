@@ -133,8 +133,8 @@ return [
         ],
 
         'admin' => [
-            'provider' => 'admin',
-            'table' => 'admin_password_resets',
+            'provider' => 'employee',
+            'table' => 'employee_password_resets',
             'expire' => 60,
             'throttle' => 60,
         ],

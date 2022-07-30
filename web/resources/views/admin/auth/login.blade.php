@@ -16,22 +16,20 @@
         <form method="POST" action="{{ route('admin.login') }}">
             @csrf
 
-            <!-- Email Address -->
+            <!-- 社員ID -->
             <div>
-                <x-label for="email" :value="__('Email')" />
+                <x-label for="id" :value="__('社員ID')" />
 
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus />
+                <x-input id="emplo_id" class="form-style block mt-1 w-full" type="text" name="emplo_id" :value="old('emplo_id')" required autofocus />
             </div>
 
             <!-- Password -->
-            <div class="mt-4">
+            <div class="mt-4 form-item">
                 <x-label for="password" :value="__('Password')" />
-
-                <x-input id="password" class="block mt-1 w-full"
-                                type="password"
-                                name="password"
-                                required autocomplete="current-password" />
+                <x-input id="password" class="form-style block mt-1 w-full" type="password" name="password" required autocomplete="current-password" />
+                <span class="auth-field-icon"><i id="eye" class="fa-solid fa-eye toggle-password" style="color:#8a8a8a"></i></span>
             </div>
+            <script src="{{ asset('/js/auth/auth.js') }}"></script>
 
             <!-- Remember Me -->
             <div class="block mt-4">
@@ -40,12 +38,12 @@
                     <span class="ml-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
                 </label>
             </div>
-
+            
             <div class="flex items-center justify-end mt-4">
-                @if (Route::has('admin.password.request'))
-                    <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('admin.password.request') }}">
-                        {{ __('Forgot your password?') }}
-                    </a>
+                @if (Route::has('employee.login'))
+                <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('employee.login') }}">
+                    {{ __('出退勤画面へ') }}
+                </a>
                 @endif
 
                 <x-button class="ml-3">
