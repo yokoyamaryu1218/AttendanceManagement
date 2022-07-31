@@ -31,14 +31,11 @@ class SubordController extends Controller
     {
         if (Auth::guard('employee')->user()->subord_authority == "1") {
             $emplo_id = Auth::guard('employee')->user()->emplo_id;
-
-            $subord = new DataBase();
-            $subord_authority = $subord->subord_authority($emplo_id);
-            $subord_data = $subord->getSubord($emplo_id);
+            $subord_data = DataBase::getSubord($emplo_id);
 
             return view('menu.subord.subord', compact('subord_data'));
         }
-        dd("閲覧権限がありません");
+        return redirect('/');
     }
 
     /**

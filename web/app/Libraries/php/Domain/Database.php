@@ -284,10 +284,9 @@ class Database
      *
      * @return  array $data
      */
-    public static function subord_authority($emplo_id)
+    public static function authoritycheck($cloumns_name, $emplo_id)
     {
-
-        $data = DB::select('SELECT subord_authority FROM `employee` WHERE emplo_id = ?', [$emplo_id]);
+        $data = DB::select('SELECT ' . $cloumns_name . ' FROM `employee` WHERE emplo_id = ?', [$emplo_id]);
 
         return $data;
     }
