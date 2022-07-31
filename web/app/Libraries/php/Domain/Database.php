@@ -40,6 +40,60 @@ class Database
      *
      * @return  array $data
      */
+    public static function getEmployeeAll()
+    {
+
+        $data = DB::select('SELECT emplo_id,name FROM `employee` WHERE 1');
+
+        return $data;
+    }
+
+    /**
+     *
+     * @param $client 顧客ID
+     *
+     * @var   $data 取得データ
+     *
+     * @return  array $data
+     */
+    public static function SelectEmployee($emplo_id)
+    {
+
+        $data = DB::select('SELECT em1.emplo_id, em1.name, em1.management_emplo_id, em2.name AS high_name, em1.subord_authority,
+        ot1.restraint_start_time, ot1.restraint_closing_time, ot1.restraint_total_time FROM employee AS em1
+        LEFT JOIN employee AS em2 ON em1.management_emplo_id = em2.emplo_id 
+        LEFT JOIN over_time AS ot1 ON em1.emplo_id = ot1.emplo_id
+        WHERE em1.emplo_id = ? ORDER BY em1.emplo_id', [$emplo_id]);
+
+        return $data;
+    }
+
+    /**
+     * システム管理者リストの取得
+     * @param $client 顧客ID
+     *
+     * @var   $list システム管理者リスト
+     *
+     * @return  array $list
+     */
+
+    public static function getSubordAuthority()
+    {
+
+        $list = DB::select('SELECT name,emplo_id from employee where subord_authority = 1 order by emplo_id');
+
+        return $list;
+    }
+
+
+    /**
+     *
+     * @param $client 顧客ID
+     *
+     * @var   $data 取得データ
+     *
+     * @return  array $data
+     */
     public static function getMonthly($emplo_id, $ym)
     {
 

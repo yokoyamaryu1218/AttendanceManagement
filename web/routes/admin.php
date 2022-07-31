@@ -9,6 +9,8 @@ use App\Http\Controllers\Admin\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Admin\Auth\RegisteredUserController;
 use App\Http\Controllers\Admin\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -21,9 +23,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/dashboard', function () {
-    return view('admin.dashboard');
-})->middleware(['auth:admin'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('admin.dashboard');
+// })->middleware(['auth:admin'])->name('dashboard');
+
+Route::get('/dashboard', [AdminController::class, 'index'])
+    ->middleware(['auth:admin'])
+    ->name('dashboard');
 
 
 Route::get('/register', [RegisteredUserController::class, 'create'])
@@ -78,3 +84,8 @@ Route::post('/confirm-password', [ConfirmablePasswordController::class, 'store']
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->middleware('auth:admin')
     ->name('logout');
+
+//従業員一覧へのroute
+Route::get('/detail', [AdminController::class, 'show'])
+    ->middleware(['auth:admin'])
+    ->name('emplo_details');
