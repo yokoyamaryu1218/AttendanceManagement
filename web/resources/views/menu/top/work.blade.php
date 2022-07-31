@@ -1,11 +1,10 @@
 <script src="{{ asset('js/time/time.js') }}" defer></script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" defer></script>
 <script src="{{ asset('js/time/time2.js') }}" defer></script>
-
 <?php $modal_start_time = ''; ?>
 
 <section class="text-gray-600 body-font relative">
-    <div class="container px-5 py-24 mx-auto ">
+    <div class="container px-5 py-24 mx-auto">
         <div class="lg:w-1/2 md:w-2/3 mx-auto">
             <!-- 日付表示部分 -->
             <div class="font-bold text-left text-2xl mb-5">{{ $ym }}-{{ $format->time_format_dw($today) }}</div>
