@@ -1,4 +1,4 @@
-<!-- 勤怠一覧のメイン項目のblade -->
+<!-- 勤怠一覧メイン部分のblade -->
 <table class="table-auto w-full text-left whitespace-no-wrap">
     <thead>
         <tr>
