@@ -1,3 +1,4 @@
+<!-- dashoboardに表示する従業員一覧のblade -->
 <section class="text-gray-600 body-font">
     <div class="container px-5 py-24 mx-auto">
         <div class="lg:w-2/3 w-full mx-auto overflow-auto">
@@ -6,6 +7,12 @@
                 {{ session('warning') }}
             </div>
             @endif
+            <div class="text-right">
+                <form method="get" action="{{ route('admin.emplo_create')}}">
+                    @csrf
+                    <button class="input-group-text flex mx-auto text-white btn btn-success border-0 py-2 px-8 focus:outline-none rounded text-lg">新規登録</button>
+                </form>
+            </div>
             <table class="table table-striped table-hover table-sm my-2">
                 <thead>
                     <tr>

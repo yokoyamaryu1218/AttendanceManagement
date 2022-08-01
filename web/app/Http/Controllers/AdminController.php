@@ -38,7 +38,10 @@ class AdminController extends Controller
      */
     public function create()
     {
-        //
+        $subord_authority_lists = DataBase::getSubordAuthority();
+        return view('menu.admin.store', compact(
+            'subord_authority_lists',
+        ));
     }
 
     /**
@@ -68,6 +71,17 @@ class AdminController extends Controller
             'employee_lists',
             'subord_authority_lists',
         ));
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function advanced_show(Request $request)
+    {
+        return view('menu.admin.advanced');
     }
 
     /**

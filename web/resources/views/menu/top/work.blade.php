@@ -1,3 +1,4 @@
+<!-- 出勤画面のblade -->
 <script src="{{ asset('js/time/time.js') }}" defer></script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" defer></script>
 <script src="{{ asset('js/time/time2.js') }}" defer></script>

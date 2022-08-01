@@ -21,7 +21,7 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('employee.monthly')">
+                    <x-nav-link :href="route('admin.advanced')">
                         {{ __('詳細設定') }}
                     </x-nav-link>
                 </div>

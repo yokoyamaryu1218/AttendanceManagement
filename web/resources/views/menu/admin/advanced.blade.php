@@ -1,4 +1,5 @@
 <!-- https://tailwindcomponents.com/component/input-field -->
+<!-- 詳細設定画面のblade -->
 <script src="{{ asset('js/admin/search.js') }}" defer></script>
 
 <x-app-layout>
@@ -6,7 +7,6 @@
     </x-slot>
 
     <body>
-        @foreach($employee_lists as $emplo)
         <div class="max-w-2xl mx-auto my-3 bg-gray-100 p-16">
             <div class="flex flex-col text-center w-full mb-20">
                 <h1 class="sm:text-4xl text-3xl font-medium title-font mb-2 text-gray-900">詳細設定画面</h1>
@@ -28,6 +28,5 @@
                 </div>
             </form>
         </div>
-        @endforeach
     </body>
 </x-app-layout>

@@ -85,6 +85,7 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
     ->middleware('auth:admin')
     ->name('logout');
 
+
 //従業員一覧へのroute
 Route::get('/detail', [AdminController::class, 'show'])
     ->middleware(['auth:admin'])
@@ -92,3 +93,13 @@ Route::get('/detail', [AdminController::class, 'show'])
 Route::post('/detail', [AdminController::class, 'show'])
     ->middleware(['auth:admin'])
     ->name('emplo_details');
+
+// 従業員新規登録へのroute
+Route::get('/store', [AdminController::class, 'create'])
+    ->middleware(['auth:admin'])
+    ->name('emplo_create');
+
+// 詳細設定へのroutei
+Route::get('/advanced', [AdminController::class, 'advanced_show'])
+    ->middleware(['auth:admin'])
+    ->name('advanced');

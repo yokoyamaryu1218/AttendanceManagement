@@ -1,3 +1,4 @@
+<!-- 部下一覧のblade -->
 <x-app-layout>
     <x-slot name="header">
     </x-slot>

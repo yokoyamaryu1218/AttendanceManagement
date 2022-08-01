@@ -1,3 +1,4 @@
+<!-- 出退勤変更モーダルのblade -->
 <div class="modal fade" id="inputModal" tabindex="-1" aria-labelledby="inputexamplesModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content flex justify-between">

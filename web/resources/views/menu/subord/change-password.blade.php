@@ -1,3 +1,4 @@
+<!-- パスワード変更画面のblade -->
 <x-app-layout>
     <x-slot name="header">
     </x-slot>
