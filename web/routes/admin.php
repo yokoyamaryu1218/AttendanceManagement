@@ -89,3 +89,6 @@ Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
 Route::get('/detail', [AdminController::class, 'show'])
     ->middleware(['auth:admin'])
     ->name('emplo_details');
+Route::post('/detail', [AdminController::class, 'show'])
+    ->middleware(['auth:admin'])
+    ->name('emplo_details');

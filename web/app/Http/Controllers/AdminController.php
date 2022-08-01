@@ -58,9 +58,9 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function show(Request $request)
     {
-        $emplo_id = '1001';
+        $emplo_id = $request->emplo_id;
         $employee_lists = DataBase::SelectEmployee($emplo_id);
         $subord_authority_lists = DataBase::getSubordAuthority();
 
