@@ -24,12 +24,9 @@
                         <input type="text" id="name" value="" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="山田太郎" required>
                     </div>
                     <div>
-                        <!-- 部下参照権限 -->
-                        <label for="subord_authority" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">部下参照権限</label>
-                        <label for="toggle-example" class="flex items-center cursor-pointer relative mb-4">
-                            <input type="checkbox" id="toggle-example" class="sr-only">
-                            <div class="toggle-bg bg-gray-200 border-2 border-gray-200 h-6 w-11 rounded-full"></div>
-                        </label>
+                        <!-- パスワード -->
+                        <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">パスワード</label>
+                        <input type="password" id="password" value="" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="●●●●●●●●" required>
                     </div>
                 </div>
                 <div class="grid gap-6 mb-6 lg:grid-cols-3">

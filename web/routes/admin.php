@@ -10,7 +10,7 @@ use App\Http\Controllers\Admin\Auth\RegisteredUserController;
 use App\Http\Controllers\Admin\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
-
+use App\Http\Controllers\MonthlyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -103,3 +103,8 @@ Route::get('/store', [AdminController::class, 'create'])
 Route::get('/advanced', [AdminController::class, 'advanced_show'])
     ->middleware(['auth:admin'])
     ->name('advanced');
+
+//部下の勤怠一覧へのroute
+Route::post('/monthly', [MonthlyController::class, 'index'])
+    ->middleware(['auth:admin'])
+    ->name('monthly');

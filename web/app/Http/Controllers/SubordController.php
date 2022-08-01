@@ -7,7 +7,6 @@ use App\Libraries\php\Domain\DataBase;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
-use App\Libraries\php\Domain\Time;
 
 // 部下一覧のコントローラー
 class SubordController extends Controller
@@ -117,76 +116,15 @@ class SubordController extends Controller
     }
 
     /**
-     * 部下の勤怠修正
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
-        $emplo_id = $request->modal_id;
-        $target_date = $request->modal_day;
-        $start_time = $request->modal_start_time;
-        $closing_time = $request->modal_closing_time;
-        $daily = $request->modal_daily;
-
-        // 重複クリック対策
-        $request->session()->regenerateToken();
-
-        //対象日のデータがあるかどうかチェック
-        $check_date = Database::checkDate($emplo_id, $target_date);
-        $daily_data = DataBase::getDaily($emplo_id, $target_date);
-
-        if ($check_date) {
-            //休憩時間を求めるため、総勤務時間を求める
-            $restraint_start_time = Database::getRestraintStartTime($emplo_id);
-            $restraint_total_time = Database::getRestraintTotalTime($emplo_id);
-
-            $total_time = Time::total_time($start_time, $closing_time, $restraint_start_time[0]->restraint_start_time);
-
-            //休憩時間を求める
-            $rest_time = Time::rest_time($total_time);
-
-            //実績時間を求める
-            $achievement_time = Time::achievement_time($total_time, $rest_time);
-
-            // 残業時間を求める
-            $over_time = Time::over_time($achievement_time, $restraint_total_time[0]->restraint_total_time);
-
-            // データベースに登録する
-            DataBase::updateTime($start_time, $closing_time, $rest_time, $achievement_time, $over_time, $emplo_id, $target_date);
-            if ($daily_data == NULL) {
-                DataBase::insertDaily($emplo_id, $target_date, $daily);
-            }
-            DataBase::updateDaily($emplo_id, $target_date, $daily);
-
-            return redirect()->route('employee.subord')->with('status', '変更しました');
-        } else {
-            //休憩時間を求めるため、総勤務時間を求める
-            $restraint_start_time = Database::getRestraintStartTime($emplo_id);
-            $restraint_total_time = Database::getRestraintTotalTime($emplo_id);
-
-            $total_time = Time::total_time($start_time, $closing_time, $restraint_start_time[0]->restraint_start_time);
-
-            //休憩時間を求める
-            $rest_time = Time::rest_time($total_time);
-
-            //実績時間を求める
-            $achievement_time = Time::achievement_time($total_time, $rest_time);
-
-            // 残業時間を求める
-            $over_time = Time::over_time($achievement_time, $restraint_total_time[0]->restraint_total_time);
-
-            // データベースに登録する
-            DataBase::insertTime($emplo_id, $target_date, $start_time, $closing_time, $rest_time, $achievement_time, $over_time);
-            if ($daily_data == NULL) {
-                DataBase::insertDaily($emplo_id, $target_date, $daily);
-            }
-            DataBase::updateDaily($emplo_id, $target_date, $daily);
-
-            return redirect()->route('employee.subord')->with('status', '新規登録しました');
-        }
+        //
     }
 
     /**

@@ -56,6 +56,22 @@ class Database
      *
      * @return  array $data
      */
+    public static function getRestTime()
+    {
+
+        $data = DB::select('SELECT total_time1,total_time2,rest_time1,rest_time2,rest_time3 FROM `rest_time` WHERE 1');
+
+        return $data;
+    }
+
+    /**
+     *
+     * @param $client 顧客ID
+     *
+     * @var   $data 取得データ
+     *
+     * @return  array $data
+     */
     public static function SelectEmployee($emplo_id)
     {
 

@@ -13,13 +13,16 @@
             </div>
             <form>
                 <div class="grid gap-6 mb-6 lg:grid-cols-1">
-                    総勤務時間が8時間を超える場合は、1時間
+                    ・就業時間は従業員ごとに定める。
                 </div>
                 <div class="grid gap-6 mb-6 lg:grid-cols-1">
-                    6時間を超え、8時間未満の場合は、45分
+                    ・休憩時間は、総勤務時間が{{ $rest_time[0]->total_time1 }}時間を超える場合は、{{ $rest_time[0]->rest_time1 }}分、
+                </div>
+                <div class="grid gap-6 mb-6 lg:grid-cols-1">
+                    {{ $rest_time[0]->total_time2 }}時間を超え、{{ $rest_time[0]->total_time1 }}時間未満の場合は、{{ $rest_time[0]->rest_time2 }}分とし、
                 </div>
                 <div class="grid gap-6 mb-12 lg:grid-cols-1">
-                    6時間未満の場合は、休憩なし
+                    {{ $rest_time[0]->total_time2 }}時間未満の場合は、休憩なしとする。
                 </div>
 
                 <div class="flex justify-center">

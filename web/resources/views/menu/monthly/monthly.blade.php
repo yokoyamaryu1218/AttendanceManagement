@@ -7,17 +7,6 @@
         <section class="text-gray-600 body-font">
             <!-- レスポンシブはhttps://tailwindcss.jp/docs/marginを参照にする -->
             <div class="pt-20 ml-64">
-                @if (session('warning'))
-                <div class="alert alert-warning">
-                    {{ session('warning') }}
-                </div>
-                @endif
-                @if (session('status'))
-                <div class="alert alert-info">
-                    {{ session('status') }}
-                </div>
-                @endif
-
                 <!-- 月度プルダウン部分 -->
                 <label>
                     <!-- プルダウンの月度を変更すれば、下の一覧も変わる -->
@@ -42,7 +31,6 @@
                     </form>
                 </label>
                 <!-- 月度プルダウン部分ここまで -->
-
             </div>
             <!-- ここから月別勤怠一覧部分 -->
             <div class="container px-5 py-4 mx-auto">

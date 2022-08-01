@@ -11,16 +11,6 @@
                 </div>
 
                 <div class="lg:w-2/3 w-full mx-auto overflow-auto">
-                    @if (session('warning'))
-                    <div class="alert alert-warning">
-                        {{ session('warning') }}
-                    </div>
-                    @endif
-                    @if (session('status'))
-                    <div class="alert alert-info">
-                        {{ session('status') }}
-                    </div>
-                    @endif
                     <table class="table-auto w-full text-left whitespace-no-wrap">
                         <thead>
                             <tr>

@@ -36,7 +36,7 @@
                             </form>
                         </td>
                         <td class="align-middle button">
-                            <form method="POST" action="{{ route('employee.subord_monthly')}}">
+                            <form method="POST" action="{{ route('admin.monthly')}}">
                                 @csrf
                                 <input type="hidden" class="form-control" id="emplo_id" name="emplo_id" value="{{$emplo->emplo_id}}">
                                 <input type="hidden" class="form-control" id="name" name="name" value="{{$emplo->name}}">

@@ -120,7 +120,7 @@ Route::group(['middleware' => 'auth:employee'], function () {
     Route::post('/subord/monthly', [MonthlyController::class, 'index'])->name('subord_monthly');
 
     //部下の勤怠修正のroute
-    Route::post('subord/monthly/update', [SubordController::class, 'update'])
+    Route::post('subord/monthly/update', [MonthlyController::class, 'update'])
     ->name('subord_monthly.update');
 
     //部下のパスワード変更へのroute
