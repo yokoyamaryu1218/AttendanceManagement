@@ -29,8 +29,8 @@
                     <div>
                         <!-- 部下参照権限 -->
                         <label for="subord_authority" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">部下参照権限</label>
-                        <label for="toggle-example" class="flex items-center cursor-pointer relative mb-4">
-                            <input type="checkbox" id="toggle-example" name="subord_authority" class="sr-only">
+                        <label for="subord_authority" class="flex items-center cursor-pointer relative mb-4">
+                            <input type="checkbox" id="subord_authority" name="subord_authority" class="sr-only">
                             <div class="toggle-bg bg-gray-200 border-2 border-gray-200 h-6 w-11 rounded-full"></div>
                         </label>
                     </div>
@@ -81,5 +81,14 @@
                 </div>
             </form>
         </div>
+        <script>
+            // https://reffect.co.jp/html/toggle-switch
+            // https://itsakura.com/js-checkbox
+            const checkbox = document.getElementById('subord_authority');
+            checkbox.addEventListener('click', () => {
+                const title = document.querySelector('.title');
+                title.textContent = checkbox.checked ? 'ON' : 'OFF';
+            });
+        </script>
     </body>
 </x-app-layout>
