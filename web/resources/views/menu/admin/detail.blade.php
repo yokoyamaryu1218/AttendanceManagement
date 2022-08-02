@@ -28,7 +28,7 @@
                         <!-- 部下参照権限 -->
                         <label for="subord_authority" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">部下参照権限</label>
                         <label for="toggle-example" class="flex items-center cursor-pointer relative mb-4">
-                            <input type="checkbox" id="toggle-example" class="sr-only" <?= $emplo->subord_authority == 1 ? 'checked' : '' ?>>
+                        <input type="checkbox" id="toggle-example" class="sr-only" <?= $emplo->subord_authority == 1 ? 'checked' : '' ?>>
                             <div class="toggle-bg bg-gray-200 border-2 border-gray-200 h-6 w-11 rounded-full"></div>
                         </label>
                     </div>

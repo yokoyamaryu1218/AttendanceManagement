@@ -30,7 +30,7 @@
                         <!-- 部下参照権限 -->
                         <label for="subord_authority" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">部下参照権限</label>
                         <label for="toggle-example" class="flex items-center cursor-pointer relative mb-4">
-                            <input type="checkbox" id="toggle-example" class="sr-only">
+                            <input type="checkbox" id="toggle-example" name="subord_authority" class="sr-only">
                             <div class="toggle-bg bg-gray-200 border-2 border-gray-200 h-6 w-11 rounded-full"></div>
                         </label>
                     </div>
@@ -71,7 +71,7 @@
                     <div>
                         <!-- 就業時間 -->
                         <label for="restraint_total_time" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">就業時間</label>
-                        <input type="time" id="restraint_total_time" name="restraint_total_time" value="{{ old('restraint_total_time') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="5:00" required>
+                        <input type="time" id="restraint_total_time" name="restraint_totalclosing_time" value="{{ old('restraint_total_time') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="5:00" required>
                     </div>
                 </div>
 
