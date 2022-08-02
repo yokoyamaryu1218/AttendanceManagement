@@ -59,10 +59,16 @@ class AdminController extends Controller
         $name = $request->name;
         $password = Hash::make($request->password);
         $management_emplo_id = $request->management_emplo_id;
-        $subord_authority = $request->subord_authority;
         $restraint_start_time = $request->restraint_start_time;
         $restraint_closing_time = $request->restraint_closing_time;
         $restraint_total_time = $request->restraint_total_time;
+
+        // トグルがONになっている場合は1、OFFの場合は0
+        if (is_null($request->subord_authority)) {
+            $subord_authority = "0";
+        } else {
+            $subord_authority = $request->subord_authority;
+        };
 
         //登録する番号を作成
         $id = DataBase::getID();
