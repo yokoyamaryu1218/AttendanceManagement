@@ -95,9 +95,13 @@ Route::post('/detail', [AdminController::class, 'show'])
     ->name('emplo_details');
 
 // 従業員新規登録へのroute
-Route::get('/store', [AdminController::class, 'create'])
+Route::get('/create', [AdminController::class, 'create'])
     ->middleware(['auth:admin'])
     ->name('emplo_create');
+    
+Route::post('/store', [AdminController::class, 'store'])
+    ->middleware(['auth:admin'])
+    ->name('emplo_store');
 
 // 詳細設定へのroutei
 Route::get('/advanced', [AdminController::class, 'advanced_show'])

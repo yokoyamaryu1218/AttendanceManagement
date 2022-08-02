@@ -56,6 +56,22 @@ class Database
      *
      * @return  array $data
      */
+    public static function getID()
+    {
+
+        $id = DB::select('SELECT emplo_id FROM `employee` ORDER BY emplo_id DESC LIMIT 1');
+
+        return $id;
+    }
+
+    /**
+     *
+     * @param $client 顧客ID
+     *
+     * @var   $data 取得データ
+     *
+     * @return  array $data
+     */
     public static function getRestTime()
     {
 
@@ -77,7 +93,7 @@ class Database
 
         $data = DB::select('SELECT em1.emplo_id, em1.name, em1.management_emplo_id, em2.name AS high_name, em1.subord_authority,
         ot1.restraint_start_time, ot1.restraint_closing_time, ot1.restraint_total_time FROM employee AS em1
-        LEFT JOIN employee AS em2 ON em1.management_emplo_id = em2.emplo_id 
+        LEFT JOIN employee AS em2 ON em1.management_emplo_id = em2.emplo_id
         LEFT JOIN over_time AS ot1 ON em1.emplo_id = ot1.emplo_id
         WHERE em1.emplo_id = ? ORDER BY em1.emplo_id', [$emplo_id]);
 
@@ -264,6 +280,45 @@ class Database
         $check = DB::select('SELECT id FROM works WHERE closing_time IS NULL AND date = ?', [$target_date]);
 
         return $check;
+    }
+
+    /**
+     * 対象日のデータがあるかどうかチェック
+     * @param $client 顧客ID
+     *
+     * @var   $data 取得データ
+     *
+     * @return  array $data
+     */
+    public static function insertEmployee($emplo_id, $name, $password, $management_emplo_id, $subord_authority)
+    {
+        DB::select('INSERT INTO employee (emplo_id,name,password,management_emplo_id,subord_authority) VALUE (?,?,?,?,?)', [$emplo_id, $name, $password, $management_emplo_id, $subord_authority]);
+    }
+
+    /**
+     * 対象日のデータがあるかどうかチェック
+     * @param $client 顧客ID
+     *
+     * @var   $data 取得データ
+     *
+     * @return  array $data
+     */
+    public static function insertOverTime($emplo_id, $restraint_start_time, $restraint_closing_time, $restraint_total_time)
+    {
+        DB::select('INSERT INTO over_time (emplo_id,restraint_start_time, restraint_closing_time, restraint_total_time) VALUE (?,?,?,?)', [$emplo_id, $restraint_start_time, $restraint_closing_time, $restraint_total_time]);
+    }
+
+    /**
+     * 対象日のデータがあるかどうかチェック
+     * @param $client 顧客ID
+     *
+     * @var   $data 取得データ
+     *
+     * @return  array $data
+     */
+    public static function insertHierarchy($lower_id, $high_id)
+    {
+        DB::insert('INSERT INTO hierarchy (lower_id,high_id) VALUE (?,?)', [$lower_id, $high_id]);
     }
 
     /**

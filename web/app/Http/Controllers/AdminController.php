@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Libraries\php\Domain\DataBase;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
@@ -38,6 +40,7 @@ class AdminController extends Controller
      */
     public function create()
     {
+        // 管理者リスト
         $subord_authority_lists = DataBase::getSubordAuthority();
         return view('menu.admin.store', compact(
             'subord_authority_lists',
@@ -52,7 +55,32 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //リクエストの取得
+        $name = $request->name;
+        $password = Hash::make($request->password);
+        $management_emplo_id = $request->management_emplo_id;
+        $subord_authority = "0";
+        $restraint_start_time = $request->restraint_start_time;
+        $restraint_closing_time = $request->restraint_closing_time;
+        $restraint_total_time = $request->restraint_total_time;
+
+        //登録する番号を作成
+        $id = DataBase::getID();
+        $emplo_id = $id[0]->emplo_id + "1";
+
+        // 重複クリック対策
+        $request->session()->regenerateToken();
+
+        // 人員を登録
+        DataBase::insertEmployee($emplo_id, $name, $password, $management_emplo_id, $subord_authority);
+
+        // 就業時間を登録
+        DataBase::insertOverTime($emplo_id, $restraint_start_time, $restraint_closing_time, $restraint_total_time);
+
+        //階層に登録
+        DataBase::insertHierarchy($emplo_id, $management_emplo_id);
+
+        return redirect()->route('admin.dashboard');
     }
 
     /**
