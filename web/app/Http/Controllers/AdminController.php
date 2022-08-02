@@ -140,9 +140,38 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        //リクエストの取得
+        $emplo_id = $request->emplo_id;
+        $name = $request->name;
+        $management_emplo_id = $request->management_emplo_id;
+        $restraint_start_time = $request->restraint_start_time;
+        $restraint_closing_time = $request->restraint_closing_time;
+        $restraint_total_time = $request->restraint_total_time;
+
+        // トグルがONになっている場合は1、OFFの場合は0
+        if (is_null($request->subord_authority)) {
+            $subord_authority = "0";
+        } elseif ($request->subord_authority = "on") {
+            $subord_authority = "1";
+        } else {
+            $subord_authority = $request->subord_authority;
+        };
+
+        // 重複クリック対策
+        $request->session()->regenerateToken();
+
+        // 人員を更新
+        DataBase::updateEmployee($emplo_id, $name, $management_emplo_id, $subord_authority);
+
+        // 就業時間を更新
+        DataBase::updateOverTime($emplo_id, $restraint_start_time, $restraint_closing_time, $restraint_total_time);
+
+        //階層に更新
+        DataBase::updateHierarchy($management_emplo_id, $emplo_id);
+
+        return redirect()->route('admin.dashboard');
     }
 
     /**

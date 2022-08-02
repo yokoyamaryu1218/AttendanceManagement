@@ -82,8 +82,6 @@
             </form>
         </div>
         <script>
-            // https://reffect.co.jp/html/toggle-switch
-            // https://itsakura.com/js-checkbox
             function clickBtn7() {
                 document.getElementById("subord_authority").value = "1";
             }

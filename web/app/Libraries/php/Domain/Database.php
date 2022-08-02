@@ -303,6 +303,22 @@ class Database
      *
      * @return  array $data
      */
+    public static function updateEmployee($emplo_id, $name, $management_emplo_id, $subord_authority)
+    {
+        DB::select(
+            'UPDATE employee SET name = ? , management_emplo_id = ?, subord_authority = ? WHERE emplo_id = ?',
+            [$name, $management_emplo_id, $subord_authority, $emplo_id]
+        );
+    }
+
+    /**
+     * 対象日のデータがあるかどうかチェック
+     * @param $client 顧客ID
+     *
+     * @var   $data 取得データ
+     *
+     * @return  array $data
+     */
     public static function insertOverTime($emplo_id, $restraint_start_time, $restraint_closing_time, $restraint_total_time)
     {
         DB::select('INSERT INTO over_time (emplo_id,restraint_start_time, restraint_closing_time, restraint_total_time) VALUE (?,?,?,?)', [$emplo_id, $restraint_start_time, $restraint_closing_time, $restraint_total_time]);
@@ -316,9 +332,38 @@ class Database
      *
      * @return  array $data
      */
+    public static function updateOverTime($emplo_id, $restraint_start_time, $restraint_closing_time, $restraint_total_time)
+    {
+        DB::select(
+            'UPDATE over_time SET restraint_start_time = ? ,restraint_closing_time = ?,restraint_total_time = ? WHERE emplo_id = ?',
+            [$restraint_start_time, $restraint_closing_time, $restraint_total_time, $emplo_id]
+        );
+    }
+
+    /**
+     * 対象日のデータがあるかどうかチェック
+     * @param $client 顧客ID
+     *
+     * @var   $data 取得データ
+     *
+     * @return  array $data
+     */
     public static function insertHierarchy($lower_id, $high_id)
     {
         DB::insert('INSERT INTO hierarchy (lower_id,high_id) VALUE (?,?)', [$lower_id, $high_id]);
+    }
+
+    /**
+     * 対象日のデータがあるかどうかチェック
+     * @param $client 顧客ID
+     *
+     * @var   $data 取得データ
+     *
+     * @return  array $data
+     */
+    public static function updateHierarchy($high_id, $lower_id)
+    {
+        DB::insert('UPDATE hierarchy SET high_id = ? WHERE lower_id = ?', [$high_id, $lower_id]);
     }
 
     /**

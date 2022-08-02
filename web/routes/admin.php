@@ -98,10 +98,15 @@ Route::post('/detail', [AdminController::class, 'show'])
 Route::get('/create', [AdminController::class, 'create'])
     ->middleware(['auth:admin'])
     ->name('emplo_create');
-    
+
 Route::post('/store', [AdminController::class, 'store'])
     ->middleware(['auth:admin'])
     ->name('emplo_store');
+
+// 従業員の登録情報更新のroute
+Route::post('/update', [AdminController::class, 'update'])
+    ->middleware(['auth:admin'])
+    ->name('emplo_update');
 
 // 詳細設定へのroutei
 Route::get('/advanced', [AdminController::class, 'advanced_show'])
