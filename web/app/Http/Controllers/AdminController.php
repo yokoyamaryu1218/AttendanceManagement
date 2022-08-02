@@ -113,13 +113,9 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function advanced_show(Request $request)
+    public function advanced_show()
     {
-        $rest_time = DataBase::getRestTime();
-
-        return view('menu.admin.advanced', compact(
-            'rest_time',
-        ));
+        return view('menu.admin.advanced');
     }
 
     /**

@@ -55,6 +55,11 @@
                     @endforeach
                 </tbody>
             </table>
+            <div class="text-right">
+                <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('employee.login') }}">
+                    {{ __('退職者一覧へ') }}
+                </a>
+            </div>
         </div>
     </div>
 </section>

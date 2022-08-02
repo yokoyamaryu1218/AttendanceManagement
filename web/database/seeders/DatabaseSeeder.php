@@ -20,7 +20,6 @@ class DatabaseSeeder extends Seeder
             WorksSeeder::class,
             HierarchySeeder::class,
             OverTimeSeeder::class,
-            RestTimeSeeder::class,
         ]);
     }
 }

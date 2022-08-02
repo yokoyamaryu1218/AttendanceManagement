@@ -12,6 +12,12 @@
             <div class="flex flex-col text-center w-full mb-20">
                 <h1 class="sm:text-4xl text-3xl font-medium title-font mb-2 text-gray-900">詳細画面</h1>
             </div>
+            <div class="text-right">
+                <form method="get" action="{{ route('admin.emplo_create')}}">
+                    @csrf
+                    <button class="input-group-text flex mx-auto text-white btn btn btn-danger border-0 py-2 px-8 focus:outline-none rounded text-lg">退職</button>
+                </form>
+            </div>
             <form method="POST" action="{{ route('admin.emplo_update')}}">
                 @csrf
                 @method('post')
@@ -30,7 +36,7 @@
                         <!-- 部下参照権限 -->
                         <label for="subord_authority" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">部下参照権限</label>
                         <label for="subord_authority" class="flex items-center cursor-pointer relative mb-4">
-                            <input type="checkbox" onclick="clickBtn7()" id="subord_authority" name="subord_authority" class="sr-only"  <?= $emplo->subord_authority == 1 ? 'checked' : '' ?>>
+                            <input type="checkbox" onclick="clickBtn7()" id="subord_authority" name="subord_authority" class="sr-only" <?= $emplo->subord_authority == 1 ? 'checked' : '' ?>>
                             <div class="toggle-bg bg-gray-200 border-2 border-gray-200 h-6 w-11 rounded-full"></div>
                         </label>
                     </div>

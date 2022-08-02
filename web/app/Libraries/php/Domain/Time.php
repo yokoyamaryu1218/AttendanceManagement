@@ -40,14 +40,12 @@ class Time
      */
     public static function rest_time($total_time)
     {
-        $rest_time = DataBase::getRestTime();
-
-        if ($total_time > $rest_time[0]->total_time1) { //8時間以上の場合は1時間
-            $rest_time = $rest_time[0]->rest_time1;
-        } elseif ($total_time > $rest_time[0]->total_time2) { //6時間を超える場合は45分
-            $rest_time = $rest_time[0]->rest_time2;
+        if ($total_time > '8.0') { //8時間以上の場合は1時間
+            $rest_time = '01:00:00';
+        } elseif ($total_time > '6.0') { //6時間を超える場合は45分
+            $rest_time = '00:45:00';
         } else {
-            $rest_time = $rest_time[0]->rest_time3;
+            $rest_time = '00:00:00';
         }
 
         return $rest_time;
