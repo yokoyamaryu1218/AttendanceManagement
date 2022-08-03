@@ -94,6 +94,16 @@ Route::post('/detail', [AdminController::class, 'show'])
     ->middleware(['auth:admin'])
     ->name('emplo_details');
 
+//退職画面へのroute
+Route::get('/detail/delete', [AdminController::class, 'destroy_check'])
+    ->middleware(['auth:admin'])
+    ->name('destroy_check');
+
+//退職処理実行のroute
+Route::post('/detail/delete/action', [AdminController::class, 'destroy'])
+    ->middleware(['auth:admin'])
+    ->name('destroy');
+
 // 従業員新規登録へのroute
 Route::get('/create', [AdminController::class, 'create'])
     ->middleware(['auth:admin'])
@@ -112,6 +122,11 @@ Route::post('/update', [AdminController::class, 'update'])
 Route::get('/advanced', [AdminController::class, 'advanced_show'])
     ->middleware(['auth:admin'])
     ->name('advanced');
+
+//部下の勤怠一覧へのroute
+Route::post('/monthly', [MonthlyController::class, 'index'])
+    ->middleware(['auth:admin'])
+    ->name('monthly');
 
 //部下の勤怠一覧へのroute
 Route::post('/monthly', [MonthlyController::class, 'index'])

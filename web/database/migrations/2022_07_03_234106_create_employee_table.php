@@ -25,10 +25,14 @@ class CreateEmployeeTable extends Migration
                 ->comment('上司社員ID');
             $table->char('subord_authority', '1')
                 ->comment('部下参照権限');
+            $table->char('retirement_authority', '1')
+                ->comment('退職フラグ');
             $table->timestamp('created_at')->useCurrent()
                 ->comment('新規登録日');
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))
                 ->comment('更新日');
+            $table->softDeletes()
+                ->comment('退職日');
         });
     }
 
@@ -39,6 +43,8 @@ class CreateEmployeeTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('employee');
+        Schema::table('employee', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
     }
 }

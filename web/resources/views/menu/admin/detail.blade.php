@@ -13,8 +13,9 @@
                 <h1 class="sm:text-4xl text-3xl font-medium title-font mb-2 text-gray-900">詳細画面</h1>
             </div>
             <div class="text-right">
-                <form method="get" action="{{ route('admin.emplo_create')}}">
+                <form method="get" action="{{ route('admin.destroy_check')}}">
                     @csrf
+                    <input type="hidden" class="form-control" id="emplo_id" name="emplo_id" value="{{$emplo->emplo_id}}">
                     <button class="input-group-text flex mx-auto text-white btn btn btn-danger border-0 py-2 px-8 focus:outline-none rounded text-lg">退職</button>
                 </form>
             </div>

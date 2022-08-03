@@ -13,7 +13,7 @@
                 <h1 class="sm:text-4xl text-3xl font-medium title-font mb-2 text-gray-900">退職確認画面</h1>
                 以下の従業員の退職処理を行います。よろしいでしょうか。
             </div>
-            <form method="POST" action="{{ route('admin.emplo_update')}}">
+            <form method="POST" action="{{ route('admin.destroy')}}">
                 @csrf
                 @method('post')
                 <div class="grid gap-6 mb-6 lg:grid-cols-2">

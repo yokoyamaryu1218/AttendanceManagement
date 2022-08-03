@@ -40,10 +40,10 @@ class Database
      *
      * @return  array $data
      */
-    public static function getEmployeeAll()
+    public static function getEmployeeAll($retirement_authority)
     {
 
-        $data = DB::select('SELECT emplo_id,name FROM `employee` WHERE 1');
+        $data = DB::select('SELECT emplo_id,name FROM `employee` WHERE retirement_authority = ?;', [$retirement_authority]);
 
         return $data;
     }
@@ -348,6 +348,19 @@ class Database
     public static function updateHierarchy($high_id, $lower_id)
     {
         DB::insert('UPDATE hierarchy SET high_id = ? WHERE lower_id = ?', [$high_id, $lower_id]);
+    }
+
+    /**
+     * 退職フラグを付与する
+     * @param $client 顧客ID
+     *
+     * @var   $data 取得データ
+     *
+     * @return  array $data
+     */
+    public static function retirementAssignment($retirement_authority, $emplo_id)
+    {
+        DB::insert('UPDATE employee SET retirement_authority = ? WHERE emplo_id = ?', [$retirement_authority, $emplo_id]);
     }
 
     /**

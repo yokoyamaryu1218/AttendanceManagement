@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Libraries\php\Domain\DataBase;
 use Illuminate\Support\Facades\Hash;
+use App\Models\Admin;
+use App\Models\Employee;
 
 class AdminController extends Controller
 {
@@ -26,7 +28,9 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $employee_lists = DataBase::getEmployeeAll();
+        // 在職者だけを表示するため、退職フラグに0を付与
+        $retirement_authority = "0";
+        $employee_lists = DataBase::getEmployeeAll($retirement_authority);
 
         return view('admin.dashboard', compact(
             'employee_lists',
@@ -176,8 +180,39 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy_check(Request $request)
     {
-        //
+        $emplo_id = $request->emplo_id;
+        $employee_lists = DataBase::SelectEmployee($emplo_id);
+
+        //リダイレクト
+        return view('menu.admin.delete', compact(
+            'employee_lists',
+        ));
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Request $request)
+    {
+        //リクエストの取得
+        $emplo_id = $request->emplo_id;
+
+        //退職フラグに1を付与する
+        //参照：https://nekoroblog.com/sql-delete/
+        // https://laraweb.net/practice/10618/
+        $retirement_authority = "1";
+        DataBase::retirementAssignment($retirement_authority, $emplo_id);
+
+        // 退職日に日付を付与する
+        $user = Employee::find($emplo_id);
+        $user->delete();
+
+        //リダイレクト
+        return redirect()->route('admin.dashboard');
     }
 }
