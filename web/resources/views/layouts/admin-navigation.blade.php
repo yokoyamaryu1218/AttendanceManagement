@@ -6,7 +6,7 @@
                 <!-- Logo -->
                 <div class="flex-shrink-0 flex items-center">
                     <a href="{{ route('admin.dashboard') }}">
-                        <img src="data:image/png;base64,{{Config::get('base64.top_icon')}}" class="block h-10 w-auto fill-current text-gray-600">
+                        <img src="data:image/png;base64,{{Config::get('base64.file')}}" class="block h-10 w-auto fill-current text-gray-600">
                     </a>
                 </div>
             </div>
