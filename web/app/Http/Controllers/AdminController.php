@@ -38,6 +38,23 @@ class AdminController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function retirement()
+    {
+        // 退職者だけを表示するため、退職フラグに1を付与
+        $retirement_authority = "1";
+        $employee_lists = DataBase::getEmployeeAll($retirement_authority);
+
+        // dd($employee_lists);
+        return view('menu.admin.retirement', compact(
+            'employee_lists',
+        ));
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -102,7 +119,8 @@ class AdminController extends Controller
     public function show(Request $request)
     {
         $emplo_id = $request->emplo_id;
-        $employee_lists = DataBase::SelectEmployee($emplo_id);
+        $retirement_authority = $request->retirement_authority;
+        $employee_lists = DataBase::SelectEmployee($emplo_id, $retirement_authority);
         $subord_authority_lists = DataBase::getSubordAuthority();
 
         return view('menu.admin.detail', compact(
@@ -174,6 +192,46 @@ class AdminController extends Controller
         return redirect()->route('admin.dashboard');
     }
 
+        /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function reinstatement_check(Request $request)
+    {
+        $emplo_id = $request->emplo_id;
+        $retirement_authority = $request->retirement_authority;
+        $employee_lists = DataBase::SelectEmployee($emplo_id, $retirement_authority);
+
+        //リダイレクト
+        return view('menu.admin.reinstatement', compact(
+            'employee_lists',
+        ));
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function reinstatement_action(Request $request)
+    {
+        //リクエストの取得
+        $emplo_id = $request->emplo_id;
+
+        //退職フラグに1を付与する
+        //参照：https://nekoroblog.com/sql-delete/
+        // https://laraweb.net/practice/10618/
+        $retirement_authority = "0";
+        DataBase::retirementAssignment($retirement_authority, $emplo_id);
+        DataBase::Delete_at($emplo_id);
+
+        //リダイレクト
+        return redirect()->route('admin.dashboard');
+    }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -183,7 +241,8 @@ class AdminController extends Controller
     public function destroy_check(Request $request)
     {
         $emplo_id = $request->emplo_id;
-        $employee_lists = DataBase::SelectEmployee($emplo_id);
+        $retirement_authority = $request->retirement_authority;
+        $employee_lists = DataBase::SelectEmployee($emplo_id, $retirement_authority);
 
         //リダイレクト
         return view('menu.admin.delete', compact(

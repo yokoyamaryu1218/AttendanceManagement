@@ -43,7 +43,7 @@ class Database
     public static function getEmployeeAll($retirement_authority)
     {
 
-        $data = DB::select('SELECT emplo_id,name FROM `employee` WHERE retirement_authority = ?;', [$retirement_authority]);
+        $data = DB::select('SELECT emplo_id,name,retirement_authority FROM `employee` WHERE retirement_authority = ?;', [$retirement_authority]);
 
         return $data;
     }
@@ -72,14 +72,16 @@ class Database
      *
      * @return  array $data
      */
-    public static function SelectEmployee($emplo_id)
+    public static function SelectEmployee($emplo_id, $retirement_authority)
     {
 
-        $data = DB::select('SELECT em1.emplo_id, em1.name, em1.management_emplo_id, em2.name AS high_name, em1.subord_authority,
+        $data = DB::select('SELECT em1.emplo_id, em1.name, em1.management_emplo_id, 
+        em1.retirement_authority, em2.name AS high_name, em1.subord_authority,
+        em1.created_at,em1.updated_at,em1.deleted_at,
         ot1.restraint_start_time, ot1.restraint_closing_time, ot1.restraint_total_time FROM employee AS em1
         LEFT JOIN employee AS em2 ON em1.management_emplo_id = em2.emplo_id
         LEFT JOIN over_time AS ot1 ON em1.emplo_id = ot1.emplo_id
-        WHERE em1.emplo_id = ? ORDER BY em1.emplo_id', [$emplo_id]);
+        WHERE em1.emplo_id = ? AND em1.retirement_authority = ? ORDER BY em1.emplo_id', [$emplo_id, $retirement_authority]);
 
         return $data;
     }
@@ -362,6 +364,20 @@ class Database
     {
         DB::insert('UPDATE employee SET retirement_authority = ? WHERE emplo_id = ?', [$retirement_authority, $emplo_id]);
     }
+
+        /**
+     * 退職日を消す
+     * @param $client 顧客ID
+     *
+     * @var   $data 取得データ
+     *
+     * @return  array $data
+     */
+    public static function Delete_at($emplo_id)
+    {
+        DB::insert('UPDATE employee SET deleted_at = NULL WHERE emplo_id = ?', [$emplo_id]);
+    }
+
 
     /**
      * @param $client 顧客ID

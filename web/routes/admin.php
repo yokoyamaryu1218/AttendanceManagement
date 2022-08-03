@@ -94,6 +94,21 @@ Route::post('/detail', [AdminController::class, 'show'])
     ->middleware(['auth:admin'])
     ->name('emplo_details');
 
+// 退職者一覧へのroute
+Route::get('/retirement', [AdminController::class, 'retirement'])
+    ->middleware(['auth:admin'])
+    ->name('retirement');
+
+//復職画面へのroute
+Route::get('/detail/retirement', [AdminController::class, 'reinstatement_check'])
+    ->middleware(['auth:admin'])
+    ->name('reinstatement_check');
+
+//復職処理実行のroute
+Route::post('/detail/retirement/action', [AdminController::class, 'reinstatement_action'])
+    ->middleware(['auth:admin'])
+    ->name('reinstatement_action');
+
 //退職画面へのroute
 Route::get('/detail/delete', [AdminController::class, 'destroy_check'])
     ->middleware(['auth:admin'])

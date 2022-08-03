@@ -13,11 +13,24 @@
                 <h1 class="sm:text-4xl text-3xl font-medium title-font mb-2 text-gray-900">詳細画面</h1>
             </div>
             <div class="text-right">
+                <!-- 退職フラグが0の場合は、退職ボタンを出し -->
+                @if(($emplo->retirement_authority) == "0")
                 <form method="get" action="{{ route('admin.destroy_check')}}">
                     @csrf
                     <input type="hidden" class="form-control" id="emplo_id" name="emplo_id" value="{{$emplo->emplo_id}}">
+                    <input type="hidden" class="form-control" id="retirement_authority" name="retirement_authority" value="{{$emplo->retirement_authority}}">
                     <button class="input-group-text flex mx-auto text-white btn btn btn-danger border-0 py-2 px-8 focus:outline-none rounded text-lg">退職</button>
                 </form>
+                @else
+                <!-- 退職フラグが1の場合は、復職ボタンを出す -->
+                <form method="get" action="{{ route('admin.reinstatement_check')}}">
+                    @csrf
+                    <input type="hidden" class="form-control" id="emplo_id" name="emplo_id" value="{{$emplo->emplo_id}}">
+                    <input type="hidden" class="form-control" id="retirement_authority" name="retirement_authority" value="{{$emplo->retirement_authority}}">
+                    <button class="input-group-text flex mx-auto text-white btn btn btn-primary border-0 py-2 px-8 focus:outline-none rounded text-lg">復職</button>
+                </form>
+                @endif
+                <!-- ボタンここまで -->
             </div>
             <form method="POST" action="{{ route('admin.emplo_update')}}">
                 @csrf
@@ -64,7 +77,7 @@
                         </datalist>
                     </div>
                 </div>
-                <div class="grid gap-6 mb-12 lg:grid-cols-3">
+                <div class="grid gap-6 mb-6 lg:grid-cols-3">
                     <div>
                         <!-- 始業時間 -->
                         <label for="restraint_start_time" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">始業時間</label>
@@ -81,7 +94,25 @@
                         <input type="time" id="restraint_total_time" name="restraint_total_time" value="{{ $emplo->restraint_total_time }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="5:00" required>
                     </div>
                 </div>
-
+                <div class="grid gap-6 mb-12 lg:grid-cols-3">
+                    <div>
+                        <!-- 登録日時 -->
+                        <label for="restraint_start_time" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">登録日時</label>
+                        <input type="test" id="ceated_at" name="created_at" value="{{ $emplo->created_at }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly>
+                    </div>
+                    <div>
+                        <!-- 更新日時 -->
+                        <label for="restraint_closing_time" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">更新日時</label>
+                        <input type="test" id="updated_at" name="updated_at" value="{{ $emplo->updated_at }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly>
+                    </div>
+                    @if(isset($emplo->deleted_at))
+                    <div>
+                        <!-- 退職処理日時 -->
+                        <label for="restraint_total_time" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">退職処理日時</label>
+                        <input type="test" id="deleted_at" name="deleted_at" value="{{ $emplo->deleted_at }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly>
+                    </div>
+                    @endif
+                </div>
                 <div class="flex justify-center">
                     <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 flex mx-auto focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">更新</button>
                     <input class="btn btn-warning my-0" type="button" value="戻る" onclick="location.href='./';">
