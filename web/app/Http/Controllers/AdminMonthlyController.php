@@ -10,7 +10,8 @@ use App\Libraries\php\Domain\DataBase;
 use App\Libraries\php\Domain\Format;
 use App\Libraries\php\Domain\Time;
 
-// 勤怠一覧のコントローラー
+// 管理者側の勤怠操作のコントローラー
+// 可能であれば、MonthlyControllerと統合する
 class AdminMonthlyController extends Controller
 {
     /**
@@ -30,12 +31,16 @@ class AdminMonthlyController extends Controller
      */
     public function index(Request $request)
     {
+        // 勤怠一覧を表示する従業員情報の取得
         $emplo_id = $request->emplo_id;
         $name = $request->name;
 
+        // 今月の年月を表示
         $format = new Format();
         $ym = $format->to_monthly();
+        // 月の日数を取得
         $day_count = date('t', strtotime($ym));
+        // 今月の従業員の勤怠一覧を取得
         $monthly_data = DataBase::getMonthly($emplo_id, $ym);
 
         return view('menu.monthly.monthly2', compact(
@@ -66,9 +71,11 @@ class AdminMonthlyController extends Controller
      */
     public function store(Request $request)
     {
+        // 従業員情報の取得
         $emplo_id = $request->emplo_id;
         $name = $request->name;
 
+        // プルダウンで選んだ年月と月数の取得
         if (isset($request->monthly_change)) {
             $ym = $request->monthly_change;
             $day_count = date('t', strtotime($ym));
@@ -77,7 +84,9 @@ class AdminMonthlyController extends Controller
             $day_count = date('t');
         }
 
+        // 勤怠一覧の取得
         $monthly_data = DataBase::getMonthly($emplo_id, $ym);
+        // フォーマットの取得
         $format = new Format();
 
         return view('menu.monthly.monthly2', compact(
@@ -121,6 +130,7 @@ class AdminMonthlyController extends Controller
      */
     public function update(Request $request)
     {
+        // リクエストの取得
         $name = $request->modal_name;
         $emplo_id = $request->modal_id;
         $target_date = $request->modal_day;
@@ -136,10 +146,14 @@ class AdminMonthlyController extends Controller
         $daily_data = DataBase::getDaily($emplo_id, $target_date);
 
         if ($check_date) {
-            Time::updateTime($emplo_id, $start_time, $closing_time, $target_date, $daily, $daily_data);
+            // 対象日にデータがある場合は、更新処理を行う
+            Time::updateTime($emplo_id, $start_time, $closing_time, $target_date);
+            TIme::Daily($emplo_id, $target_date, $daily, $daily_data);
             return redirect()->route('admin.monthly', compact('emplo_id', 'name',))->with('status', '変更しました');
         } else {
-            Time::insertTime($emplo_id, $start_time, $closing_time, $target_date, $daily, $daily_data);
+            // 対象日にデータがない場合は、新規登録処理を行う
+            Time::insertTime($emplo_id, $start_time, $closing_time, $target_date);
+            Time::Daily($emplo_id, $target_date, $daily, $daily_data);
             return redirect()->route('admin.monthly', compact('emplo_id', 'name',))->with('status', '新規登録しました');
         }
     }

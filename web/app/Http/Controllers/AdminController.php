@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\Employee;
 use App\Libraries\php\Domain\Common;
 
+// 管理者画面用のコントローラー
 class AdminController extends Controller
 {
     /**
@@ -33,7 +34,7 @@ class AdminController extends Controller
         $retirement_authority = "0";
         $employee_lists = DataBase::getEmployeeAll($retirement_authority);
 
-        // 退職者がいる場合、退職者一覧を表示するため、退職者リストも取得する
+        // 退職者がいる場合、退職者一覧のリンクを表示するため、退職者リストも取得する
         $retirement_authority = "1";
         $retirement_lists = DataBase::getEmployeeAll($retirement_authority);
 
@@ -66,7 +67,7 @@ class AdminController extends Controller
      */
     public function create()
     {
-        // 管理者リスト
+        // 管理者リストの取得
         $subord_authority_lists = DataBase::getSubordAuthority();
         return view('menu.admin.store', compact(
             'subord_authority_lists',
@@ -119,9 +120,11 @@ class AdminController extends Controller
      */
     public function show(Request $request)
     {
+        // 詳細画面の情報取得
         $emplo_id = $request->emplo_id;
         $retirement_authority = $request->retirement_authority;
         $employee_lists = DataBase::SelectEmployee($emplo_id, $retirement_authority);
+        // 管理者リストの取得
         $subord_authority_lists = DataBase::getSubordAuthority();
 
         return view('menu.admin.detail', compact(
@@ -138,6 +141,7 @@ class AdminController extends Controller
      */
     public function advanced_show()
     {
+        // 就業規則の表示
         return view('menu.admin.advanced');
     }
 
@@ -196,6 +200,7 @@ class AdminController extends Controller
      */
     public function reinstatement_check(Request $request)
     {
+        // 復職者処理を行う従業員の詳細取得
         $emplo_id = $request->emplo_id;
         $retirement_authority = $request->retirement_authority;
         $employee_lists = DataBase::SelectEmployee($emplo_id, $retirement_authority);
@@ -236,6 +241,7 @@ class AdminController extends Controller
      */
     public function destroy_check(Request $request)
     {
+        // 退職処理を行う従業員の情報取得
         $emplo_id = $request->emplo_id;
         $retirement_authority = $request->retirement_authority;
         $employee_lists = DataBase::SelectEmployee($emplo_id, $retirement_authority);
@@ -276,6 +282,7 @@ class AdminController extends Controller
      */
     public function password_create(Request $request)
     {
+        // パスワードの変更を行う従業員情報の取得
         $emplo_id = $request->emplo_id;
         $name = $request->name;
 
@@ -300,6 +307,7 @@ class AdminController extends Controller
      */
     public function password_store(Request $request)
     {
+        // リクエストの取得
         $emplo_id = $request->emplo_id;
         $name = $request->name;
         $password = Hash::make($request->password);
@@ -313,7 +321,7 @@ class AdminController extends Controller
             ))->with('warning', '新しいパスワードが合致しません。');
         }
 
-        // パスワードは6文字以上あるか，2つが一致しているかなどのチェックF
+        // パスワードは6文字以上あるか，2つが一致しているかなどのチェック
         $this->validator($request->all())->validate();
 
         // パスワードを保存

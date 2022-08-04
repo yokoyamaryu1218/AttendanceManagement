@@ -110,30 +110,12 @@ class AttendanceContoroller extends Controller
         $closing_time = $_POST['modal_end_time'];
         $emplo_id = Auth::guard('employee')->user()->emplo_id;
 
-        //休憩時間を求めるため、総勤務時間を求める
+        // 出勤時間の取得
         $start_time = Database::getStartTime($emplo_id, $target_date);
 
-        $cloumns_name = 'restraint_start_time';
-        $restraint_start_time = Database::getOverTime($cloumns_name, $emplo_id);
-
-        $cloumns_name = 'restraint_total_time';
-        $restraint_total_time = Database::getOverTime($cloumns_name, $emplo_id);
-
+        // 出勤時間が打刻されている場合は新規登録し、未打刻の場合は警告MSGを出す
         if ($start_time) {
-            $total_time = Time::total_time($start_time[0]->start_time, $closing_time, $restraint_start_time[0]->restraint_start_time);
-
-            //休憩時間を求める
-            $rest_time = Time::rest_time($total_time);
-
-            //実績時間を求める
-            $achievement_time = Time::achievement_time($total_time, $rest_time);
-
-            // 残業時間を求める
-            $over_time = Time::over_time($achievement_time, $restraint_total_time[0]->restraint_total_time);
-
-            // データベースに登録する
-            DataBase::insertEndTime($closing_time, $rest_time, $achievement_time, $over_time, $emplo_id, $target_date);
-
+            Time::insertTime($emplo_id, $start_time[0]->start_time, $closing_time, $target_date);
             return back()->with('works_status', '退勤時間を登録しました');
         }
         return back()->with('works_warning', '出勤時間が打刻されていません');
@@ -147,6 +129,7 @@ class AttendanceContoroller extends Controller
      */
     public function daily_store(Request $request)
     {
+        // リクエストの取得
         $emplo_id = Auth::guard('employee')->user()->emplo_id;
         $daily = $request->daily;
         $today = date('Y-m-j');
@@ -154,6 +137,7 @@ class AttendanceContoroller extends Controller
         // 重複クリック対策
         $request->session()->regenerateToken();
 
+        // 日報の登録
         DataBase::insertDaily($emplo_id, $today, $daily);
 
         return back()->with('status', '日報を登録しました');;
@@ -190,13 +174,15 @@ class AttendanceContoroller extends Controller
      */
     public function daily_update(Request $request)
     {
+        // リクエストの取得
         $emplo_id = Auth::guard('employee')->user()->emplo_id;
         $daily = nl2br($request->daily);
+        $today = date('Y-m-j');
 
         // 重複クリック対策
         $request->session()->regenerateToken();
 
-        $today = date('Y-m-j');
+        // 日報の更新
         DataBase::updateDaily($emplo_id, $today, $daily);
 
         return back()->with('status', '日報を更新しました');;

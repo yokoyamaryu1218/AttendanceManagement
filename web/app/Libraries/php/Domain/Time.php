@@ -11,12 +11,12 @@ use App\Libraries\php\Domain\DataBase;
 class Time
 {
     /**
-     * 上司や管理者にて勤怠を新規登録するクラス
+     * 勤怠を新規登録するクラス
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public static function insertTime($emplo_id, $start_time, $closing_time, $target_date, $daily, $daily_data)
+    public static function insertTime($emplo_id, $start_time, $closing_time, $target_date)
     {
         //休憩時間を求めるため、総勤務時間を求める
         $cloumns_name = 'restraint_start_time';
@@ -38,19 +38,15 @@ class Time
 
         // データベースに登録する
         DataBase::insertTime($emplo_id, $target_date, $start_time, $closing_time, $rest_time, $achievement_time, $over_time);
-        if ($daily_data == NULL) {
-            DataBase::insertDaily($emplo_id, $target_date, $daily);
-        }
-        DataBase::updateDaily($emplo_id, $target_date, $daily);
     }
 
     /**
-     * 上司や管理者にて勤怠を更新するクラス
+     * 勤怠を更新するクラス
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public static function updateTime($emplo_id, $start_time, $closing_time, $target_date, $daily, $daily_data)
+    public static function updateTime($emplo_id, $start_time, $closing_time, $target_date)
     {
         //休憩時間を求めるため、総勤務時間を求める
         $cloumns_name = 'restraint_start_time';
@@ -70,11 +66,24 @@ class Time
         // 残業時間を求める
         $over_time = Time::over_time($achievement_time, $restraint_total_time[0]->restraint_total_time);
 
-        // データベースに登録する
+        // データベースを更新する
         DataBase::updateTime($start_time, $closing_time, $rest_time, $achievement_time, $over_time, $emplo_id, $target_date);
+    }
+
+
+    /**
+     * 勤怠処理と合わせて日報の登録（更新）を行うクラス
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public static function Daily($emplo_id, $target_date, $daily, $daily_data)
+    {
+        // 日報の登録がされていない場合は新規登録を行い
         if ($daily_data == NULL) {
             DataBase::insertDaily($emplo_id, $target_date, $daily);
         }
+        // 日報が登録されている場合は更新処理を行う
         DataBase::updateDaily($emplo_id, $target_date, $daily);
     }
 

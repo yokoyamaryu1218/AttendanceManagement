@@ -28,12 +28,14 @@ class SubordController extends Controller
      */
     public function index()
     {
+        // 自分自身の配下の部下一覧を取得する
         if (Auth::guard('employee')->user()->subord_authority == "1") {
             $emplo_id = Auth::guard('employee')->user()->emplo_id;
             $subord_data = DataBase::getSubord($emplo_id);
 
             return view('menu.subord.subord', compact('subord_data'));
         }
+        // 部下がいない状態で部下一覧の画面に遷移しようとした場合、TOPに遷移する
         return redirect('/');
     }
 
@@ -44,6 +46,7 @@ class SubordController extends Controller
      */
     public function create(Request $request)
     {
+        // パスワードの変更を行う従業員情報の取得
         $subord_id = $request->subord_id;
         $subord_name = $request->subord_name;
 
@@ -68,6 +71,7 @@ class SubordController extends Controller
      */
     public function store(Request $request)
     {
+        // リクエストの取得
         $subord_id = $request->subord_id;
         $subord_name = $request->subord_name;
         $password = Hash::make($request->password);
