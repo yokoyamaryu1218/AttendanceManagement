@@ -1,5 +1,5 @@
 <!-- https://tailwindcomponents.com/component/input-field -->
-<!-- 詳細画面のblade -->
+<!-- 退職確認画面のblade -->
 <script src="{{ asset('js/admin/search.js') }}" defer></script>
 
 <x-app-layout>

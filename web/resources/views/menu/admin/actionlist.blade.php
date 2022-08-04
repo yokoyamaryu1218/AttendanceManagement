@@ -1,3 +1,4 @@
+<!-- 復職・退職確認画面に出す従業員詳細画面のblade -->
 @foreach($employee_lists as $emplo)
 @csrf
 @method('post')
