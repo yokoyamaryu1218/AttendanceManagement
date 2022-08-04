@@ -12,6 +12,8 @@ params.delete('mode');
 
 console.log(params.get('subord_id')); // null
 console.log(params.get('subord_name')); // null
+console.log(params.get('emplo_id')); // null
+console.log(params.get('name')); // null
 
 // アドレスバーのURLからGETパラメータを削除
 history.replaceState('', '', url.pathname);

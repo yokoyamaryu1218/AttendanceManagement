@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Libraries\php\Domain\DataBase;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Admin;
 use App\Models\Employee;
@@ -192,7 +193,7 @@ class AdminController extends Controller
         return redirect()->route('admin.dashboard');
     }
 
-        /**
+    /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
@@ -221,11 +222,11 @@ class AdminController extends Controller
         //リクエストの取得
         $emplo_id = $request->emplo_id;
 
-        //退職フラグに1を付与する
-        //参照：https://nekoroblog.com/sql-delete/
-        // https://laraweb.net/practice/10618/
+        //退職フラグに0を付与する
         $retirement_authority = "0";
         DataBase::retirementAssignment($retirement_authority, $emplo_id);
+
+        // 退職日をNULLにする
         DataBase::Delete_at($emplo_id);
 
         //リダイレクト
@@ -262,8 +263,6 @@ class AdminController extends Controller
         $emplo_id = $request->emplo_id;
 
         //退職フラグに1を付与する
-        //参照：https://nekoroblog.com/sql-delete/
-        // https://laraweb.net/practice/10618/
         $retirement_authority = "1";
         DataBase::retirementAssignment($retirement_authority, $emplo_id);
 
@@ -273,5 +272,61 @@ class AdminController extends Controller
 
         //リダイレクト
         return redirect()->route('admin.dashboard');
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function password_create(Request $request)
+    {
+        $emplo_id = $request->emplo_id;
+        $name = $request->name;
+
+        return view('menu.admin.change-password', compact(
+            'emplo_id',
+            'name',
+        ));
+    }
+
+    protected function validator(array $data)
+    {
+        return Validator::make($data, [
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function password_store(Request $request)
+    {
+        $emplo_id = $request->emplo_id;
+        $name = $request->name;
+        $password = Hash::make($request->password);
+        $password_confirmation = $request->password_confirmation;
+
+        // 新しいパスワードを確認
+        if (!password_verify($request->password, password_hash($password_confirmation, PASSWORD_DEFAULT))) {
+            return redirect()->route('admin.change_password', compact(
+                'emplo_id',
+                'name',
+            ))->with('warning', '新しいパスワードが合致しません。');
+        }
+
+        // パスワードは6文字以上あるか，2つが一致しているかなどのチェックF
+        $this->validator($request->all())->validate();
+
+        // パスワードを保存
+        Database::subord_updatepassword($password, $emplo_id);
+
+        return redirect()->route('admin.change_password', compact(
+            'emplo_id',
+            'name',
+        ))->with('status', 'パスワードを変更しました');
     }
 }

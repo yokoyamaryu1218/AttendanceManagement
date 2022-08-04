@@ -147,3 +147,11 @@ Route::post('/monthly', [MonthlyController::class, 'index'])
 Route::post('/monthly', [MonthlyController::class, 'index'])
     ->middleware(['auth:admin'])
     ->name('monthly');
+
+//従業員のパスワード変更へのroute
+Route::get('/change_password', [AdminController::class, 'password_create'])
+    ->name('change_password');
+Route::post('/change_password', [AdminController::class, 'password_create'])
+    ->name('change_password');
+Route::post('/reset-password', [AdminController::class, 'password_store'])
+    ->name('password.update');

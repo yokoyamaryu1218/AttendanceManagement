@@ -2,7 +2,7 @@
 <x-app-layout>
     <x-slot name="header">
     </x-slot>
-    <form method="POST" action="{{ route('employee.subord.password.update') }}">
+    <form method="POST" action="{{ route('admin.password.update') }}">
         @csrf
 
         <body>
@@ -22,12 +22,12 @@
                         </div>
                         @endif
 
-                        <!-- パスワードを変更する部下の名前 -->
+                        <!-- パスワードを変更す社員の名前 -->
                         <div class="mt-4">
-                            社員名：{{ $subord_name }}さん
+                            社員名：{{ $name }}さん
                             <script src="{{ asset('js/subord/subord.js') }}" defer></script>
-                            <input type="hidden" class="form-control" id="subord_id" name="subord_id" value="{{ $subord_id }}">
-                            <input type="hidden" class="form-control" id="subord_name" name="subord_name" value="{{ $subord_name }}">
+                            <input type="hidden" class="form-control" id="emplo_id" name="emplo_id" value="{{ $emplo_id }}">
+                            <input type="hidden" class="form-control" id="name" name="name" value="{{ $name }}">
                         </div>
 
                         <!--  new Password -->
