@@ -146,8 +146,11 @@ class MonthlyController extends Controller
 
         if ($check_date) {
             //休憩時間を求めるため、総勤務時間を求める
-            $restraint_start_time = Database::getRestraintStartTime($emplo_id);
-            $restraint_total_time = Database::getRestraintTotalTime($emplo_id);
+            $cloumns_name = 'restraint_start_time';
+            $restraint_start_time = Database::getOverTime($cloumns_name,$emplo_id);
+
+            $cloumns_name = 'restraint_total_time';
+            $restraint_total_time = Database::getOverTime($cloumns_name,$emplo_id);
 
             $total_time = Time::total_time($start_time, $closing_time, $restraint_start_time[0]->restraint_start_time);
 
@@ -170,8 +173,11 @@ class MonthlyController extends Controller
             return redirect()->route('employee.subord')->with('status', '変更しました');
         } else {
             //休憩時間を求めるため、総勤務時間を求める
-            $restraint_start_time = Database::getRestraintStartTime($emplo_id);
-            $restraint_total_time = Database::getRestraintTotalTime($emplo_id);
+            $cloumns_name = 'restraint_start_time';
+            $restraint_start_time = Database::getOverTime($cloumns_name,$emplo_id);
+
+            $cloumns_name = 'restraint_total_time';
+            $restraint_total_time = Database::getOverTime($cloumns_name,$emplo_id);
 
             $total_time = Time::total_time($start_time, $closing_time, $restraint_start_time[0]->restraint_start_time);
 

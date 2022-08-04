@@ -5,7 +5,6 @@ namespace App\Libraries\php\Domain;
 use PDO;
 use App\Models\Date;
 use Illuminate\Support\Facades\DB;
-use App\Libraries\php\Domain\ConnectDB;
 
 /**
  * データベース動作クラス
@@ -115,7 +114,7 @@ class Database
     public static function getMonthly($emplo_id, $ym)
     {
 
-        $connect = new ConnectDB();
+        $connect = new Format();
         $pdo = $connect->connect_db();
 
         $sql = "SELECT wk1.date, wk1.emplo_id, wk1.start_time, wk1.closing_time,
@@ -174,30 +173,12 @@ class Database
      *
      * @return  array $data
      */
-    public static function getRestraintStartTime($emplo_id)
+    public static function getOverTime($cloumns_name,$emplo_id)
     {
-
-        $data = DB::select('SELECT restraint_start_time FROM over_time WHERE emplo_id =?', [$emplo_id]);
+        $data = DB::select('SELECT ' . $cloumns_name . ' FROM over_time WHERE emplo_id =?', [$emplo_id]);
 
         return $data;
     }
-
-    /**
-     *
-     * @param $client 顧客ID
-     *
-     * @var   $data 取得データ
-     *
-     * @return  array $data
-     */
-    public static function getRestraintTotalTime($emplo_id)
-    {
-
-        $data = DB::select('SELECT restraint_total_time FROM over_time WHERE emplo_id =?', [$emplo_id]);
-
-        return $data;
-    }
-
 
     /**
      *
@@ -225,7 +206,7 @@ class Database
      */
     public static function checkDate($emplo_id, $target_date)
     {
-        $connect = new ConnectDB();
+        $connect = new Format();
         $pdo = $connect->connect_db();
 
         $sql = "SELECT id FROM works WHERE emplo_id = :emplo_id AND date = :date LIMIT 1";
@@ -278,7 +259,7 @@ class Database
      */
     public static function insertEmployee($emplo_id, $name, $password, $management_emplo_id, $subord_authority, $retirement_authority)
     {
-        DB::select('INSERT INTO employee (emplo_id,name,password,management_emplo_id,subord_authority,retirement_authority) VALUE (?,?,?,?,?,?)', [$emplo_id, $name, $password, $management_emplo_id, $subord_authority, $retirement_authority]);
+        DB::select('INSERT INTO employee (emplo_id,name,password,management_emplo_id,subord_authority,retirement_authority) VALUE (?,?,?,?,?)', [$emplo_id, $name, $password, $management_emplo_id, $subord_authority, $retirement_authority]);
     }
 
     /**

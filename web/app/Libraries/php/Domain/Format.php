@@ -10,6 +10,17 @@ use PDO;
 
 class Format
 {
+    // データベースに接続するクラス
+    public static function connect_db()
+    {
+        $dsn = 'mysql:dbname=attendance_management;host=localhost;charset=utf8';
+        $user = 'root';
+        $password = '';
+        $pdo = new PDO($dsn, $user, $password);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        return $pdo;
+    }
+
     // 曜日表示
     function time_format_dw($date)
     {

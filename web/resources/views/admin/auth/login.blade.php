@@ -1,6 +1,5 @@
 <x-guest-layout>
     <x-auth-card>
-        管理者用
         <x-slot name="logo">
             <img src="data:image/png;base64,{{Config::get('base64.file_login')}}" class="w-20 h-20 fill-current text-gray-500">
         </x-slot>

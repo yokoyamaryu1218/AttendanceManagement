@@ -8,6 +8,7 @@ use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+// 管理者側のログインコントローラー
 class AuthenticatedSessionController extends Controller
 {
     /**
