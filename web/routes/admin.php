@@ -10,7 +10,7 @@ use App\Http\Controllers\Admin\Auth\RegisteredUserController;
 use App\Http\Controllers\Admin\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\MonthlyController;
+use App\Http\Controllers\AdminMonthlyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -139,14 +139,20 @@ Route::get('/advanced', [AdminController::class, 'advanced_show'])
     ->name('advanced');
 
 //部下の勤怠一覧へのroute
-Route::post('/monthly', [MonthlyController::class, 'index'])
-    ->middleware(['auth:admin'])
+Route::post('/monthly', [AdminMonthlyController::class, 'index'])
+    ->name('monthly');
+Route::get('/monthly', [AdminMonthlyController::class, 'index'])
     ->name('monthly');
 
-//部下の勤怠一覧へのroute
-Route::post('/monthly', [MonthlyController::class, 'index'])
-    ->middleware(['auth:admin'])
-    ->name('monthly');
+//月度を変えたときのroute
+Route::post('/monthly/change', [AdminMonthlyController::class, 'store'])
+    ->name('monthly_change');
+Route::get('/monthly/change', [AdminMonthlyController::class, 'store'])
+    ->name('monthly_change');
+
+//部下の勤怠修正のroute
+Route::post('monthly/update', [AdminMonthlyController::class, 'update'])
+    ->name('monthly.update');
 
 //従業員のパスワード変更へのroute
 Route::get('/change_password', [AdminController::class, 'password_create'])

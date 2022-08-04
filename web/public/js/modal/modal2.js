@@ -4,6 +4,7 @@ var inputModal = document.getElementById("inputModal");
 inputModal.addEventListener("show.bs.modal", function (event) {
     /* 編集ボタンが押された対象日の表データを取得 */
     var button = event.relatedTarget;
+    var name = button.getAttribute("data-bs-name");
     var day = button.getAttribute("data-bs-day");
     var emplo_id = button.getAttribute("data-bs-id");
     var start = button.getAttribute("data-bs-start");
@@ -15,6 +16,7 @@ inputModal.addEventListener("show.bs.modal", function (event) {
     $("#modal_closing_time").val(closing);
     $("#modal_daily").val(daily);
     $("#modal_day").val(day);
+    $("#modal_name").val(name);
     $("#modal_id").val(emplo_id);
 
     // 日付をタイトルとして表示
