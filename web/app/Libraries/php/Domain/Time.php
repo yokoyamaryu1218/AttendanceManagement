@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Libraries\php\Domain;
+
 use App\Libraries\php\Domain\DataBase;
 
 /**
@@ -9,6 +10,74 @@ use App\Libraries\php\Domain\DataBase;
 
 class Time
 {
+    /**
+     * 上司や管理者にて勤怠を新規登録するクラス
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public static function insertTime($emplo_id, $start_time, $closing_time, $target_date, $daily, $daily_data)
+    {
+        //休憩時間を求めるため、総勤務時間を求める
+        $cloumns_name = 'restraint_start_time';
+        $restraint_start_time = Database::getOverTime($cloumns_name, $emplo_id);
+
+        $cloumns_name = 'restraint_total_time';
+        $restraint_total_time = Database::getOverTime($cloumns_name, $emplo_id);
+
+        $total_time = Time::total_time($start_time, $closing_time, $restraint_start_time[0]->restraint_start_time);
+
+        //休憩時間を求める
+        $rest_time = Time::rest_time($total_time);
+
+        //実績時間を求める
+        $achievement_time = Time::achievement_time($total_time, $rest_time);
+
+        // 残業時間を求める
+        $over_time = Time::over_time($achievement_time, $restraint_total_time[0]->restraint_total_time);
+
+        // データベースに登録する
+        DataBase::insertTime($emplo_id, $target_date, $start_time, $closing_time, $rest_time, $achievement_time, $over_time);
+        if ($daily_data == NULL) {
+            DataBase::insertDaily($emplo_id, $target_date, $daily);
+        }
+        DataBase::updateDaily($emplo_id, $target_date, $daily);
+    }
+
+    /**
+     * 上司や管理者にて勤怠を更新するクラス
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public static function updateTime($emplo_id, $start_time, $closing_time, $target_date, $daily, $daily_data)
+    {
+        //休憩時間を求めるため、総勤務時間を求める
+        $cloumns_name = 'restraint_start_time';
+        $restraint_start_time = Database::getOverTime($cloumns_name, $emplo_id);
+
+        $cloumns_name = 'restraint_total_time';
+        $restraint_total_time = Database::getOverTime($cloumns_name, $emplo_id);
+
+        $total_time = Time::total_time($start_time, $closing_time, $restraint_start_time[0]->restraint_start_time);
+
+        //休憩時間を求める
+        $rest_time = Time::rest_time($total_time);
+
+        //実績時間を求める
+        $achievement_time = Time::achievement_time($total_time, $rest_time);
+
+        // 残業時間を求める
+        $over_time = Time::over_time($achievement_time, $restraint_total_time[0]->restraint_total_time);
+
+        // データベースに登録する
+        DataBase::updateTime($start_time, $closing_time, $rest_time, $achievement_time, $over_time, $emplo_id, $target_date);
+        if ($daily_data == NULL) {
+            DataBase::insertDaily($emplo_id, $target_date, $daily);
+        }
+        DataBase::updateDaily($emplo_id, $target_date, $daily);
+    }
+
     /**
      * 休憩時間を求めるため、総勤務時間を求める
      * 参照：https://sukimanosukima.com/2020/07/18/php-6/

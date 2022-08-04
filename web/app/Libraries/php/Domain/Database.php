@@ -259,7 +259,7 @@ class Database
      */
     public static function insertEmployee($emplo_id, $name, $password, $management_emplo_id, $subord_authority, $retirement_authority)
     {
-        DB::select('INSERT INTO employee (emplo_id,name,password,management_emplo_id,subord_authority,retirement_authority) VALUE (?,?,?,?,?)', [$emplo_id, $name, $password, $management_emplo_id, $subord_authority, $retirement_authority]);
+        DB::select('INSERT INTO employee (emplo_id,name,password,management_emplo_id,subord_authority,retirement_authority) VALUE (?,?,?,?,?,?)', [$emplo_id, $name, $password, $management_emplo_id, $subord_authority, $retirement_authority]);
     }
 
     /**

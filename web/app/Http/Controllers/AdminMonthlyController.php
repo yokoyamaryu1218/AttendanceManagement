@@ -136,59 +136,11 @@ class AdminMonthlyController extends Controller
         $daily_data = DataBase::getDaily($emplo_id, $target_date);
 
         if ($check_date) {
-            //休憩時間を求めるため、総勤務時間を求める
-            $cloumns_name = 'restraint_start_time';
-            $restraint_start_time = Database::getOverTime($cloumns_name,$emplo_id);
-
-            $cloumns_name = 'restraint_total_time';
-            $restraint_total_time = Database::getOverTime($cloumns_name,$emplo_id);
-
-            $total_time = Time::total_time($start_time, $closing_time, $restraint_start_time[0]->restraint_start_time);
-
-            //休憩時間を求める
-            $rest_time = Time::rest_time($total_time);
-
-            //実績時間を求める
-            $achievement_time = Time::achievement_time($total_time, $rest_time);
-
-            // 残業時間を求める
-            $over_time = Time::over_time($achievement_time, $restraint_total_time[0]->restraint_total_time);
-
-            // データベースに登録する
-            DataBase::updateTime($start_time, $closing_time, $rest_time, $achievement_time, $over_time, $emplo_id, $target_date);
-            if ($daily_data == NULL) {
-                DataBase::insertDaily($emplo_id, $target_date, $daily);
-            }
-            DataBase::updateDaily($emplo_id, $target_date, $daily);
-
+            Time::updateTime($emplo_id, $start_time, $closing_time, $target_date, $daily, $daily_data);
             return redirect()->route('admin.monthly', compact('emplo_id', 'name',))->with('status', '変更しました');
         } else {
-            //休憩時間を求めるため、総勤務時間を求める
-            $cloumns_name = 'restraint_start_time';
-            $restraint_start_time = Database::getOverTime($cloumns_name,$emplo_id);
-
-            $cloumns_name = 'restraint_total_time';
-            $restraint_total_time = Database::getOverTime($cloumns_name,$emplo_id);
-
-            $total_time = Time::total_time($start_time, $closing_time, $restraint_start_time[0]->restraint_start_time);
-
-            //休憩時間を求める
-            $rest_time = Time::rest_time($total_time);
-
-            //実績時間を求める
-            $achievement_time = Time::achievement_time($total_time, $rest_time);
-
-            // 残業時間を求める
-            $over_time = Time::over_time($achievement_time, $restraint_total_time[0]->restraint_total_time);
-
-            // データベースに登録する
-            DataBase::insertTime($emplo_id, $target_date, $start_time, $closing_time, $rest_time, $achievement_time, $over_time);
-            if ($daily_data == NULL) {
-                DataBase::insertDaily($emplo_id, $target_date, $daily);
-            }
-            DataBase::updateDaily($emplo_id, $target_date, $daily);
-
-            return redirect()->route('admin.monthly', compact('emplo_id', 'name',))->with('status', '変更しました');
+            Time::insertTime($emplo_id, $start_time, $closing_time, $target_date, $daily, $daily_data);
+            return redirect()->route('admin.monthly', compact('emplo_id', 'name',))->with('status', '新規登録しました');
         }
     }
 
