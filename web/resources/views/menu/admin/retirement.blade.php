@@ -11,12 +11,21 @@
                         <h1 class="sm:text-4xl text-3xl font-medium title-font mb-2 text-gray-900">退職者一覧</h1>
                     </div>
                     <!-- 従業員の一覧表示部分 -->
+                    @if(!(empty($employee_lists)))
                     @include('menu.admin.emplo_list')
                     <div class="text-right">
                         <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('admin.dashboard') }}">
                             {{ __('従業員一覧へ') }}
                         </a>
                     </div>
+                    @else
+                    <div class="text-center">
+                        <h5>現在、退職者はいないようです。</h5></BR>
+                        <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('admin.dashboard') }}">
+                            {{ __('従業員一覧へ') }}
+                        </a>
+                    </div>
+                    @endif
                 </div>
             </div>
         </section>

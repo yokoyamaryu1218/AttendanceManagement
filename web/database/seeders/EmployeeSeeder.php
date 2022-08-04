@@ -20,8 +20,7 @@ class EmployeeSeeder extends Seeder
         $employee_holder = '?,?,?,?,?,?,?,?,?';
         // @var array employeeの挿入データ
         $employee_insert_data_list = [
-            ['0000', '管理者アカウント', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2',  '0000', 1, 0, NULL, NULL, NULL], //パスワード：password
-            ['1000', '上司次郎', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2',  '1000', 1, 0, NULL, NULL, NULL], //パスワード：password
+            ['1000', '上司次郎', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2',  '0000', 1, 0, NULL, NULL, NULL], //パスワード：password
             ['1001', '田中太郎', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2',  '1000', 1, 0, NULL, NULL, NULL], //パスワード：password
             ['1002', '部下一郎', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2',  '1001', 0, 0, NULL, NULL, NULL], //パスワード：password
             ['1003', '部下次郎', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2',  '1001', 0, 0, NULL, NULL, NULL], //パスワード：password

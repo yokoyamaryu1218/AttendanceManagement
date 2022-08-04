@@ -75,7 +75,7 @@ class Database
     public static function SelectEmployee($emplo_id, $retirement_authority)
     {
 
-        $data = DB::select('SELECT em1.emplo_id, em1.name, em1.management_emplo_id, 
+        $data = DB::select('SELECT em1.emplo_id, em1.name, em1.management_emplo_id,
         em1.retirement_authority, em2.name AS high_name, em1.subord_authority,
         em1.created_at,em1.updated_at,em1.deleted_at,
         ot1.restraint_start_time, ot1.restraint_closing_time, ot1.restraint_total_time FROM employee AS em1
@@ -276,9 +276,9 @@ class Database
      *
      * @return  array $data
      */
-    public static function insertEmployee($emplo_id, $name, $password, $management_emplo_id, $subord_authority)
+    public static function insertEmployee($emplo_id, $name, $password, $management_emplo_id, $subord_authority, $retirement_authority)
     {
-        DB::select('INSERT INTO employee (emplo_id,name,password,management_emplo_id,subord_authority) VALUE (?,?,?,?,?)', [$emplo_id, $name, $password, $management_emplo_id, $subord_authority]);
+        DB::select('INSERT INTO employee (emplo_id,name,password,management_emplo_id,subord_authority,retirement_authority) VALUE (?,?,?,?,?,?)', [$emplo_id, $name, $password, $management_emplo_id, $subord_authority, $retirement_authority]);
     }
 
     /**
@@ -365,7 +365,7 @@ class Database
         DB::insert('UPDATE employee SET retirement_authority = ? WHERE emplo_id = ?', [$retirement_authority, $emplo_id]);
     }
 
-        /**
+    /**
      * 退職日を消す
      * @param $client 顧客ID
      *

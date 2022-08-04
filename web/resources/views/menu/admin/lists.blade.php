@@ -9,11 +9,13 @@
                 </form>
             </div>
             @include('menu.admin.emplo_list')
+            @if(!(empty($retirement_lists)))
             <div class="text-right">
                 <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('admin.retirement') }}">
                     {{ __('退職者一覧へ') }}
                 </a>
             </div>
+            @endif
         </div>
     </div>
 </section>

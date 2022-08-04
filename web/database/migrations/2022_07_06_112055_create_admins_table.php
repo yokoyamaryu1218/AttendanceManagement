@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 class CreateAdminsTable extends Migration
 {
@@ -14,13 +15,17 @@ class CreateAdminsTable extends Migration
     public function up()
     {
         Schema::create('admins', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
+            $table->primary(['emplo_id']);
+            $table->string('emplo_id', '10')
+                ->comment('管理者ID');
+            $table->string('name', '32')
+                ->comment('社員名');
+            $table->string('password', '256')
+                ->comment('パスワード');
+            $table->timestamp('created_at')->useCurrent()
+                ->comment('新規登録日');
+            $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))
+                ->comment('更新日');
         });
     }
 

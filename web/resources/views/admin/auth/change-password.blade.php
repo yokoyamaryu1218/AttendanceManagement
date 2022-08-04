@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
     </x-slot>
-    <form method="POST" action="{{ route('employee.password.update') }}">
+    <form method="POST" action="{{ route('admin.password.update') }}">
         @csrf
 
         <body>

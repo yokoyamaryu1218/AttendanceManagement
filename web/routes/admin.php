@@ -54,13 +54,13 @@ Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
     ->middleware('guest')
     ->name('password.email');
 
-Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])
-    ->middleware('guest')
-    ->name('password.reset');
+// Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])
+//     ->middleware('guest')
+//     ->name('password.reset');
 
-Route::post('/reset-password', [NewPasswordController::class, 'store'])
-    ->middleware('guest')
-    ->name('password.update');
+// Route::post('/reset-password', [NewPasswordController::class, 'store'])
+//     ->middleware('guest')
+//     ->name('password.update');
 
 Route::get('/verify-email', [EmailVerificationPromptController::class, '__invoke'])
     ->middleware('auth:admin')
@@ -160,4 +160,10 @@ Route::get('/change_password', [AdminController::class, 'password_create'])
 Route::post('/change_password', [AdminController::class, 'password_create'])
     ->name('change_password');
 Route::post('/reset-password', [AdminController::class, 'password_store'])
+    ->name('password.update');
+
+//パスワード変更
+Route::get('/change_password', [NewPasswordController::class, 'create'])
+    ->name('change_password');
+Route::post('/reset-password', [NewPasswordController::class, 'store'])
     ->name('password.update');

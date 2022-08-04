@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\DB;
 use App\Libraries\php\Domain\DataBase;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
-use App\Models\Admin;
 use App\Models\Employee;
 
 class AdminController extends Controller
@@ -33,8 +32,13 @@ class AdminController extends Controller
         $retirement_authority = "0";
         $employee_lists = DataBase::getEmployeeAll($retirement_authority);
 
+        // 退職者がいる場合、退職者一覧を表示するため、退職者リストも取得する
+        $retirement_authority = "1";
+        $retirement_lists = DataBase::getEmployeeAll($retirement_authority);
+
         return view('admin.dashboard', compact(
             'employee_lists',
+            'retirement_lists',
         ));
     }
 
@@ -49,7 +53,6 @@ class AdminController extends Controller
         $retirement_authority = "1";
         $employee_lists = DataBase::getEmployeeAll($retirement_authority);
 
-        // dd($employee_lists);
         return view('menu.admin.retirement', compact(
             'employee_lists',
         ));
@@ -84,6 +87,7 @@ class AdminController extends Controller
         $restraint_start_time = $request->restraint_start_time;
         $restraint_closing_time = $request->restraint_closing_time;
         $restraint_total_time = $request->restraint_total_time;
+        $retirement_authority = "0";
 
         // トグルがONになっている場合は1、OFFの場合は0
         if (is_null($request->subord_authority)) {
@@ -100,7 +104,7 @@ class AdminController extends Controller
         $request->session()->regenerateToken();
 
         // 人員を登録
-        DataBase::insertEmployee($emplo_id, $name, $password, $management_emplo_id, $subord_authority);
+        DataBase::insertEmployee($emplo_id, $name, $password, $management_emplo_id, $subord_authority, $retirement_authority);
 
         // 就業時間を登録
         DataBase::insertOverTime($emplo_id, $restraint_start_time, $restraint_closing_time, $restraint_total_time);
