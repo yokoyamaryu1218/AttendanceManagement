@@ -9,6 +9,60 @@ namespace App\Libraries\php\Domain;
 class Common
 {
     /**
+     * 曜日を表示する
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    function time_format_dw($date)
+    {
+        $format_date = NULL;
+        $week = array('日', '月', '火', '水', '木', '金', '土');
+
+        if ($date) {
+            $format_date = date('j (' . $week[date('w', strtotime($date))] . ')', strtotime($date));
+        }
+
+        return $format_date;
+    }
+
+    /**
+     * 今月の年月を表示する
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */    function to_monthly()
+    {
+        // https://codeforfun.jp/php-calendar/
+        if (isset($_GET['ym'])) {
+            $ym = $_GET['ym'];
+        } else {
+            // 今月の年月を表示
+            $ym = date('Y-m');
+        }
+
+        return $ym;
+    }
+
+    /**
+     * 今月の年月を表示する
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */    function top_monthly()
+    {
+        // https://codeforfun.jp/php-calendar/
+        if (isset($_GET['ym'])) {
+            $ym = $_GET['ym'];
+        } else {
+            // 今月の年月を表示
+            $ym = date('Y/m');
+        }
+
+        return $ym;
+    }
+
+    /**
      * 従業員情報を登録するクラス
      * Display a listing of the resource.
      *

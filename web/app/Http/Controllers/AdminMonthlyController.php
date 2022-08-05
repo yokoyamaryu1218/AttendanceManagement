@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Libraries\php\Domain\DataBase;
-use App\Libraries\php\Domain\Format;
+use App\Libraries\php\Domain\Common;
 use App\Libraries\php\Domain\Time;
 
 // 管理者側の勤怠操作のコントローラー
@@ -36,7 +36,7 @@ class AdminMonthlyController extends Controller
         $name = $request->name;
 
         // 今月の年月を表示
-        $format = new Format();
+        $format = new Common();
         $ym = $format->to_monthly();
         // 月の日数を取得
         $day_count = date('t', strtotime($ym));
@@ -87,7 +87,7 @@ class AdminMonthlyController extends Controller
         // 勤怠一覧の取得
         $monthly_data = DataBase::getMonthly($emplo_id, $ym);
         // フォーマットの取得
-        $format = new Format();
+        $format = new Common();
 
         return view('menu.monthly.monthly2', compact(
             'monthly_data',
@@ -122,7 +122,7 @@ class AdminMonthlyController extends Controller
     }
 
     /**
-     * 部下の勤怠修正
+     * 従業員の勤怠修正
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request

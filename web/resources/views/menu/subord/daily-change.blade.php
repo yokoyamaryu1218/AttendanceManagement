@@ -3,7 +3,7 @@
     <div class="modal-dialog">
         <div class="modal-content flex justify-between">
             <div class="modal-header">
-                <h5><label class="modal-title" for="modal-title"></label></h5>
+                <h5><label class="modal-title" for="modal-title"></label> 勤怠修正画面</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
@@ -29,6 +29,7 @@
                         <button type="button" class="focus:outline-none flex mx-auto modal-close text-white bg-red-500 border-0 py-2 px-8 focus:outline-none hover:bg-red-600 rounded text-lg" data-bs-dismiss="modal">閉じる</button>
                     </div>
                 </div>
+                <input type="hidden" id="modal_name" name="modal_name">
                 <input type="hidden" id="modal_day" name="modal_day">
                 <input type="hidden" id="modal_id" name="modal_id">
             </form>

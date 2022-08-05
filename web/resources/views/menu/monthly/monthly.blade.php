@@ -13,7 +13,7 @@
                     <form method="POST" action="{{ route('employee.monthly_change')}}" name="monthly_change">
                         @csrf
                         <input type="hidden" class="form-control" id="emplo_id" name="emplo_id" value="{{$emplo_id}}">
-                        <input type="hidden" class="form-control" id="emplo_name" name="emplo_name" value="{{$emplo_name}}">
+                        <input type="hidden" class="form-control" id="name" name="name" value="{{$name}}">
                         <select class="rounded-pill mb-1" name="monthly_change" onchange="submit(this.form)">
                             <option value="{{ date('Y-m') }}">
                                 {{ date('Y年m月') }}
@@ -26,15 +26,28 @@
                                 @endfor
                         </select>
                         <!-- 名前表示部分 -->
-                        {{ $emplo_name }}さん
+                        {{ $name }}さん
                         <!-- 名前表示部分ここまで -->
                     </form>
                 </label>
                 <!-- 月度プルダウン部分ここまで -->
             </div>
-            <!-- ここから月別勤怠一覧部分 -->
+
             <div class="container px-5 py-4 mx-auto">
                 <div class="lg:w-2/3 w-full mx-auto overflow-auto">
+                    <!-- フラッシュメッセージの表示 -->
+                    @if (session('warning'))
+                    <div class="alert alert-warning">
+                        {{ session('warning') }}
+                    </div>
+                    @endif
+                    @if (session('status'))
+                    <div class="alert alert-info">
+                        {{ session('status') }}
+                    </div>
+                    @endif
+
+                    <!-- ここから月別勤怠一覧部分 -->
                     @include('menu.monthly.daily')
                 </div>
             </div>

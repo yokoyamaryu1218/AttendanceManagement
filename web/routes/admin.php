@@ -23,36 +23,141 @@ use App\Http\Controllers\AdminMonthlyController;
 |
 */
 
-// Route::get('/dashboard', function () {
-//     return view('admin.dashboard');
-// })->middleware(['auth:admin'])->name('dashboard');
-
-Route::get('/dashboard', [AdminController::class, 'index'])
-    ->middleware(['auth:admin'])
-    ->name('dashboard');
-
-
-Route::get('/register', [RegisteredUserController::class, 'create'])
-    ->middleware('guest')
-    ->name('register');
-
-Route::post('/register', [RegisteredUserController::class, 'store'])
-    ->middleware('guest');
-
+// 初期画面(ログイン画面)
 Route::get('/', [AuthenticatedSessionController::class, 'create'])
     ->middleware('guest')
     ->name('login');
 
 Route::post('/', [AuthenticatedSessionController::class, 'store'])
     ->middleware('guest');
+// 初期画面ここまで
 
-Route::get('/forgot-password', [PasswordResetLinkController::class, 'create'])
-    ->middleware('guest')
-    ->name('password.request');
+Route::group(['middleware' => 'auth:admin'], function () {
+    // ログアウト処理
+    Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
+        ->name('logout');
+    // ログアウト処理ここまで
 
-Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
-    ->middleware('guest')
-    ->name('password.email');
+    // ダッシュボード表示に関するルーティング
+    // 在職の従業員の表示
+    Route::get('/dashboard', [AdminController::class, 'index'])
+        ->name('dashboard');
+    // ダッシュボード表示に関するルーティングここまで
+
+    // 従業員新規登録に関するルーティング
+    // 新規登録画面の表示
+    Route::get('/create', [AdminController::class, 'create'])
+        ->name('emplo_create');
+
+    // 新規登録処理の実行
+    Route::post('/store', [AdminController::class, 'store'])
+        ->name('emplo_store');
+    // 従業員新規登録に関するルーティングここまで
+
+    // 従業員の詳細画面に関するルーティング
+    // 選択した従業員の表示
+    Route::get('/detail', [AdminController::class, 'show'])
+        ->name('emplo_details');
+
+    Route::post('/detail', [AdminController::class, 'show'])
+        ->name('emplo_details');
+
+    // 従業員の登録情報更新の実行
+    Route::post('/update', [AdminController::class, 'update'])
+        ->name('emplo_update');
+    // 従業員の詳細画面に関するルーティングここまで
+
+    // 退職処理に関するルーティング
+    // 退職確認画面の表示
+    Route::get('/detail/delete', [AdminController::class, 'destroy_check'])
+        ->name('destroy_check');
+
+    //退職処理実行
+    Route::post('/detail/delete/action', [AdminController::class, 'destroy'])
+        ->name('destroy');
+    //退職処理に関するルーティングここまで
+
+    // 退職者一覧に関するルーティング
+    // 退職した従業員の表示
+    Route::get('/retirement', [AdminController::class, 'retirement'])
+        ->name('retirement');
+    // 退職者一覧に関するルーティングここまで
+
+    // 復職処理に関するルーティング
+    // 復職確認画面の表示
+    Route::get('/detail/retirement', [AdminController::class, 'reinstatement_check'])
+        ->name('reinstatement_check');
+
+    // 復職処理実行
+    Route::post('/detail/retirement/action', [AdminController::class, 'reinstatement_action'])
+        ->name('reinstatement_action');
+    // 復職処理に関するルーティングここまで
+
+    // 選択した従業員の勤怠一覧表示に関するルーティング
+    // 選択した従業員の勤怠一覧の表示
+    Route::post('/monthly', [AdminMonthlyController::class, 'index'])
+        ->name('monthly');
+
+    // 勤怠修正後に再度勤怠一覧画面へ遷移するための記載
+    Route::get('/monthly', [AdminMonthlyController::class, 'index'])
+        ->name('monthly');
+
+    // プルダウンで月度を変える処理
+    Route::post('/monthly/change', [AdminMonthlyController::class, 'store'])
+        ->name('monthly_change');
+
+    // 従業員の勤怠修正処理の実行
+    Route::post('monthly/update', [AdminMonthlyController::class, 'update'])
+        ->name('monthly.update');
+    // 選択した従業員の勤怠一覧表示に関するルーティングここまで
+
+    // 選択した従業員のパスワード変更に関するルーティング
+    // パスワード変更画面の表示
+    Route::get('/change_password', [AdminController::class, 'password_create'])
+        ->name('change_password');
+
+    // パスワード変更後に同じ画面へ遷移するための記載
+    Route::post('/change_password', [AdminController::class, 'password_create'])
+        ->name('change_password');
+
+    // パスワード変更処理の実行
+    Route::post('/reset-password', [AdminController::class, 'password_store'])
+        ->name('password.update');
+    // 選択した従業員のパスワード変更に関するルーティングここまで
+
+    // 就業規則に関するルーティング
+    // 就業規則(簡易版)の表示
+    Route::get('/advanced', [AdminController::class, 'advanced_show'])
+        ->name('advanced');
+    // 就業規則に関するルーティングここまで
+
+    // 管理者自身のパスワード変更に関するルーティング
+    // パスワード変更画面の表示
+    Route::get('/change_password', [NewPasswordController::class, 'create'])
+        ->name('change_password');
+
+    // パスワード変更処理の実行
+    Route::post('/reset-password', [NewPasswordController::class, 'store'])
+        ->name('password.update');
+    // 管理者自身のパスワード変更に関するルーティングここまで
+});
+
+
+
+// Route::get('/register', [RegisteredUserController::class, 'create'])
+//     ->middleware('guest')
+//     ->name('register');
+
+// Route::post('/register', [RegisteredUserController::class, 'store'])
+//     ->middleware('guest');
+
+// Route::get('/forgot-password', [PasswordResetLinkController::class, 'create'])
+//     ->middleware('guest')
+//     ->name('password.request');
+
+// Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
+//     ->middleware('guest')
+//     ->name('password.email');
 
 // Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])
 //     ->middleware('guest')
@@ -62,108 +167,21 @@ Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
 //     ->middleware('guest')
 //     ->name('password.update');
 
-Route::get('/verify-email', [EmailVerificationPromptController::class, '__invoke'])
-    ->middleware('auth:admin')
-    ->name('verification.notice');
+// Route::get('/verify-email', [EmailVerificationPromptController::class, '__invoke'])
+//     ->middleware('auth:admin')
+//     ->name('verification.notice');
 
-Route::get('/verify-email/{id}/{hash}', [VerifyEmailController::class, '__invoke'])
-    ->middleware(['auth:admin', 'signed', 'throttle:6,1'])
-    ->name('verification.verify');
+// Route::get('/verify-email/{id}/{hash}', [VerifyEmailController::class, '__invoke'])
+//     ->middleware(['auth:admin', 'signed', 'throttle:6,1'])
+//     ->name('verification.verify');
 
-Route::post('/email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
-    ->middleware(['auth:admin', 'throttle:6,1'])
-    ->name('verification.send');
+// Route::post('/email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
+//     ->middleware(['auth:admin', 'throttle:6,1'])
+//     ->name('verification.send');
 
-Route::get('/confirm-password', [ConfirmablePasswordController::class, 'show'])
-    ->middleware('auth:admin')
-    ->name('password.confirm');
+// Route::get('/confirm-password', [ConfirmablePasswordController::class, 'show'])
+//     ->middleware('auth:admin')
+//     ->name('password.confirm');
 
-Route::post('/confirm-password', [ConfirmablePasswordController::class, 'store'])
-    ->middleware('auth:admin');
-
-Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])
-    ->middleware('auth:admin')
-    ->name('logout');
-
-
-//従業員一覧へのroute
-Route::get('/detail', [AdminController::class, 'show'])
-    ->middleware(['auth:admin'])
-    ->name('emplo_details');
-Route::post('/detail', [AdminController::class, 'show'])
-    ->middleware(['auth:admin'])
-    ->name('emplo_details');
-
-// 退職者一覧へのroute
-Route::get('/retirement', [AdminController::class, 'retirement'])
-    ->middleware(['auth:admin'])
-    ->name('retirement');
-
-//復職画面へのroute
-Route::get('/detail/retirement', [AdminController::class, 'reinstatement_check'])
-    ->middleware(['auth:admin'])
-    ->name('reinstatement_check');
-
-//復職処理実行のroute
-Route::post('/detail/retirement/action', [AdminController::class, 'reinstatement_action'])
-    ->middleware(['auth:admin'])
-    ->name('reinstatement_action');
-
-//退職画面へのroute
-Route::get('/detail/delete', [AdminController::class, 'destroy_check'])
-    ->middleware(['auth:admin'])
-    ->name('destroy_check');
-
-//退職処理実行のroute
-Route::post('/detail/delete/action', [AdminController::class, 'destroy'])
-    ->middleware(['auth:admin'])
-    ->name('destroy');
-
-// 従業員新規登録へのroute
-Route::get('/create', [AdminController::class, 'create'])
-    ->middleware(['auth:admin'])
-    ->name('emplo_create');
-
-Route::post('/store', [AdminController::class, 'store'])
-    ->middleware(['auth:admin'])
-    ->name('emplo_store');
-
-// 従業員の登録情報更新のroute
-Route::post('/update', [AdminController::class, 'update'])
-    ->middleware(['auth:admin'])
-    ->name('emplo_update');
-
-// 詳細設定へのroutei
-Route::get('/advanced', [AdminController::class, 'advanced_show'])
-    ->middleware(['auth:admin'])
-    ->name('advanced');
-
-//部下の勤怠一覧へのroute
-Route::post('/monthly', [AdminMonthlyController::class, 'index'])
-    ->name('monthly');
-Route::get('/monthly', [AdminMonthlyController::class, 'index'])
-    ->name('monthly');
-
-//月度を変えたときのroute
-Route::post('/monthly/change', [AdminMonthlyController::class, 'store'])
-    ->name('monthly_change');
-Route::get('/monthly/change', [AdminMonthlyController::class, 'store'])
-    ->name('monthly_change');
-
-//部下の勤怠修正のroute
-Route::post('monthly/update', [AdminMonthlyController::class, 'update'])
-    ->name('monthly.update');
-
-//従業員のパスワード変更へのroute
-Route::get('/change_password', [AdminController::class, 'password_create'])
-    ->name('change_password');
-Route::post('/change_password', [AdminController::class, 'password_create'])
-    ->name('change_password');
-Route::post('/reset-password', [AdminController::class, 'password_store'])
-    ->name('password.update');
-
-//パスワード変更
-Route::get('/change_password', [NewPasswordController::class, 'create'])
-    ->name('change_password');
-Route::post('/reset-password', [NewPasswordController::class, 'store'])
-    ->name('password.update');
+// Route::post('/confirm-password', [ConfirmablePasswordController::class, 'store'])
+//     ->middleware('auth:admin');

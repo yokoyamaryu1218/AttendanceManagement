@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Libraries\php\Domain\Format;
+use App\Libraries\php\Domain\Common;
 use App\Libraries\php\Domain\DataBase;
 use App\Libraries\php\Domain\Time;
 
@@ -31,8 +31,8 @@ class AttendanceContoroller extends Controller
     {
         // 今日の日付 フォーマット
         $today = date('Y-m-j');
-        $format = new Format();
-        $ym = $format->to_monthly();
+        $format = new Common();
+        $ym = $format->top_monthly();
 
         // 参照先：https://on-ze.com/archives/1838
         $time = intval(date('H'));
@@ -176,7 +176,7 @@ class AttendanceContoroller extends Controller
     {
         // リクエストの取得
         $emplo_id = Auth::guard('employee')->user()->emplo_id;
-        $daily = nl2br($request->daily);
+        $daily = $request->daily;
         $today = date('Y-m-j');
 
         // 重複クリック対策

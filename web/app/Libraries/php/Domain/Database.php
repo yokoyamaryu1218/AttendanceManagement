@@ -12,6 +12,17 @@ use Illuminate\Support\Facades\DB;
 
 class Database
 {
+    // データベースに接続するクラス
+    public static function connect_db()
+    {
+        $dsn = 'mysql:dbname=attendance_management;host=localhost;charset=utf8';
+        $user = 'root';
+        $password = '';
+        $pdo = new PDO($dsn, $user, $password);
+        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        return $pdo;
+    }
+
     /**
      *
      * @param $client 顧客ID
@@ -113,9 +124,7 @@ class Database
      */
     public static function getMonthly($emplo_id, $ym)
     {
-
-        $connect = new Format();
-        $pdo = $connect->connect_db();
+        $pdo = self::connect_db();
 
         $sql = "SELECT wk1.date, wk1.emplo_id, wk1.start_time, wk1.closing_time,
         wk1.rest_time, wk1.achievement_time, wk1.over_time,dl1.daily FROM works AS wk1
@@ -173,7 +182,7 @@ class Database
      *
      * @return  array $data
      */
-    public static function getOverTime($cloumns_name,$emplo_id)
+    public static function getOverTime($cloumns_name, $emplo_id)
     {
         $data = DB::select('SELECT ' . $cloumns_name . ' FROM over_time WHERE emplo_id =?', [$emplo_id]);
 
@@ -206,8 +215,7 @@ class Database
      */
     public static function checkDate($emplo_id, $target_date)
     {
-        $connect = new Format();
-        $pdo = $connect->connect_db();
+        $pdo = self::connect_db();
 
         $sql = "SELECT id FROM works WHERE emplo_id = :emplo_id AND date = :date LIMIT 1";
         $stmt = $pdo->prepare($sql);

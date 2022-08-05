@@ -32,7 +32,7 @@
                 </label>
                 <!-- 月度プルダウン部分ここまで -->
             </div>
-            <!-- ここから月別勤怠一覧部分 -->
+
             <div class="container px-5 py-4 mx-auto">
                 <div class="lg:w-2/3 w-full mx-auto overflow-auto">
                     <!-- フラッシュメッセージの表示 -->
@@ -46,7 +46,8 @@
                         {{ session('status') }}
                     </div>
                     @endif
-                    
+
+                    <!-- ここから月別勤怠一覧部分 -->
                     @include('menu.monthly.daily2')
                 </div>
             </div>
@@ -54,7 +55,6 @@
             <!-- ここからモーダル -->
             @include('menu.admin.daily-change')
             <!-- モーダルここまで -->
-
         </section>
     </body>
 </x-app-layout>

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Libraries\php\Domain\DataBase;
-use App\Libraries\php\Domain\Format;
+use App\Libraries\php\Domain\Common;
 use App\Libraries\php\Domain\Time;
 
 // 勤怠一覧のコントローラー
@@ -32,20 +32,30 @@ class MonthlyController extends Controller
     {
         // 従業員のIDの取得
         if ($request->subord_id) {
+            // 部下一覧からのアクセスの場合、部下のIDを取得
             $emplo_id = $request->subord_id;
+        } elseif ($request->emplo_id) {
+            // 勤怠修正をした場合、修正した社員のIDを取得
+            $emplo_id = $request->emplo_id;
         } else {
+            //　自分自身の勤怠を見る場合、自分のIDを取得
             $emplo_id = Auth::guard('employee')->user()->emplo_id;
         };
 
         // 従業員の名前を取得
         if ($request->subord_name) {
-            $emplo_name = $request->subord_name;
+            // 部下一覧からのアクセスの場合、部下の名前を取得
+            $name = $request->subord_name;
+        } elseif ($request->name) {
+            // 勤怠修正をした場合、修正した社員の名前を取得
+            $name = $request->name;
         } else {
-            $emplo_name = Auth::guard('employee')->user()->name;
+            //　自分自身の勤怠を見る場合、自分の名前を取得
+            $name = Auth::guard('employee')->user()->name;
         };
 
         // 今月の年月を表示
-        $format = new Format();
+        $format = new Common();
         $ym = $format->to_monthly();
         // 月の日数を取得
         $day_count = date('t', strtotime($ym));
@@ -56,11 +66,13 @@ class MonthlyController extends Controller
             'monthly_data',
             'day_count',
             'emplo_id',
-            'emplo_name',
+            'name',
             'ym',
             'format'
         ));
     }
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -82,7 +94,7 @@ class MonthlyController extends Controller
     {
         // 従業員情報の取得
         $emplo_id = $request->emplo_id;
-        $emplo_name = $request->emplo_name;
+        $name = $request->name;
 
         // プルダウンで選んだ年月と月数の取得
         if (isset($request->monthly_change)) {
@@ -96,12 +108,12 @@ class MonthlyController extends Controller
         // 勤怠一覧の取得
         $monthly_data = DataBase::getMonthly($emplo_id, $ym);
         // フォーマットの取得
-        $format = new Format();
+        $format = new Common();
 
         return view('menu.monthly.monthly', compact(
             'monthly_data',
             'day_count',
-            'emplo_name',
+            'name',
             'emplo_id',
             'ym',
             'format'
@@ -140,6 +152,7 @@ class MonthlyController extends Controller
     public function update(Request $request)
     {
         // リクエスト処理の取得
+        $name = $request->modal_name;
         $emplo_id = $request->modal_id;
         $target_date = $request->modal_day;
         $start_time = $request->modal_start_time;
@@ -155,14 +168,14 @@ class MonthlyController extends Controller
 
         if ($check_date) {
             // 対象日にデータがある場合は、更新処理を行う
-            Time::updateTime($emplo_id, $start_time, $closing_time, $target_date, $daily, $daily_data);
+            Time::updateTime($emplo_id, $start_time, $closing_time, $target_date);
             TIme::Daily($emplo_id, $target_date, $daily, $daily_data);
-            return redirect()->route('employee.subord')->with('status', '変更しました');
+            return redirect()->route('employee.monthly', compact('emplo_id', 'name',))->with('status', '変更しました');
         } else {
             // 対象日にデータがない場合は、新規登録処理を行う
-            Time::insertTime($emplo_id, $start_time, $closing_time, $target_date, $daily, $daily_data);
-            TIme::Daily($emplo_id, $target_date, $daily, $daily_data);
-            return redirect()->route('employee.subord')->with('status', '新規登録しました');
+            Time::insertTime($emplo_id, $start_time, $closing_time, $target_date);
+            Time::Daily($emplo_id, $target_date, $daily, $daily_data);
+            return redirect()->route('employee.monthly', compact('emplo_id', 'name',))->with('status', '新規登録しました');
         }
     }
 

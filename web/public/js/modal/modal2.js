@@ -10,6 +10,8 @@ inputModal.addEventListener("show.bs.modal", function (event) {
     var start = button.getAttribute("data-bs-start");
     var closing = button.getAttribute("data-bs-closing");
     var daily = button.getAttribute("data-bs-daily");
+    /* タイトル部分に日付を表示するため取得 */
+    var month = button.getAttribute("data-bs-month");
 
     /* 取得したデータをモーダルの各欄に設定 */
     $("#modal_start_time").val(start);
@@ -21,6 +23,6 @@ inputModal.addEventListener("show.bs.modal", function (event) {
 
     // 日付をタイトルとして表示
     var modalTitle = inputModal.querySelector('.modal-title')
-    modalTitle.textContent = `${day}`
+    modalTitle.textContent = `${month}`
 
 });
