@@ -35,6 +35,9 @@
 
             <div class="container px-5 py-4 mx-auto">
                 <div class="lg:w-2/3 w-full mx-auto overflow-auto">
+                    <div class="text-right mb-1">
+                        <input class="btn btn-warning" type="button" value="戻る" onclick="window.history.back()">
+                    </div>
                     <!-- フラッシュメッセージの表示 -->
                     @if (session('warning'))
                     <div class="alert alert-warning">

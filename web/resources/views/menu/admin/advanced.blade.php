@@ -26,7 +26,7 @@
                 </div>
 
                 <div class="flex justify-center">
-                    <input class="btn btn-warning my-0" type="button" value="戻る" onclick="location.href='./';">
+                    <input class="btn btn-warning my-0" type="button" value="戻る" onclick="window.history.back()">
                 </div>
             </form>
         </div>
