@@ -1,4 +1,4 @@
-<!-- 勤怠一覧のblade -->
+<!-- employee側　勤怠一覧のblade -->
 <x-app-layout>
     <x-slot name="header">
     </x-slot>
@@ -46,16 +46,19 @@
                         {{ session('status') }}
                     </div>
                     @endif
+                    <!-- フラッシュメッセージここまで -->
 
                     <!-- ここから月別勤怠一覧部分 -->
                     @include('menu.attendance.attend-lists01')
+                    <!-- 月別勤怠一覧部分ここまで -->
                 </div>
             </div>
-            <!-- 月別勤怠一覧部分ここまで -->
             <!-- ここからモーダル -->
+            <!-- 自分自身の勤怠一覧の場合、日報表示のモーダルを表示 -->
             @if (Auth::guard('employee')->user()->emplo_id == $emplo_id)
             @include('menu.modal.modal01')
             @else
+            <!-- 部下の勤怠一覧の場合、勤怠修正のモーダル表示 -->
             @include('menu.modal.modal03')
             @endif
             <!-- モーダルここまで -->

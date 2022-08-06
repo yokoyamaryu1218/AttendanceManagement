@@ -1,8 +1,9 @@
-<!-- 日報のblade -->
+<!-- employee側 日報のblade -->
 <section class="text-gray-600 body-font relative">
     <div class="container px-5 py-24 mx-auto ">
         <div class="lg:w-1/2 md:w-2/3 mx-auto">
             <div class="flex flex-wrap -m-2">
+                <!-- 当日の日報のデータが未登録の場合は新規登録し、すでにデータがある場合は更新処理を行う -->
                 <form method="POST" action="@if($daily_data == NULL){{ route('employee.daily.store')}}@else{{ route('employee.daily.update')}}@endif" name="daily_change">
                     @csrf
                     <div class="p-2 w-full">

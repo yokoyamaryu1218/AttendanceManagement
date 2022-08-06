@@ -1,5 +1,5 @@
 <!-- https://tailwindcomponents.com/component/input-field -->
-<!-- 退職確認画面のblade -->
+<!-- admin側　退職確認画面のblade -->
 <script src="{{ asset('js/admin/search.js') }}" defer></script>
 
 <x-app-layout>
@@ -14,14 +14,17 @@
                 以下の従業員の退職処理を行います。よろしいでしょうか。
             </div>
             <form method="POST" action="{{ route('admin.destroy')}}">
+            <!-- 復職・退職確認画面に出す従業員詳細画面のbladeへ -->
             @include('menu.emplo_detail.emplo_detail07')
             </form>
         </div>
         @endforeach
+        <!-- トグル用のJava -->
         <script>
             function clickBtn7() {
                 document.getElementById("subord_authority").value = "1";
             }
         </script>
+        <!-- トグル用のJavaここまで -->
     </body>
 </x-app-layout>

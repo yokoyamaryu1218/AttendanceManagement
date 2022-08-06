@@ -1,4 +1,4 @@
-<!-- 勤怠一覧のblade -->
+<!-- admin側　勤怠一覧のblade -->
 <x-app-layout>
     <x-slot name="header">
     </x-slot>
@@ -49,12 +49,14 @@
                         {{ session('status') }}
                     </div>
                     @endif
+                    <!-- フラッシュメッセージここまで -->
 
                     <!-- ここから月別勤怠一覧部分 -->
                     @include('menu.attendance.attend-lists02')
+                    <!-- 月別勤怠一覧部分ここまで -->
                 </div>
             </div>
-            <!-- 月別勤怠一覧部分ここまで -->
+
             <!-- ここからモーダル -->
             @include('menu.modal.modal02')
             <!-- モーダルここまで -->

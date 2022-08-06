@@ -1,4 +1,4 @@
-<!-- 従業員の一覧を表示する共通blade -->
+<!-- admin側 従業員の一覧を表示する共通用blade -->
 <table class="table table-striped table-hover table-sm my-2">
     <thead>
         <tr>

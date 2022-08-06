@@ -1,4 +1,4 @@
-<!-- 部下一覧のblade -->
+<!-- employee側 部下一覧のblade -->
 <x-app-layout>
     <x-slot name="header">
     </x-slot>
@@ -23,8 +23,11 @@
                         <tbody>
                             @foreach($subord_data as $subord)
                             <tr>
+                                <!-- 社員番号 -->
                                 <th class="fix-col">{{$subord->subord_id}}</td>
+                                <!-- 従業員名 -->
                                 <td class="fix-col">{{$subord->subord_name}}</td>
+                                <!-- 勤怠一覧 -->
                                 <td class="fix-col">
                                     <form method="POST" action="{{ route('employee.subord_monthly')}}">
                                         @csrf
@@ -33,6 +36,7 @@
                                         <button class="input-group-text flex mx-auto text-white btn btn-success border-0 py-2 px-8 focus:outline-none rounded text-lg">開く</button>
                                     </form>
                                 </td>
+                                <!-- パスワード変更 -->
                                 <td class="fix-col">
                                     <form method="POST" action="{{ route('employee.subord.change_password' )}}">
                                         @csrf
