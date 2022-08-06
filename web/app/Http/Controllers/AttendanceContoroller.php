@@ -8,7 +8,7 @@ use App\Libraries\php\Domain\Common;
 use App\Libraries\php\Domain\DataBase;
 use App\Libraries\php\Domain\Time;
 
-// ホーム画面のコントローラー
+// 従業員側 ホーム画面のコントローラー
 class AttendanceContoroller extends Controller
 {
 
@@ -197,5 +197,23 @@ class AttendanceContoroller extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function subord_index()
+    {
+        // 自分自身の配下の部下一覧を取得する
+        if (Auth::guard('employee')->user()->subord_authority == "1") {
+            $emplo_id = Auth::guard('employee')->user()->emplo_id;
+            $subord_data = DataBase::getSubord($emplo_id);
+
+            return view('menu.subord.subord_lists', compact('subord_data'));
+        }
+        // 部下がいない状態で部下一覧の画面に遷移しようとした場合、TOPに遷移する
+        return redirect('/');
     }
 }

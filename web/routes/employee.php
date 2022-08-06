@@ -10,8 +10,8 @@ use App\Http\Controllers\Employee\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Employee\Auth\RegisteredUserController;
 use App\Http\Controllers\Employee\Auth\VerifyEmailController;
 use App\Http\Controllers\AttendanceContoroller;
-use App\Http\Controllers\SubordController;
 use App\Http\Controllers\MonthlyController;
+use App\Http\Controllers\PasswordChangeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -74,7 +74,7 @@ Route::group(['middleware' => 'auth:employee'], function () {
 
     // 部下の勤怠一覧表示やパスワード変更に関するルーティング
     // 部下一覧を表示
-    Route::get('/subord', [SubordController::class, 'index'])
+    Route::get('/subord', [AttendanceContoroller::class, 'subord_index'])
         ->name('subord');
 
     // 部下の勤怠一覧を表示
@@ -86,17 +86,16 @@ Route::group(['middleware' => 'auth:employee'], function () {
         ->name('subord_monthly.update');
 
     // 部下のパスワード変更画面の表示
-    Route::get('subord/change_password', [SubordController::class, 'create'])
+    Route::get('subord/change_password', [PasswordChangeController::class, 'index'])
         ->name('subord.change_password');
 
     // パスワード変更後に同じ画面へ遷移するための記載
-    Route::post('subord/change_password', [SubordController::class, 'create'])
+    Route::post('subord/change_password', [PasswordChangeController::class, 'index'])
         ->name('subord.change_password');
 
     // パスワード変更処理の実行
-    Route::post('subord/reset-password', [SubordController::class, 'store'])
+    Route::post('subord/reset-password', [PasswordChangeController::class, 'store'])
         ->name('subord.password.update');
-    // 部下の勤怠一覧表示やパスワード変更に関するルーティングここまで
 
     // 自分自身のパスワード変更に関するルーティング
     // パスワード変更画面の表示

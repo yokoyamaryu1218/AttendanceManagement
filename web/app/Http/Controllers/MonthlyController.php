@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Libraries\php\Domain\DataBase;
@@ -14,45 +13,45 @@ use App\Libraries\php\Domain\Time;
 class MonthlyController extends Controller
 {
     /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth:employee');
-    }
-
-    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
-        // 従業員のIDの取得
-        if ($request->subord_id) {
-            // 部下一覧からのアクセスの場合、部下のIDを取得
-            $emplo_id = $request->subord_id;
-        } elseif ($request->emplo_id) {
-            // 勤怠修正をした場合、修正した社員のIDを取得
+        if (Auth::guard('employee')->check()) {
+            // 従業員のIDの取得
+            if ($request->subord_id) {
+                // 部下一覧からのアクセスの場合、部下のIDを取得
+                $emplo_id = $request->subord_id;
+            } elseif ($request->emplo_id) {
+                // 勤怠修正をした場合、修正した社員のIDを取得
+                $emplo_id = $request->emplo_id;
+            } else {
+                //　自分自身の勤怠を見る場合、自分のIDを取得
+                $emplo_id = Auth::guard('employee')->user()->emplo_id;
+            };
+        } elseif (Auth::guard('admin')->check()) {
+            // 従業員情報の取得
             $emplo_id = $request->emplo_id;
-        } else {
-            //　自分自身の勤怠を見る場合、自分のIDを取得
-            $emplo_id = Auth::guard('employee')->user()->emplo_id;
-        };
+        }
 
-        // 従業員の名前を取得
-        if ($request->subord_name) {
-            // 部下一覧からのアクセスの場合、部下の名前を取得
-            $name = $request->subord_name;
-        } elseif ($request->name) {
-            // 勤怠修正をした場合、修正した社員の名前を取得
+        if (Auth::guard('employee')->check()) {
+            // 従業員の名前を取得
+            if ($request->subord_name) {
+                // 部下一覧からのアクセスの場合、部下の名前を取得
+                $name = $request->subord_name;
+            } elseif ($request->name) {
+                // 勤怠修正をした場合、修正した社員の名前を取得
+                $name = $request->name;
+            } else {
+                //　自分自身の勤怠を見る場合、自分の名前を取得
+                $name = Auth::guard('employee')->user()->name;
+            };
+        } elseif (Auth::guard('admin')->check()) {
+            //従業員の名前を取得
             $name = $request->name;
-        } else {
-            //　自分自身の勤怠を見る場合、自分の名前を取得
-            $name = Auth::guard('employee')->user()->name;
-        };
+        }
 
         // 今月の年月を表示
         $format = new Common();
@@ -62,14 +61,25 @@ class MonthlyController extends Controller
         // 今月の従業員の勤怠一覧を取得
         $monthly_data = DataBase::getMonthly($emplo_id, $ym);
 
-        return view('menu.attendance.attendance01', compact(
-            'monthly_data',
-            'day_count',
-            'emplo_id',
-            'name',
-            'ym',
-            'format'
-        ));
+        if (Auth::guard('employee')->check()) {
+            return view('menu.attendance.attendance01', compact(
+                'monthly_data',
+                'day_count',
+                'emplo_id',
+                'name',
+                'ym',
+                'format'
+            ));
+        } elseif (Auth::guard('admin')->check()) {
+            return view('menu.attendance.attendance02', compact(
+                'monthly_data',
+                'day_count',
+                'emplo_id',
+                'name',
+                'ym',
+                'format'
+            ));
+        }
     }
 
 
@@ -110,14 +120,25 @@ class MonthlyController extends Controller
         // フォーマットの取得
         $format = new Common();
 
-        return view('menu.attendance.attendance01', compact(
-            'monthly_data',
-            'day_count',
-            'name',
-            'emplo_id',
-            'ym',
-            'format'
-        ));
+        if (Auth::guard('employee')->check()) {
+            return view('menu.attendance.attendance01', compact(
+                'monthly_data',
+                'day_count',
+                'name',
+                'emplo_id',
+                'ym',
+                'format'
+            ));
+        } elseif (Auth::guard('admin')->check()) {
+            return view('menu.attendance.attendance02', compact(
+                'monthly_data',
+                'day_count',
+                'emplo_id',
+                'name',
+                'ym',
+                'format'
+            ));
+        }
     }
 
     /**
@@ -170,12 +191,20 @@ class MonthlyController extends Controller
             // 対象日にデータがある場合は、更新処理を行う
             Time::updateTime($emplo_id, $start_time, $closing_time, $target_date);
             TIme::Daily($emplo_id, $target_date, $daily, $daily_data);
-            return redirect()->route('employee.monthly', compact('emplo_id', 'name',))->with('status', '変更しました');
+            if (Auth::guard('employee')->check()) {
+                return redirect()->route('employee.monthly', compact('emplo_id', 'name',))->with('status', '変更しました');
+            } elseif (Auth::guard('admin')->check()) {
+                return redirect()->route('admin.monthly', compact('emplo_id', 'name',))->with('status', '変更しました');
+            }
         } else {
             // 対象日にデータがない場合は、新規登録処理を行う
             Time::insertTime($emplo_id, $start_time, $closing_time, $target_date);
             Time::Daily($emplo_id, $target_date, $daily, $daily_data);
-            return redirect()->route('employee.monthly', compact('emplo_id', 'name',))->with('status', '新規登録しました');
+            if (Auth::guard('employee')->check()) {
+                return redirect()->route('employee.monthly', compact('emplo_id', 'name',))->with('status', '新規登録しました');
+            } elseif (Auth::guard('admin')->check()) {
+                return redirect()->route('admin.monthly', compact('emplo_id', 'name',))->with('status', '新規登録しました');
+            }
         }
     }
 

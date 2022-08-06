@@ -10,7 +10,8 @@ use App\Http\Controllers\Admin\Auth\RegisteredUserController;
 use App\Http\Controllers\Admin\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\AdminMonthlyController;
+use App\Http\Controllers\MonthlyController;
+use App\Http\Controllers\PasswordChangeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -95,33 +96,33 @@ Route::group(['middleware' => 'auth:admin'], function () {
 
     // 選択した従業員の勤怠一覧表示に関するルーティング
     // 選択した従業員の勤怠一覧の表示
-    Route::post('/monthly', [AdminMonthlyController::class, 'index'])
+    Route::post('/monthly', [MonthlyController::class, 'index'])
         ->name('monthly');
 
     // 勤怠修正後に再度勤怠一覧画面へ遷移するための記載
-    Route::get('/monthly', [AdminMonthlyController::class, 'index'])
+    Route::get('/monthly', [MonthlyController::class, 'index'])
         ->name('monthly');
 
     // プルダウンで月度を変える処理
-    Route::post('/monthly/change', [AdminMonthlyController::class, 'store'])
+    Route::post('/monthly/change', [MonthlyController::class, 'store'])
         ->name('monthly_change');
 
     // 従業員の勤怠修正処理の実行
-    Route::post('monthly/update', [AdminMonthlyController::class, 'update'])
+    Route::post('monthly/update', [MonthlyController::class, 'update'])
         ->name('monthly.update');
     // 選択した従業員の勤怠一覧表示に関するルーティングここまで
 
     // 選択した従業員のパスワード変更に関するルーティング
     // パスワード変更画面の表示
-    Route::get('/emplo/change_password', [AdminController::class, 'password_create'])
+    Route::get('/emplo/change_password', [PasswordChangeController::class, 'index'])
         ->name('emplo_change_password');
 
     // パスワード変更後に同じ画面へ遷移するための記載
-    Route::post('/emplo/change_password', [AdminController::class, 'password_create'])
+    Route::post('/emplo/change_password', [PasswordChangeController::class, 'index'])
         ->name('emplo_change_password');
 
     // パスワード変更処理の実行
-    Route::post('/emplo/reset-password', [AdminController::class, 'password_store'])
+    Route::post('/emplo/reset-password', [PasswordChangeController::class, 'store'])
         ->name('emplo_password.update');
     // 選択した従業員のパスワード変更に関するルーティングここまで
 
