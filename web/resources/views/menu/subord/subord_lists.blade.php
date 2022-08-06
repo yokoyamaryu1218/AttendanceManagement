@@ -40,8 +40,8 @@
                                 <td class="fix-col">
                                     <form method="POST" action="{{ route('employee.subord.change_password' )}}">
                                         @csrf
-                                        <input type="hidden" class="form-control" id="subord_id" name="subord_id" value="{{$subord->subord_id}}">
-                                        <input type="hidden" class="form-control" id="subord_name" name="subord_name" value="{{$subord->subord_name}}">
+                                        <input type="hidden" class="form-control" id="emplo_id" name="emplo_id" value="{{$subord->subord_id}}">
+                                        <input type="hidden" class="form-control" id="name" name="name" value="{{$subord->subord_name}}">
                                         <button class="input-group-text flex mx-auto text-white btn btn-success border-0 py-2 px-8 focus:outline-none rounded text-lg">開く</button>
                                     </form>
                                 </td>

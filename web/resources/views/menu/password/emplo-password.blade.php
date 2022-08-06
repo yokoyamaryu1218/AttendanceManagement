@@ -1,8 +1,8 @@
-<!-- employee側 パスワード変更画面のblade -->
+<!-- admin側 パスワード変更画面のblade -->
 <x-app-layout>
     <x-slot name="header">
     </x-slot>
-    <form method="POST" action="{{ route('admin.password.update') }}">
+    <form method="POST" action="{{ route('admin.emplo_password.update') }}">
         @csrf
         <!-- パスワード入力画面を出す共通のbladeへ -->
         @include('menu.password.common')

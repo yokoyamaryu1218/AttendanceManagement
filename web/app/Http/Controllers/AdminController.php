@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Libraries\php\Domain\DataBase;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
@@ -206,7 +207,7 @@ class AdminController extends Controller
         $employee_lists = DataBase::SelectEmployee($emplo_id, $retirement_authority);
 
         //リダイレクト
-        return view('menu.emplo_detail.emplo_detail05', compact(
+        return view('menu.emplo_detail.emplo_detail06', compact(
             'employee_lists',
         ));
     }
@@ -286,6 +287,8 @@ class AdminController extends Controller
         $emplo_id = $request->emplo_id;
         $name = $request->name;
 
+        dd(Auth::guard('admin')->user());
+
         return view('menu.password.emplo-password', compact(
             'emplo_id',
             'name',
@@ -315,7 +318,7 @@ class AdminController extends Controller
 
         // 新しいパスワードを確認
         if (!password_verify($request->password, password_hash($password_confirmation, PASSWORD_DEFAULT))) {
-            return redirect()->route('admin.change_password', compact(
+            return redirect()->route('admin.emplo_change_password', compact(
                 'emplo_id',
                 'name',
             ))->with('warning', '新しいパスワードが合致しません。');
@@ -327,7 +330,7 @@ class AdminController extends Controller
         // パスワードを保存
         Database::subord_updatepassword($password, $emplo_id);
 
-        return redirect()->route('admin.change_password', compact(
+        return redirect()->route('admin.emplo_change_password', compact(
             'emplo_id',
             'name',
         ))->with('status', 'パスワードを変更しました');

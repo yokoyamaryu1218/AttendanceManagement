@@ -113,16 +113,16 @@ Route::group(['middleware' => 'auth:admin'], function () {
 
     // 選択した従業員のパスワード変更に関するルーティング
     // パスワード変更画面の表示
-    Route::get('/change_password', [AdminController::class, 'password_create'])
-        ->name('change_password');
+    Route::get('/emplo/change_password', [AdminController::class, 'password_create'])
+        ->name('emplo_change_password');
 
     // パスワード変更後に同じ画面へ遷移するための記載
-    Route::post('/change_password', [AdminController::class, 'password_create'])
-        ->name('change_password');
+    Route::post('/emplo/change_password', [AdminController::class, 'password_create'])
+        ->name('emplo_change_password');
 
     // パスワード変更処理の実行
-    Route::post('/reset-password', [AdminController::class, 'password_store'])
-        ->name('password.update');
+    Route::post('/emplo/reset-password', [AdminController::class, 'password_store'])
+        ->name('emplo_password.update');
     // 選択した従業員のパスワード変更に関するルーティングここまで
 
     // 就業規則に関するルーティング

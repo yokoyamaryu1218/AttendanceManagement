@@ -47,12 +47,12 @@ class SubordController extends Controller
     public function create(Request $request)
     {
         // パスワードの変更を行う従業員情報の取得
-        $subord_id = $request->subord_id;
-        $subord_name = $request->subord_name;
-
+        $emplo_id = $request->emplo_id;
+        $name = $request->name;
+        dd(Auth::guard('employee')->user());
         return view('menu.password.subord-password', compact(
-            'subord_id',
-            'subord_name',
+            'emplo_id',
+            'name',
         ));
     }
 
@@ -72,16 +72,16 @@ class SubordController extends Controller
     public function store(Request $request)
     {
         // リクエストの取得
-        $subord_id = $request->subord_id;
-        $subord_name = $request->subord_name;
+        $emplo_id = $request->emplo_id;
+        $name = $request->name;
         $password = Hash::make($request->password);
         $password_confirmation = $request->password_confirmation;
 
         // 新しいパスワードを確認
         if (!password_verify($request->password, password_hash($password_confirmation, PASSWORD_DEFAULT))) {
             return redirect()->route('employee.subord.change_password', compact(
-                'subord_id',
-                'subord_name',
+                'emplo_id',
+                'name',
             ))->with('warning', '新しいパスワードが合致しません。');
         }
 
@@ -89,11 +89,11 @@ class SubordController extends Controller
         $this->validator($request->all())->validate();
 
         // パスワードを保存
-        Database::subord_updatepassword($password, $subord_id);
+        Database::subord_updatepassword($password, $emplo_id);
 
         return redirect()->route('employee.subord.change_password', compact(
-            'subord_id',
-            'subord_name',
+            'emplo_id',
+            'name',
         ))->with('status', 'パスワードを変更しました');
     }
 
