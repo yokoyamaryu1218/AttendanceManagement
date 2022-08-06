@@ -8,7 +8,7 @@
                     <button class="input-group-text flex mx-auto text-white btn btn-success border-0 py-2 px-8 focus:outline-none rounded text-lg">新規登録</button>
                 </form>
             </div>
-            @include('menu.admin.emplo_list')
+            @include('menu.emplo_detail.emplo_detail02')
             @if(!(empty($retirement_lists)))
             <div class="text-right">
                 <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('admin.retirement') }}">

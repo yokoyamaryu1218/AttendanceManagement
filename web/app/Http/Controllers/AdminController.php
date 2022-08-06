@@ -55,7 +55,7 @@ class AdminController extends Controller
         $retirement_authority = "1";
         $employee_lists = DataBase::getEmployeeAll($retirement_authority);
 
-        return view('menu.admin.retirement', compact(
+        return view('menu.emplo_detail.emplo_detail06', compact(
             'employee_lists',
         ));
     }
@@ -69,7 +69,7 @@ class AdminController extends Controller
     {
         // 管理者リストの取得
         $subord_authority_lists = DataBase::getSubordAuthority();
-        return view('menu.admin.store', compact(
+        return view('menu.emplo_detail.emplo_detail03', compact(
             'subord_authority_lists',
         ));
     }
@@ -127,7 +127,7 @@ class AdminController extends Controller
         // 管理者リストの取得
         $subord_authority_lists = DataBase::getSubordAuthority();
 
-        return view('menu.admin.detail', compact(
+        return view('menu.emplo_detail.emplo_detail01', compact(
             'employee_lists',
             'subord_authority_lists',
         ));
@@ -142,7 +142,7 @@ class AdminController extends Controller
     public function advanced_show()
     {
         // 就業規則の表示
-        return view('menu.admin.advanced');
+        return view('menu.another.advanced');
     }
 
     /**
@@ -206,7 +206,7 @@ class AdminController extends Controller
         $employee_lists = DataBase::SelectEmployee($emplo_id, $retirement_authority);
 
         //リダイレクト
-        return view('menu.admin.reinstatement', compact(
+        return view('menu.emplo_detail.emplo_detail05', compact(
             'employee_lists',
         ));
     }
@@ -247,7 +247,7 @@ class AdminController extends Controller
         $employee_lists = DataBase::SelectEmployee($emplo_id, $retirement_authority);
 
         //リダイレクト
-        return view('menu.admin.delete', compact(
+        return view('menu.emplo_detail.emplo_detail04', compact(
             'employee_lists',
         ));
     }
@@ -286,7 +286,7 @@ class AdminController extends Controller
         $emplo_id = $request->emplo_id;
         $name = $request->name;
 
-        return view('menu.admin.change-password', compact(
+        return view('menu.password.emplo-password', compact(
             'emplo_id',
             'name',
         ));

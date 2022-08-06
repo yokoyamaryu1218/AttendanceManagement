@@ -12,7 +12,7 @@
                     </div>
                     <!-- 従業員の一覧表示部分 -->
                     @if(!(empty($employee_lists)))
-                    @include('menu.admin.emplo_list')
+                    @include('menu.emplo_detail.emplo_detail02')
                     <div class="text-right">
                         <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('admin.dashboard') }}">
                             {{ __('従業員一覧へ') }}

@@ -62,7 +62,7 @@ class MonthlyController extends Controller
         // 今月の従業員の勤怠一覧を取得
         $monthly_data = DataBase::getMonthly($emplo_id, $ym);
 
-        return view('menu.monthly.monthly', compact(
+        return view('menu.attendance.attendance01', compact(
             'monthly_data',
             'day_count',
             'emplo_id',
@@ -110,7 +110,7 @@ class MonthlyController extends Controller
         // フォーマットの取得
         $format = new Common();
 
-        return view('menu.monthly.monthly', compact(
+        return view('menu.attendance.attendance01', compact(
             'monthly_data',
             'day_count',
             'name',

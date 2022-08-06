@@ -33,7 +33,7 @@ class SubordController extends Controller
             $emplo_id = Auth::guard('employee')->user()->emplo_id;
             $subord_data = DataBase::getSubord($emplo_id);
 
-            return view('menu.subord.subord', compact('subord_data'));
+            return view('menu.subord.subord_lists', compact('subord_data'));
         }
         // 部下がいない状態で部下一覧の画面に遷移しようとした場合、TOPに遷移する
         return redirect('/');
@@ -50,7 +50,7 @@ class SubordController extends Controller
         $subord_id = $request->subord_id;
         $subord_name = $request->subord_name;
 
-        return view('menu.subord.change-password', compact(
+        return view('menu.password.subord-password', compact(
             'subord_id',
             'subord_name',
         ));

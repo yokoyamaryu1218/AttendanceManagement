@@ -10,7 +10,7 @@
                 <!-- 月度プルダウン部分 -->
                 <label>
                     <!-- プルダウンの月度を変更すれば、下の一覧も変わる -->
-                    <form method="POST" action="{{ route('admin.monthly_change')}}" name="monthly_change">
+                    <form method="POST" action="{{ route('employee.monthly_change')}}" name="monthly_change">
                         @csrf
                         <input type="hidden" class="form-control" id="emplo_id" name="emplo_id" value="{{$emplo_id}}">
                         <input type="hidden" class="form-control" id="name" name="name" value="{{$name}}">
@@ -35,9 +35,6 @@
 
             <div class="container px-5 py-4 mx-auto">
                 <div class="lg:w-2/3 w-full mx-auto overflow-auto">
-                    <div class="text-right mb-1">
-                        <input class="btn btn-warning" type="button" value="戻る" onclick="window.history.back()">
-                    </div>
                     <!-- フラッシュメッセージの表示 -->
                     @if (session('warning'))
                     <div class="alert alert-warning">
@@ -51,13 +48,18 @@
                     @endif
 
                     <!-- ここから月別勤怠一覧部分 -->
-                    @include('menu.monthly.daily2')
+                    @include('menu.attendance.attend-lists01')
                 </div>
             </div>
             <!-- 月別勤怠一覧部分ここまで -->
             <!-- ここからモーダル -->
-            @include('menu.admin.daily-change')
+            @if (Auth::guard('employee')->user()->emplo_id == $emplo_id)
+            @include('menu.modal.modal01')
+            @else
+            @include('menu.modal.modal03')
+            @endif
             <!-- モーダルここまで -->
+
         </section>
     </body>
 </x-app-layout>

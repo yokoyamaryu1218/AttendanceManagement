@@ -4,7 +4,7 @@
 
     <body>
         <div>
-            @include('menu.admin.lists')
+            @include('menu.top.lists')
         </div>
     </body>
 </x-app-layout>
