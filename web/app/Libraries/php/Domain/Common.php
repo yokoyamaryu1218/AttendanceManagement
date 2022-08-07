@@ -10,9 +10,12 @@ class Common
 {
     /**
      * 曜日を表示する
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @param  int  $date 日付
+     * 
+     * @var array $week 曜日
+     * @var array $format_date 曜日を表示するフォーマットデータ
+     * 
+     * @return  array $format_date
      */
     function time_format_dw($date)
     {
@@ -28,10 +31,12 @@ class Common
 
     /**
      * 今月の年月を表示する
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */    function to_monthly()
+     * 
+     * @var string $ym 今月の年月
+     * 
+     * @return  array $ym
+     */
+    function to_monthly()
     {
         // https://codeforfun.jp/php-calendar/
         if (isset($_GET['ym'])) {
@@ -45,28 +50,18 @@ class Common
     }
 
     /**
-     * 今月の年月を表示する
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */    function top_monthly()
-    {
-        // https://codeforfun.jp/php-calendar/
-        if (isset($_GET['ym'])) {
-            $ym = $_GET['ym'];
-        } else {
-            // 今月の年月を表示
-            $ym = date('Y/m');
-        }
-
-        return $ym;
-    }
-
-    /**
      * 従業員情報を登録するクラス
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * 
+     * @param  int  $emplo_id 社員ID
+     * @param  int  $name 社員名
+     * @param  int  $password パスワード
+     * @param  int  $managment_emplo_id 上司社員ID
+     * @param  int  $subord_authority 部下参照権限
+     * @param  int  $retirement_authority 退職フラグ
+     * @param  int  $restraint_start_time 始業時間
+     * @param  int  $restraint_closing_time 終業時間
+     * @param  int $restraint_total_time 就業時間
+     * @var App\Libraries\php\Domain\DataBase
      */
     public static function insertEmployee($emplo_id, $name, $password, $management_emplo_id, $subord_authority, $retirement_authority, $restraint_start_time, $restraint_closing_time, $restraint_total_time)
     {
@@ -82,9 +77,16 @@ class Common
 
     /**
      * 従業員情報を更新するクラス
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     *      
+     * @param  int  $emplo_id 社員ID
+     * @param  int  $name 社員名
+     * @param  int  $managment_emplo_id 上司社員ID
+     * @param  int  $subord_authority 部下参照権限
+     * @param  int  $retirement_authority 退職フラグ
+     * @param  int  $restraint_start_time 始業時間
+     * @param  int  $restraint_closing_time 終業時間
+     * @param  int $restraint_total_time 就業時間
+     * @var App\Libraries\php\Domain\DataBase
      */
     public static function updateEmployee($emplo_id, $name, $management_emplo_id, $subord_authority, $restraint_start_time, $restraint_closing_time, $restraint_total_time)
     {

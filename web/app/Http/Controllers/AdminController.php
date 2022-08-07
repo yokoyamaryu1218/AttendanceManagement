@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
-use App\Libraries\php\Domain\DataBase;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Hash;
 use App\Models\Employee;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use App\Libraries\php\Domain\Common;
+use App\Libraries\php\Domain\DataBase;
 
 // 管理者画面用のコントローラー
 class AdminController extends Controller
@@ -25,9 +22,12 @@ class AdminController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * 在職の従業員の表示
      *
-     * @return \Illuminate\Http\Response
+     * @var App\Libraries\php\Domain\DataBase
+     * @var array $retirement_authority 退職フラグ
+     * @var array $employee_lists 在職者リスト
+     * @var array $retirement_lists 退職者リスト
      */
     public function index()
     {
@@ -46,9 +46,11 @@ class AdminController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * 退職した従業員の表示
      *
-     * @return \Illuminate\Http\Response
+     * @var App\Libraries\php\Domain\DataBase
+     * @var array $retirement_authority 退職フラグ
+     * @var array $retirement_lists 退職者リスト
      */
     public function retirement()
     {
@@ -62,24 +64,37 @@ class AdminController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * 従業員の新規登録画面の表示
      *
-     * @return \Illuminate\Http\Response
+     * @var App\Libraries\php\Domain\DataBase
+     * @var array $subord_authority_lists 管理者リスト
      */
     public function create()
     {
         // 管理者リストの取得
         $subord_authority_lists = DataBase::getSubordAuthority();
+
         return view('menu.emplo_detail.emplo_detail03', compact(
             'subord_authority_lists',
         ));
     }
 
     /**
-     * Store a newly created resource in storage.
+     * 従業員の登録
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request\Request $request
+     * 
+     * @var string $name　従業員名
+     * @var string $password パスワード
+     * @var string $management_emplo_id 上司社員ID
+     * @var string $restraint_start_time 始業時間
+     * @var string $restraint_closing_time 終業時間
+     * @var string $restraint_total_time 就業時間
+     * @var string $retirement_authority 退職フラグ 
+     * @var array $subord_authority 部下参照権限
+     * @var App\Libraries\php\Domain\DataBase
+     * @var string $emplo_id 社員ID
+     * @var App\Libraries\php\Domain\Common
      */
     public function store(Request $request)
     {
@@ -107,17 +122,31 @@ class AdminController extends Controller
         $request->session()->regenerateToken();
 
         // 情報を登録
-        Common::insertEmployee($emplo_id, $name, $password, $management_emplo_id, $subord_authority, $retirement_authority,
-        $restraint_start_time, $restraint_closing_time, $restraint_total_time);
+        Common::insertEmployee(
+            $emplo_id,
+            $name,
+            $password,
+            $management_emplo_id,
+            $subord_authority,
+            $retirement_authority,
+            $restraint_start_time,
+            $restraint_closing_time,
+            $restraint_total_time
+        );
 
         return redirect()->route('admin.dashboard');
     }
 
     /**
-     * Display the specified resource.
+     * 従業員の表示
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request\Request $request
+     * 
+     * @var string $emplo_id 社員ID
+     * @var string $retirement_authority 退職フラグ 
+     * @var App\Libraries\php\Domain\DataBase
+     * @var array $employee_lists 選択した従業員の詳細データ
+     * @var array $subord_authority_lists 管理者リスト
      */
     public function show(Request $request)
     {
@@ -125,6 +154,7 @@ class AdminController extends Controller
         $emplo_id = $request->emplo_id;
         $retirement_authority = $request->retirement_authority;
         $employee_lists = DataBase::SelectEmployee($emplo_id, $retirement_authority);
+
         // 管理者リストの取得
         $subord_authority_lists = DataBase::getSubordAuthority();
 
@@ -135,10 +165,8 @@ class AdminController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * 就業規則の表示
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
      */
     public function advanced_show()
     {
@@ -147,22 +175,18 @@ class AdminController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * 従業員情報の更新
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request\Request $request
+     * 
+     * @var string $emplo_id 社員ID
+     * @var string $name　従業員名
+     * @var string $management_emplo_id 上司社員ID
+     * @var string $restraint_start_time 始業時間
+     * @var string $restraint_closing_time 終業時間
+     * @var string $restraint_total_time 就業時間
+     * @var array $subord_authority 部下参照権限
+     * @var App\Libraries\php\Domain\Common
      */
     public function update(Request $request)
     {
@@ -187,17 +211,28 @@ class AdminController extends Controller
         $request->session()->regenerateToken();
 
         // 情報を更新
-        Common::updateEmployee($emplo_id, $name, $management_emplo_id, $subord_authority, $restraint_start_time,
-        $restraint_closing_time, $restraint_total_time);
+        Common::updateEmployee(
+            $emplo_id,
+            $name,
+            $management_emplo_id,
+            $subord_authority,
+            $restraint_start_time,
+            $restraint_closing_time,
+            $restraint_total_time
+        );
 
         return redirect()->route('admin.dashboard');
     }
 
     /**
-     * Remove the specified resource from storage.
+     * 復職処理を行う従業員の詳細取得
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request\Request $request
+     * 
+     * @var string $emplo_id 社員ID
+     * @var string $retirement_authority 退職フラグ 
+     * @var App\Libraries\php\Domain\DataBase
+     * @var array $employee_lists 選択した従業員の詳細データ
      */
     public function reinstatement_check(Request $request)
     {
@@ -213,10 +248,13 @@ class AdminController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * 復職処理の実行
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request\Request $request
+     * 
+     * @var string $emplo_id 社員ID
+     * @var array $retirement_authority 退職フラグ 
+     * @var App\Libraries\php\Domain\DataBase
      */
     public function reinstatement_action(Request $request)
     {
@@ -235,10 +273,14 @@ class AdminController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * 退職処理を行う従業員の詳細取得
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request\Request $request
+     * 
+     * @var string $emplo_id 社員ID
+     * @var string $retirement_authority 退職フラグ 
+     * @var App\Libraries\php\Domain\DataBase
+     * @var array $employee_lists 選択した従業員の詳細データ
      */
     public function destroy_check(Request $request)
     {
@@ -254,10 +296,13 @@ class AdminController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * 退職処理の実行
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param \Illuminate\Http\Request\Request $request
+     * 
+     * @var string $emplo_id 社員ID
+     * @var array $retirement_authority 退職フラグ 
+     * @var App\Libraries\php\Domain\DataBase
      */
     public function destroy(Request $request)
     {

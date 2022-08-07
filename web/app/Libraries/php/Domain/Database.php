@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\DB;
 
 class Database
 {
-    // データベースに接続するクラス
+
     public static function connect_db()
     {
         $dsn = 'mysql:dbname=attendance_management;host=localhost;charset=utf8';
@@ -213,14 +213,14 @@ class Database
      *
      * @return  array $data
      */
-    public static function checkDate($emplo_id, $target_date)
+    public static function checkDate($emplo_id, $today)
     {
         $pdo = self::connect_db();
 
         $sql = "SELECT id FROM works WHERE emplo_id = :emplo_id AND date = :date LIMIT 1";
         $stmt = $pdo->prepare($sql);
         $stmt->bindValue(':emplo_id', (int)$emplo_id, PDO::PARAM_INT);
-        $stmt->bindValue(':date', $target_date, PDO::PARAM_STR);
+        $stmt->bindValue(':date', $today, PDO::PARAM_STR);
         $stmt->execute();
         $data = $stmt->fetch();
 
@@ -235,9 +235,9 @@ class Database
      *
      * @return  array $data
      */
-    public static function insertStartTime($emplo_id, $target_date, $start_time)
+    public static function insertStartTime($emplo_id, $today, $start_time)
     {
-        $data =  DB::select('INSERT INTO works (emplo_id,date,start_time) VALUE (?,?,?)', [$emplo_id, $target_date, $start_time]);
+        $data =  DB::select('INSERT INTO works (emplo_id,date,start_time) VALUE (?,?,?)', [$emplo_id, $today, $start_time]);
 
         return $data;
     }

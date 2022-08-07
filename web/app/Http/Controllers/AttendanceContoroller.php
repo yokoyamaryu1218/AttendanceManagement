@@ -11,7 +11,6 @@ use App\Libraries\php\Domain\Time;
 // 従業員側 ホーム画面のコントローラー
 class AttendanceContoroller extends Controller
 {
-
     /**
      * Create a new controller instance.
      *
@@ -23,16 +22,23 @@ class AttendanceContoroller extends Controller
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * 出勤画面と日報の表示
+     * 
+     * @var string $today 今日の日付
+     * @var App\Libraries\php\Domain\Common
+     * @var string $ym 今月の年月
+     * @var array $time 今の時間
+     * @var array $message 出勤画面に出すメッセージ
+     * @var string $emplo_id 社員ID
+     * @var App\Libraries\php\Domain\DataBase
+     * @var array $daily_data 日報情報
      */
     public function index()
     {
         // 今日の日付 フォーマット
         $today = date('Y-m-j');
         $format = new Common();
-        $ym = $format->top_monthly();
+        $ym = $format->to_monthly();
 
         // 参照先：https://on-ze.com/archives/1838
         $time = intval(date('H'));
@@ -61,71 +67,71 @@ class AttendanceContoroller extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * 出勤時間の打刻
+     * 
+     * @var string $today 今日の日付
+     * @var string $start_time 出勤時間
+     * @var array $message 出勤画面に出すメッセージ
+     * @var string $emplo_id 社員ID
+     * @var App\Libraries\php\Domain\DataBase
+     * @var string $check_data 対象日にデータがある場合に取得する
      */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function start_time_store(Request $request)
+    public function start_time_store()
     {
         // 入力値をPOSTパラメーターから取得
-        $target_date = date('Y-m-d');
+        $today = date('Y-m-d');
         $start_time = $_POST['modal_start_time'];
-
         $emplo_id = Auth::guard('employee')->user()->emplo_id;
 
         //対象日のデータがあるかどうかチェック
-        $check_date = Database::checkDate($emplo_id, $target_date);
+        $check_date = Database::checkDate($emplo_id, $today);
 
         if ($check_date) {
             // 重複登録の場合
             return back()->with('works_warning', 'すでに打刻済みです。');
         } else {
             // 勤務開始時間をデータベースに登録する
-            DataBase::insertStartTime($emplo_id, $target_date, $start_time);
+            DataBase::insertStartTime($emplo_id, $today, $start_time);
             return back()->with('works_status', '出勤時間を登録しました');;
         }
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * 退勤時間の打刻
+     * 
+     * @var string $today 今日の日付
+     * @var string $closing_time 退勤時間
+     * @var string $emplo_id 社員ID
+     * @var App\Libraries\php\Domain\DataBase
+     * @var array $start_time 出勤時間
      */
-    public function closing_time_store(Request $request)
+    public function closing_time_store()
     {
         // 入力値をPOSTパラメーターから取得
-        $target_date = date('Y-m-d');
+        $today = date('Y-m-d');
         $closing_time = $_POST['modal_end_time'];
         $emplo_id = Auth::guard('employee')->user()->emplo_id;
 
         // 出勤時間の取得
-        $start_time = Database::getStartTime($emplo_id, $target_date);
+        $start_time = Database::getStartTime($emplo_id, $today);
 
         // 出勤時間が打刻されている場合は新規登録し、未打刻の場合は警告MSGを出す
         if ($start_time) {
-            Time::insertTime($emplo_id, $start_time[0]->start_time, $closing_time, $target_date);
+            Time::insertTime($emplo_id, $start_time[0]->start_time, $closing_time, $today);
             return back()->with('works_status', '退勤時間を登録しました');
         }
         return back()->with('works_warning', '出勤時間が打刻されていません');
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * 日報の登録
+     * 
+     * @param \Illuminate\Http\Request\Request $request
+     * 
+     * @var string $emplo_id 社員ID
+     * @var string $daily 日報
+     * @var string $today 今日の日付
+     * @var App\Libraries\php\Domain\DataBase
      */
     public function daily_store(Request $request)
     {
@@ -144,33 +150,14 @@ class AttendanceContoroller extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * 日報の更新
+     * 
+     * @param \Illuminate\Http\Request\Request $request
+     * 
+     * @var string $emplo_id 社員ID
+     * @var string $daily 日報
+     * @var string $today 今日の日付
+     * @var App\Libraries\php\Domain\DataBase
      */
     public function daily_update(Request $request)
     {
@@ -189,20 +176,11 @@ class AttendanceContoroller extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * 部下一覧の表示
+     * 
+     * @var string $emplo_id 社員ID
+     * @var App\Libraries\php\Domain\DataBase
+     * @var array $subord_data 部下情報
      */
     public function subord_index()
     {

@@ -13,9 +13,17 @@ use App\Libraries\php\Domain\Time;
 class MonthlyController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * 勤怠一覧の表示
+     * 
+     * @param \Illuminate\Http\Request\Request $request
+     * 
+     * @var string $emplo_id 社員ID
+     * @var string $name 社員名
+     * @var App\Libraries\php\Domain\Common $format
+     * @var string $ym 今月の年月
+     * @var string $day_count 月の日数
+     * @var App\Libraries\php\Domain\DataBase
+     * @var array $monthly_data 勤怠データ
      */
     public function index(Request $request)
     {
@@ -58,7 +66,7 @@ class MonthlyController extends Controller
         $ym = $format->to_monthly();
         // 月の日数を取得
         $day_count = date('t', strtotime($ym));
-        // 今月の従業員の勤怠一覧を取得
+        // 今月の勤怠一覧を取得
         $monthly_data = DataBase::getMonthly($emplo_id, $ym);
 
         if (Auth::guard('employee')->check()) {
@@ -82,23 +90,18 @@ class MonthlyController extends Controller
         }
     }
 
-
-
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * プロダウンで選んだ年度の勤怠一覧の表示
+     * 
+     * @param \Illuminate\Http\Request\Request $request
+     * 
+     * @var string $emplo_id 社員ID
+     * @var string $name 社員名
+     * @var string $ym 選択した年月
+     * @var string $day_count 月の日数
+     * @var App\Libraries\php\Domain\Common $format
+     * @var App\Libraries\php\Domain\DataBase
+     * @var array $monthly_data 勤怠データ
      */
     public function store(Request $request)
     {
@@ -142,33 +145,20 @@ class MonthlyController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * 部下の勤怠修正
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * 勤怠の修正
+     * 
+     * @param \Illuminate\Http\Request\Request $request
+     * 
+     * @var string $nama　従業員名
+     * @var string $emplo_id 社員ID
+     * @var string $target_date 選択した日付
+     * @var string $start_time 出勤時間
+     * @var string $closing_time 退勤時間
+     * @var string $daily 日報
+     * @var App\Libraries\php\Domain\DataBase
+     * @var array $check_date 勤怠データ
+     * @var array $daily_data 日報データ
+     * @var App\Libraries\php\Domain\Time
      */
     public function update(Request $request)
     {
@@ -206,16 +196,5 @@ class MonthlyController extends Controller
                 return redirect()->route('admin.monthly', compact('emplo_id', 'name',))->with('status', '新規登録しました');
             }
         }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

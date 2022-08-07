@@ -12,9 +12,12 @@ use Illuminate\Support\Facades\Hash;
 class PasswordChangeController extends Controller
 {
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * 勤怠一覧の表示
+     * 
+     * @param \Illuminate\Http\Request\Request $request
+     * 
+     * @var string $emplo_id 社員ID
+     * @var string $name 社員名
      */
     public function index(Request $request)
     {
@@ -43,10 +46,15 @@ class PasswordChangeController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * パスワードの変更の実行
+     * 
+     * @param \Illuminate\Http\Request\Request $request
+     * 
+     * @var string $emplo_id 社員ID
+     * @var string $name 社員名
+     * @var string $password パスワード
+     * @var string $password_cofirmation パスワード確認用
+     * @var App\Libraries\php\Domain\DataBase
      */
     public function store(Request $request)
     {
