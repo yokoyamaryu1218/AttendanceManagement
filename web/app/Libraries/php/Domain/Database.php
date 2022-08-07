@@ -12,7 +12,13 @@ use Illuminate\Support\Facades\DB;
 
 class Database
 {
-
+    /**
+     * データベースに接続するクラス
+     * 
+     * 選択した社員の勤怠一覧を取得するときと、
+     * 対象日のデータがあるかどうかチェックするときに必要な記載
+     * 
+     */
     public static function connect_db()
     {
         $dsn = 'mysql:dbname=attendance_management;host=localhost;charset=utf8';
@@ -24,27 +30,9 @@ class Database
     }
 
     /**
-     *
-     * @param $client 顧客ID
-     *
-     * @var   $data 取得データ
-     *
-     * @return  array $data
-     */
-    public static function getAll($emplo_id)
-    {
-
-        $data = DB::select('SELECT wk1.id, wk1.emplo_id, wk1.date, wk1.start_time, wk1.closing_time,
-            wk1.rest_time, wk1.achievement_time, daily.daily,wk1.created_at, wk1.updated_at FROM works AS wk1
-            LEFT JOIN daily ON wk1.date = daily.date
-            WHERE wk1.emplo_id = ? ORDER BY daily.date', [$emplo_id]);
-
-        return $data;
-    }
-
-    /**
-     *
-     * @param $client 顧客ID
+     * 従業員のデータを取得するクラス
+     * 
+     * @param $retirement_authorit　退職フラグ
      *
      * @var   $data 取得データ
      *
@@ -59,12 +47,11 @@ class Database
     }
 
     /**
+     * 最新の社員IDを取得
+     * 
+     * @var   $id ID
      *
-     * @param $client 顧客ID
-     *
-     * @var   $data 取得データ
-     *
-     * @return  array $data
+     * @return  array $id
      */
     public static function getID()
     {
@@ -75,8 +62,10 @@ class Database
     }
 
     /**
-     *
-     * @param $client 顧客ID
+     * 選択した従業員詳細の取得
+     * 
+     * @param $emplo_id 社員ID
+     * @param $retirement_authority 退職フラグ
      *
      * @var   $data 取得データ
      *
@@ -85,26 +74,30 @@ class Database
     public static function SelectEmployee($emplo_id, $retirement_authority)
     {
 
-        $data = DB::select('SELECT em1.emplo_id, em1.name, em1.management_emplo_id,
-        em1.retirement_authority, em2.name AS high_name, em1.subord_authority,
-        em1.created_at,em1.updated_at,em1.deleted_at,
+        $data = DB::select('SELECT em1.emplo_id, em1.name, em1.management_emplo_id, 
+        em1.retirement_authority, em1.subord_authority,em1.created_at,em1.updated_at,em1.deleted_at,
+        /* ここまでで社員ID、社員名、上司社員ID、退職フラグ、部下参照権限、新規登録日、更新日、退職日をemployeeテーブルから取得する */
+        em2.name AS high_name, 
+        /* ここまでで上司名をemployeeテーブルから取得する */        
         ot1.restraint_start_time, ot1.restraint_closing_time, ot1.restraint_total_time FROM employee AS em1
+        /* 始業時間、終業時間、就業時間をovet_timeテーブルから取得する */        
         LEFT JOIN employee AS em2 ON em1.management_emplo_id = em2.emplo_id
+        /* emplpyeeテーブルの上司社員IDと別途employeeテーブルの社員IDを結合して取得する */        
         LEFT JOIN over_time AS ot1 ON em1.emplo_id = ot1.emplo_id
+        /* emplpyeeテーブルの社員IDとover_timeテーブルの社員IDを結合して取得する */        
         WHERE em1.emplo_id = ? AND em1.retirement_authority = ? ORDER BY em1.emplo_id', [$emplo_id, $retirement_authority]);
+        /* 社員IDと退職フラグを検索条件にして情報を取得し、社員IDを基準に並び替える。 */
 
         return $data;
     }
 
     /**
-     * システム管理者リストの取得
-     * @param $client 顧客ID
-     *
-     * @var   $list システム管理者リスト
+     * 部下参照権限が1の社員IDと社員名の取得
+     * 
+     * @var   $list 取得データ
      *
      * @return  array $list
      */
-
     public static function getSubordAuthority()
     {
 
@@ -115,8 +108,10 @@ class Database
 
 
     /**
-     *
-     * @param $client 顧客ID
+     * 選択した社員の勤怠一覧を取得する
+     * 
+     * @param $emplo_id 社員ID
+     * @param $ym 年月
      *
      * @var   $data 取得データ
      *
@@ -128,11 +123,19 @@ class Database
 
         $sql = "SELECT wk1.date, wk1.emplo_id, wk1.start_time, wk1.closing_time,
         wk1.rest_time, wk1.achievement_time, wk1.over_time,dl1.daily FROM works AS wk1
+        /* ここまでで勤怠日、社員ID、出勤時間、退勤時間、休憩時間、実績時間、残業時間をworksテーブルから取得し、
+        対象日の日報をdailyテーブルから取得する */
         LEFT JOIN daily AS dl1 ON wk1.date = dl1.date AND wk1.emplo_id = dl1.emplo_id
+        /* dailyテーブルの日付、社員IDと別途worksテーブルの日付、社員IDを結合して取得する */        
         WHERE wk1.emplo_id = :emplo_id
+        /* 社員IDを検索条件にして情報を取得し、 */
         AND DATE_FORMAT(wk1.date, '%Y-%m') = :date
+        /* 日付を選択した年月のものだけ抽出し、 */
         ORDER BY date";
+        /* 日付順に並び替える　*/
 
+        // 配列の各データにアクセスしやすいように、行のキーを日付にするため
+        // フェッチモードを指定する
         $stmt = $pdo->prepare($sql);
         $stmt->bindValue(':emplo_id', $emplo_id, PDO::PARAM_INT);
         $stmt->bindValue(':date', $ym, PDO::PARAM_STR);
