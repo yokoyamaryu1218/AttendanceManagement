@@ -18,11 +18,9 @@ class Time
      * @param  int  $closing_time 退勤時間
      * @param  int  $target_date 選択した日付
      * 
-     * @var array $cloumns_name カラム名
      * @var App\Libraries\php\Domain\DataBase
      * @var App\Libraries\php\Domain\Time
-     * @var array $restraint_start_time 始業時間
-     * @var array $restraint_total_time 就業時間
+     * @var array $restraint_time 就業時間
      * @var array $total_time 総勤務時間
      * @var array $rest_time 休憩時間
      * @var array $achievement_time 実績時間
@@ -31,13 +29,8 @@ class Time
     public static function insertTime($emplo_id, $start_time, $closing_time, $target_date)
     {
         //休憩時間を求めるため、総勤務時間を求める
-        $cloumns_name = 'restraint_start_time';
-        $restraint_start_time = Database::getOverTime($cloumns_name, $emplo_id);
-
-        $cloumns_name = 'restraint_total_time';
-        $restraint_total_time = Database::getOverTime($cloumns_name, $emplo_id);
-
-        $total_time = Time::total_time($start_time, $closing_time, $restraint_start_time[0]->restraint_start_time);
+        $restraint_time = Database::getRestraintTime($emplo_id);
+        $total_time = Time::total_time($start_time, $closing_time, $restraint_time[0]->restraint_start_time);
 
         //休憩時間を求める
         $rest_time = Time::rest_time($total_time);
@@ -46,7 +39,7 @@ class Time
         $achievement_time = Time::achievement_time($total_time, $rest_time);
 
         // 残業時間を求める
-        $over_time = Time::over_time($achievement_time, $restraint_total_time[0]->restraint_total_time);
+        $over_time = Time::over_time($achievement_time, $restraint_time[0]->restraint_total_time);
 
         // データベースに登録する
         DataBase::insertTime($emplo_id, $target_date, $start_time, $closing_time, $rest_time, $achievement_time, $over_time);
@@ -60,11 +53,9 @@ class Time
      * @param  int  $closing_time 退勤時間
      * @param  int  $target_date 選択した日付
      * 
-     * @var array $cloumns_name カラム名
      * @var App\Libraries\php\Domain\DataBase
      * @var App\Libraries\php\Domain\Time
-     * @var array $restraint_start_time 始業時間
-     * @var array $restraint_total_time 就業時間
+     * @var array $restraint_time 就業時間
      * @var array $total_time 総勤務時間
      * @var array $rest_time 休憩時間
      * @var array $achievement_time 実績時間
@@ -73,13 +64,8 @@ class Time
     public static function updateTime($emplo_id, $start_time, $closing_time, $target_date)
     {
         //休憩時間を求めるため、総勤務時間を求める
-        $cloumns_name = 'restraint_start_time';
-        $restraint_start_time = Database::getOverTime($cloumns_name, $emplo_id);
-
-        $cloumns_name = 'restraint_total_time';
-        $restraint_total_time = Database::getOverTime($cloumns_name, $emplo_id);
-
-        $total_time = Time::total_time($start_time, $closing_time, $restraint_start_time[0]->restraint_start_time);
+        $restraint_time = Database::getRestraintTime($emplo_id);
+        $total_time = Time::total_time($start_time, $closing_time, $restraint_time[0]->restraint_start_time);
 
         //休憩時間を求める
         $rest_time = Time::rest_time($total_time);
@@ -88,7 +74,7 @@ class Time
         $achievement_time = Time::achievement_time($total_time, $rest_time);
 
         // 残業時間を求める
-        $over_time = Time::over_time($achievement_time, $restraint_total_time[0]->restraint_total_time);
+        $over_time = Time::over_time($achievement_time, $restraint_time[0]->restraint_total_time);
 
         // データベースを更新する
         DataBase::updateTime($start_time, $closing_time, $rest_time, $achievement_time, $over_time, $emplo_id, $target_date);

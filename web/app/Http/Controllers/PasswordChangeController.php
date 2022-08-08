@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Hash;
 class PasswordChangeController extends Controller
 {
     /**
-     * 勤怠一覧の表示
+     * パスワード変更画面の表示
      * 
      * @param \Illuminate\Http\Request\Request $request
      * 

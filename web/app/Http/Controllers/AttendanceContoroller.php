@@ -31,6 +31,8 @@ class AttendanceContoroller extends Controller
      * @var array $message 出勤画面に出すメッセージ
      * @var string $emplo_id 社員ID
      * @var App\Libraries\php\Domain\DataBase
+     * @var array $cloumns_name カラム名
+     * @var array $table_name テーブル名
      * @var array $daily_data 日報情報
      */
     public function index()
@@ -54,8 +56,9 @@ class AttendanceContoroller extends Controller
 
         //日報の表示
         $emplo_id = Auth::guard('employee')->user()->emplo_id;
-        $daily_data = DataBase::getDaily($emplo_id, $today);
-
+        $cloumns_name = "daily";
+        $table_name = "daily";
+        $daily_data = DataBase::getStartTimeOrDaily($cloumns_name, $table_name, $emplo_id, $today);
         return view('employee.dashboard', compact(
             'ym',
             'today',
@@ -103,6 +106,8 @@ class AttendanceContoroller extends Controller
      * @var string $closing_time 退勤時間
      * @var string $emplo_id 社員ID
      * @var App\Libraries\php\Domain\DataBase
+     * @var array $cloumns_name カラム名
+     * @var array $table_name テーブル名
      * @var array $start_time 出勤時間
      */
     public function closing_time_store()
@@ -113,7 +118,9 @@ class AttendanceContoroller extends Controller
         $emplo_id = Auth::guard('employee')->user()->emplo_id;
 
         // 出勤時間の取得
-        $start_time = Database::getStartTime($emplo_id, $today);
+        $cloumns_name = "works";
+        $table_name = "works";
+        $start_time = DataBase::getStartTimeOrDaily($cloumns_name, $table_name, $emplo_id, $today);
 
         // 出勤時間が打刻されている場合は新規登録し、未打刻の場合は警告MSGを出す
         if ($start_time) {

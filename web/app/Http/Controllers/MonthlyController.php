@@ -157,6 +157,8 @@ class MonthlyController extends Controller
      * @var string $daily 日報
      * @var App\Libraries\php\Domain\DataBase
      * @var array $check_date 勤怠データ
+     * @var array $cloumns_name カラム名
+     * @var array $table_name テーブル名
      * @var array $daily_data 日報データ
      * @var App\Libraries\php\Domain\Time
      */
@@ -175,7 +177,9 @@ class MonthlyController extends Controller
 
         //対象日のデータがあるかどうかチェック
         $check_date = Database::checkDate($emplo_id, $target_date);
-        $daily_data = DataBase::getDaily($emplo_id, $target_date);
+        $cloumns_name = "daily";
+        $table_name = "daily";
+        $daily_data = DataBase::getStartTimeOrDaily($cloumns_name, $table_name, $emplo_id, $target_date);
 
         if ($check_date) {
             // 対象日にデータがある場合は、更新処理を行う

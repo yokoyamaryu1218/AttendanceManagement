@@ -3,7 +3,6 @@
 namespace App\Libraries\php\Domain;
 
 use PDO;
-use App\Models\Date;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -30,7 +29,7 @@ class Database
     }
 
     /**
-     * 従業員のデータを取得するクラス
+     * 従業員一覧を取得するクラス
      * 
      * @param $retirement_authorit　退職フラグ
      *
@@ -146,55 +145,48 @@ class Database
     }
 
     /**
-     *
-     * @param $client 顧客ID
-     *
-     * @var   $data 取得データ
-     *
-     * @return  array $data
-     */
-    public static function getDaily($emplo_id, $today)
-    {
-
-        $data = DB::select('SELECT daily FROM daily WHERE emplo_id = ? AND date = ?', [$emplo_id, $today]);
-
-        return $data;
-    }
-
-    /**
-     *
-     * @param $client 顧客ID
+     * 今日の日報、出勤時間を取得する
+     * 
+     * @param $cloumns_name カラム名
+     * @param $table_name テーブル名
+     * @param $emplo_id 社員ID
+     * @param $today 今日の日付
      *
      * @var   $data 取得データ
      *
      * @return  array $data
      */
-    public static function getStartTime($emplo_id, $target_date)
+    public static function getStartTimeOrDaily($cloumns_name, $table_name, $emplo_id, $today)
     {
 
-        $data = DB::select('SELECT start_time FROM works WHERE emplo_id = ? AND date = ?', [$emplo_id, $target_date]);
+        $data = DB::select('SELECT ' . $cloumns_name . ' FROM ' . $table_name . ' WHERE emplo_id = ? AND date = ?', [$emplo_id, $today]);
 
         return $data;
     }
 
     /**
-     *
-     * @param $client 顧客ID
+     * 始業時間と就業時間を取得する
+     * 
+     * @param $cloumns_name カラム名
+     * @param $emplo_id 社員ID
      *
      * @var   $data 取得データ
      *
      * @return  array $data
      */
-    public static function getOverTime($cloumns_name, $emplo_id)
+    public static function getRestraintTime($emplo_id)
     {
-        $data = DB::select('SELECT ' . $cloumns_name . ' FROM over_time WHERE emplo_id =?', [$emplo_id]);
+        $data = DB::select('SELECT restraint_start_time, restraint_total_time FROM over_time WHERE emplo_id =?', [$emplo_id]);
 
         return $data;
     }
 
     /**
-     *
-     * @param $client 顧客ID
+     * 日報を更新する
+     * 
+     * @param $emplo_id 社員ID
+     * @param $today 今日の日付
+     * @param $daily 日報
      *
      * @var   $data 取得データ
      *
@@ -210,7 +202,9 @@ class Database
 
     /**
      * 対象日のデータがあるかどうかチェック
-     * @param $client 顧客ID
+     * 
+     * @param $emplo_id 社員ID
+     * @param $today 今日の日付
      *
      * @var   $data 取得データ
      *
@@ -220,6 +214,8 @@ class Database
     {
         $pdo = self::connect_db();
 
+        // 配列の各データにアクセスしやすいように、フェッチモードで行のキーを日付しているため、
+        // ここでもフェッチモードでチェックする
         $sql = "SELECT id FROM works WHERE emplo_id = :emplo_id AND date = :date LIMIT 1";
         $stmt = $pdo->prepare($sql);
         $stmt->bindValue(':emplo_id', (int)$emplo_id, PDO::PARAM_INT);
@@ -231,8 +227,11 @@ class Database
     }
 
     /**
-     * 対象日のデータがあるかどうかチェック
-     * @param $client 顧客ID
+     * 出勤時間の打刻
+     * 
+     * @param $emplo_id 社員ID
+     * @param $today 今日の日付
+     * @param $start_time 出勤時間
      *
      * @var   $data 取得データ
      *
@@ -246,27 +245,15 @@ class Database
     }
 
     /**
-     * 対象日のデータがあるかどうかチェック
-     * @param $client 顧客ID
+     * 社員情報登録
+     * 
+     * @param $emplo_id 社員ID
+     * @param $name　社員名
+     * @param $password　パスワード
+     * @param $management_emplo_id　上司社員ID
+     * @param $subord_authority　部下参照権限
+     * @param $retirement_authority　退職フラグ
      *
-     * @var   $data 取得データ
-     *
-     * @return  array $data
-     */
-    public static function CheckEndTime($target_date)
-    {
-        $check = DB::select('SELECT id FROM works WHERE closing_time IS NULL AND date = ?', [$target_date]);
-
-        return $check;
-    }
-
-    /**
-     * 対象日のデータがあるかどうかチェック
-     * @param $client 顧客ID
-     *
-     * @var   $data 取得データ
-     *
-     * @return  array $data
      */
     public static function insertEmployee($emplo_id, $name, $password, $management_emplo_id, $subord_authority, $retirement_authority)
     {
@@ -274,12 +261,13 @@ class Database
     }
 
     /**
-     * 対象日のデータがあるかどうかチェック
-     * @param $client 顧客ID
+     * 社員情報更新
+     * 
+     * @param $emplo_id 社員ID
+     * @param $name　社員名
+     * @param $management_emplo_id　上司社員ID
+     * @param $subord_authority　部下参照権限
      *
-     * @var   $data 取得データ
-     *
-     * @return  array $data
      */
     public static function updateEmployee($emplo_id, $name, $management_emplo_id, $subord_authority)
     {
@@ -290,12 +278,13 @@ class Database
     }
 
     /**
-     * 対象日のデータがあるかどうかチェック
-     * @param $client 顧客ID
+     * 就業時間の登録
+     * 
+     * @param $emplo_id 社員ID
+     * @param $restraint_start_time 始業時間
+     * @param $restraint_closing_time　終業時間
+     * @param $restraint_total_time 就業時間
      *
-     * @var   $data 取得データ
-     *
-     * @return  array $data
      */
     public static function insertOverTime($emplo_id, $restraint_start_time, $restraint_closing_time, $restraint_total_time)
     {
@@ -303,12 +292,13 @@ class Database
     }
 
     /**
-     * 対象日のデータがあるかどうかチェック
-     * @param $client 顧客ID
+     * 就業時間の更新
+     * 
+     * @param $emplo_id 社員ID
+     * @param $restraint_start_time 始業時間
+     * @param $restraint_closing_time　終業時間
+     * @param $restraint_total_time 就業時間
      *
-     * @var   $data 取得データ
-     *
-     * @return  array $data
      */
     public static function updateOverTime($emplo_id, $restraint_start_time, $restraint_closing_time, $restraint_total_time)
     {
@@ -319,12 +309,11 @@ class Database
     }
 
     /**
-     * 対象日のデータがあるかどうかチェック
-     * @param $client 顧客ID
+     * 階層の登録
+     * 
+     * @param $lower_id 下位ID
+     * @param $high_id 上位ID
      *
-     * @var   $data 取得データ
-     *
-     * @return  array $data
      */
     public static function insertHierarchy($lower_id, $high_id)
     {
@@ -332,12 +321,11 @@ class Database
     }
 
     /**
-     * 対象日のデータがあるかどうかチェック
-     * @param $client 顧客ID
+     * 階層の更新
+     * 
+     * @param $lower_id 下位ID
+     * @param $high_id 上位ID
      *
-     * @var   $data 取得データ
-     *
-     * @return  array $data
      */
     public static function updateHierarchy($high_id, $lower_id)
     {
@@ -346,11 +334,10 @@ class Database
 
     /**
      * 退職フラグを付与する
-     * @param $client 顧客ID
+     * 
+     * @param $retirement_authority 退職フラグ
+     * @param $emplo_id 社員ID
      *
-     * @var   $data 取得データ
-     *
-     * @return  array $data
      */
     public static function retirementAssignment($retirement_authority, $emplo_id)
     {
@@ -359,11 +346,9 @@ class Database
 
     /**
      * 退職日を消す
-     * @param $client 顧客ID
+     * 
+     * @param $emplo_id 社員ID
      *
-     * @var   $data 取得データ
-     *
-     * @return  array $data
      */
     public static function Delete_at($emplo_id)
     {
@@ -372,7 +357,14 @@ class Database
 
 
     /**
-     * @param $client 顧客ID
+     * 退勤時間の打刻
+     * 
+     * @param $closing_time 退勤時間
+     * @param $rest_time　休憩時間
+     * @param $achievement_time　実績時間
+     * @param $over_time　残業時間
+     * @param $emplo_id　社員ID
+     * @param $target_date　対象日
      *
      * @var   $data 取得データ
      *
@@ -386,7 +378,15 @@ class Database
     }
 
     /**
-     * @param $client 顧客ID
+     * 打刻時間の更新
+     * 
+     * @param $start_time 出勤時間
+     * @param $closing_time 退勤時間
+     * @param $rest_time　休憩時間
+     * @param $achievement_time　実績時間
+     * @param $over_time　残業時間
+     * @param $emplo_id　社員ID
+     * @param $target_date　対象日
      *
      * @var   $data 取得データ
      *
@@ -400,8 +400,15 @@ class Database
     }
 
     /**
-     * 対象日のデータがあるかどうかチェック
-     * @param $client 顧客ID
+     * 打刻時間の新規登録
+     * 
+     * @param $emplo_id　社員ID
+     * @param $target_date　対象日
+     * @param $start_time 出勤時間
+     * @param $closing_time 退勤時間
+     * @param $rest_time　休憩時間
+     * @param $achievement_time　実績時間
+     * @param $over_time　残業時間
      *
      * @var   $data 取得データ
      *
@@ -416,8 +423,11 @@ class Database
 
 
     /**
-     *
-     * @param $client 顧客ID
+     * 日報の登録
+     * 
+     * @param $emplo_id　社員ID
+     * @param $today 今日の日付
+     * @param $daily 日報
      *
      * @var   $data 取得データ
      *
@@ -432,8 +442,9 @@ class Database
     }
 
     /**
-     *
-     * @param $client 顧客ID
+     * 部下の取得
+     * 
+     * @param $emplo_id　社員ID
      *
      * @var   $data 取得データ
      *
@@ -442,33 +453,24 @@ class Database
     public static function getSubord($emplo_id)
     {
 
-        $data = DB::select('SELECT em1.emplo_id, em1.name,
-        em2.emplo_id AS subord_id, em2.name AS subord_name FROM employee AS em1
+        $data = DB::select('SELECT em1.emplo_id, em2.emplo_id AS subord_id, 
+        em2.name AS subord_name FROM employee AS em1
+        /* ここまでで勤怠日、ログインしている社員ID、部下の社員IDと部下の名前をemployeeテーブルから取得する */
         LEFT JOIN hierarchy on em1.emplo_id = hierarchy.high_id
-        LEFT JOIN employee AS em2 on hierarchy.lower_id = em2.emplo_id
-        where em1.emplo_id = ? order by em1.emplo_id', [$emplo_id]);
+        /* hierarchyテーブルの上位IDと、employeeテーブルの社員IDを結合して取得する */        
+        LEFT JOIN employee AS em2 ON hierarchy.lower_id = em2.emplo_id
+        /* 別途hierarchyテーブルの下位IDと、employeeテーブルの社員IDを結合して取得する */        
+        WHERE em1.emplo_id = ? ORDER BY subord_id', [$emplo_id]);
+        /* 社員IDを検索条件にして情報を取得し、部下の社員IDを基準に並び替える。 */
 
         return $data;
     }
 
     /**
-     *
-     * @param $client 顧客ID
-     *
-     * @var   $data 取得データ
-     *
-     * @return  array $data
-     */
-    public static function authoritycheck($cloumns_name, $emplo_id)
-    {
-        $data = DB::select('SELECT ' . $cloumns_name . ' FROM `employee` WHERE emplo_id = ?', [$emplo_id]);
-
-        return $data;
-    }
-
-    /**
-     *
-     * @param $client 顧客ID
+     * 従業員（部下）の更新
+     * 
+     * @param $password パスワード
+     * @param $emplo_id　社員ID
      *
      * @var   $data 取得データ
      *
