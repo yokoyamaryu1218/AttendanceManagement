@@ -46,6 +46,11 @@
                         {{ session('status') }}
                     </div>
                     @endif
+                    @if ($errors->has('daily'))
+                    <div class="alert text-center alert-warning">
+                        {{ $errors->first('daily') }}
+                    </div>
+                    @endif
                     <!-- フラッシュメッセージここまで -->
 
                     <!-- ここから月別勤怠一覧部分 -->

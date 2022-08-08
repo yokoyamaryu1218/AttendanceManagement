@@ -106,6 +106,11 @@ Route::group(['middleware' => 'auth:employee'], function () {
     Route::post('/reset-password', [NewPasswordController::class, 'store'])
         ->name('password.update');
     // 自分自身のパスワード変更に関するルーティングここまで
+
+    // エラーページの表示
+    Route::get('/error', [MonthlyController::class, 'errorMsg'])
+        ->name('error');
+    // エラーページここまで
 });
 
 // Route::post('/register', [RegisteredUserController::class, 'store'])

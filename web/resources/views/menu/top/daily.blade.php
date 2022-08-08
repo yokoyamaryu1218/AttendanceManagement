@@ -15,6 +15,12 @@
                                 {{ session('status') }}
                             </div>
                             @endif
+
+                            @if ($errors->has('daily'))
+                            <div class="alert text-center alert-warning">
+                                {{ $errors->first('daily') }}
+                            </div>
+                            @endif
                             <!-- フラッシュメッセージここまで -->
                             <!-- 日報表示部分 -->
                             <textarea id="daily" name="daily" cols="40" rows="10" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="日報の入力は任意です">@if($daily_data == NULL)@else{{ $daily_data[0]->daily }}@endif</textarea>

@@ -141,6 +141,11 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::post('/reset-password', [NewPasswordController::class, 'store'])
         ->name('password.update');
     // 管理者自身のパスワード変更に関するルーティングここまで
+
+    // エラーページの表示
+    Route::get('/error', [MonthlyController::class, 'errorMsg'])
+    ->name('error');
+    // エラーページここまで
 });
 
 

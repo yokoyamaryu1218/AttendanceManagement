@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\AllPostRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Libraries\php\Domain\Common;
 use App\Libraries\php\Domain\DataBase;
@@ -59,6 +60,7 @@ class AttendanceContoroller extends Controller
         $cloumns_name = "daily";
         $table_name = "daily";
         $daily_data = DataBase::getStartTimeOrDaily($cloumns_name, $table_name, $emplo_id, $today);
+
         return view('employee.dashboard', compact(
             'ym',
             'today',
@@ -118,7 +120,7 @@ class AttendanceContoroller extends Controller
         $emplo_id = Auth::guard('employee')->user()->emplo_id;
 
         // 出勤時間の取得
-        $cloumns_name = "works";
+        $cloumns_name = "start_time";
         $table_name = "works";
         $start_time = DataBase::getStartTimeOrDaily($cloumns_name, $table_name, $emplo_id, $today);
 
@@ -133,14 +135,14 @@ class AttendanceContoroller extends Controller
     /**
      * 日報の登録
      * 
-     * @param \Illuminate\Http\Request\Request $request
+     * @param \Illuminate\Http\Request\AllPostRequest $request
      * 
      * @var string $emplo_id 社員ID
      * @var string $daily 日報
      * @var string $today 今日の日付
      * @var App\Libraries\php\Domain\DataBase
      */
-    public function daily_store(Request $request)
+    public function daily_store(AllPostRequest $request)
     {
         // リクエストの取得
         $emplo_id = Auth::guard('employee')->user()->emplo_id;
@@ -151,7 +153,12 @@ class AttendanceContoroller extends Controller
         $request->session()->regenerateToken();
 
         // 日報の登録
-        DataBase::insertDaily($emplo_id, $today, $daily);
+        try {
+            DataBase::insertDaily($emplo_id, $today, $daily);
+        } catch (\Exception $e) {
+            //エラー処理
+            return redirect()->route('emplo.error');
+        }
 
         return back()->with('status', '日報を登録しました');;
     }
@@ -159,14 +166,14 @@ class AttendanceContoroller extends Controller
     /**
      * 日報の更新
      * 
-     * @param \Illuminate\Http\Request\Request $request
+     * @param \Illuminate\Http\Request\AllPostRequest $request
      * 
      * @var string $emplo_id 社員ID
      * @var string $daily 日報
      * @var string $today 今日の日付
      * @var App\Libraries\php\Domain\DataBase
      */
-    public function daily_update(Request $request)
+    public function daily_update(AllPostRequest $request)
     {
         // リクエストの取得
         $emplo_id = Auth::guard('employee')->user()->emplo_id;

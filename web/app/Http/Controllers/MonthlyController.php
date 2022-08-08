@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 
 use Illuminate\Http\Request;
+use App\Http\Requests\AllPostRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Libraries\php\Domain\DataBase;
 use App\Libraries\php\Domain\Common;
@@ -162,7 +163,7 @@ class MonthlyController extends Controller
      * @var array $daily_data 日報データ
      * @var App\Libraries\php\Domain\Time
      */
-    public function update(Request $request)
+    public function update(AllPostRequest $request)
     {
         // リクエスト処理の取得
         $name = $request->modal_name;
@@ -200,5 +201,14 @@ class MonthlyController extends Controller
                 return redirect()->route('admin.monthly', compact('emplo_id', 'name',))->with('status', '新規登録しました');
             }
         }
+    }
+
+    /**
+     * エラーメッセージページ遷移
+     *
+     */
+    public function errorMsg()
+    {
+        return view('menu.another.error');
     }
 }

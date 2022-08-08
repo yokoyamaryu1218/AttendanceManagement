@@ -1,7 +1,5 @@
 <!-- https://tailwindcomponents.com/component/input-field -->
 <!-- admin側　就業規則画面のblade -->
-<script src="{{ asset('js/admin/search.js') }}" defer></script>
-
 <x-app-layout>
     <x-slot name="header">
     </x-slot>
