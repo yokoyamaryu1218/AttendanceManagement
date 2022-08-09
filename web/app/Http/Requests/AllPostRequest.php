@@ -34,6 +34,7 @@ class AllPostRequest extends FormRequest
     {
         return [
             'daily.max' => '日報は1,024文字以内で入力してください',
+
         ];
     }
 }

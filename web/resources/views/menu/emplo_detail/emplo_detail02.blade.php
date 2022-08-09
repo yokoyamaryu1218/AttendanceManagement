@@ -36,7 +36,7 @@
             </td>
             <!-- パスワード変更 -->
             <td class="align-middle button">
-                <form method="POST" action="{{ route('admin.emplo_change_password' )}}">
+                <form method="POST" action="{{ route('admin.emplo_change_password', [ 'emplo_id'=> $emplo->emplo_id , 'name'=> $emplo->name ] )}}">
                     @csrf
                     <input type="hidden" class="form-control" id="emplo_id" name="emplo_id" value="{{$emplo->emplo_id}}">
                     <input type="hidden" class="form-control" id="name" name="name" value="{{$emplo->name}}">

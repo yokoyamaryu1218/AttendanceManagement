@@ -16,10 +16,15 @@
                 </div>
                 @endif
 
-                <!-- パスワードを変更す社員の名前 -->
+                @if ($errors->has('password'))
+                <div class="alert text-center alert-warning">
+                    {{ $errors->first('password') }}
+                </div>
+                @endif
+
+                <!-- パスワードを変更する社員の名前 -->
                 <div class="mt-4">
                     社員名：{{ $name }}さん
-                    <script src="{{ asset('js/subord/subord.js') }}" defer></script>
                     <input type="hidden" class="form-control" id="emplo_id" name="emplo_id" value="{{ $emplo_id }}">
                     <input type="hidden" class="form-control" id="name" name="name" value="{{ $name }}">
                 </div>

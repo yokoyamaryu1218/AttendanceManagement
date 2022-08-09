@@ -13,9 +13,9 @@ class PasswordChangeController extends Controller
 {
     /**
      * パスワード変更画面の表示
-     * 
+     *
      * @param \Illuminate\Http\Request\Request $request
-     * 
+     *
      * @var string $emplo_id 社員ID
      * @var string $name 社員名
      */
@@ -41,15 +41,16 @@ class PasswordChangeController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'password' => 'required|string|min:6|confirmed',
+            // reget:英数字混合を指定
+            'password' => ['required', 'string', 'min:8', 'regex:/^(?=.*?[a-z])(?=.*?\d)[a-z\d]+$/i', 'confirmed'],
         ]);
     }
 
     /**
      * パスワードの変更の実行
-     * 
+     *
      * @param \Illuminate\Http\Request\Request $request
-     * 
+     *
      * @var string $emplo_id 社員ID
      * @var string $name 社員名
      * @var string $password パスワード
@@ -63,21 +64,6 @@ class PasswordChangeController extends Controller
         $name = $request->name;
         $password = Hash::make($request->password);
         $password_confirmation = $request->password_confirmation;
-
-        // 新しいパスワードを確認
-        if (!password_verify($request->password, password_hash($password_confirmation, PASSWORD_DEFAULT))) {
-            if (Auth::guard('employee')->check()) {
-                return redirect()->route('employee.subord.change_password', compact(
-                    'emplo_id',
-                    'name',
-                ))->with('warning', '新しいパスワードが合致しません。');
-            } elseif (Auth::guard('admin')->check()) {
-                return redirect()->route('admin.emplo_change_password', compact(
-                    'emplo_id',
-                    'name',
-                ))->with('warning', '新しいパスワードが合致しません。');
-            }
-        }
 
         // パスワードは6文字以上あるか，2つが一致しているかなどのチェック
         $this->validator($request->all())->validate();

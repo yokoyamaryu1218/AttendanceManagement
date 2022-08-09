@@ -25,7 +25,7 @@
                             <tr>
                                 <!-- 社員番号 -->
                                 <th class="fix-col">{{$subord->subord_id}}</td>
-                                <!-- 従業員名 -->
+                                    <!-- 従業員名 -->
                                 <td class="fix-col">{{$subord->subord_name}}</td>
                                 <!-- 勤怠一覧 -->
                                 <td class="fix-col">
@@ -38,7 +38,7 @@
                                 </td>
                                 <!-- パスワード変更 -->
                                 <td class="fix-col">
-                                    <form method="POST" action="{{ route('employee.subord.change_password' )}}">
+                                    <form method="POST" action="{{ route('employee.subord.change_password', [ 'emplo_id'=> $subord->subord_id , 'name'=> $subord->subord_name ] )}}">
                                         @csrf
                                         <input type="hidden" class="form-control" id="emplo_id" name="emplo_id" value="{{$subord->subord_id}}">
                                         <input type="hidden" class="form-control" id="name" name="name" value="{{$subord->subord_name}}">
