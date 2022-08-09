@@ -14,26 +14,26 @@
             <form method="POST" action="{{ route('admin.emplo_store')}}">
                 @csrf
                 @method('post')
+                @if ($errors->has('name'))
+                <div class="alert text-center alert-warning">
+                    {{ $errors->first('name') }}
+                </div>
+                @endif
+                @if ($errors->has('password'))
+                <div class="alert text-center alert-warning">
+                    {{ $errors->first('password') }}
+                </div>
+                @endif
                 <div class="grid gap-6 mb-6 lg:grid-cols-3">
                     <div>
                         <!-- 社員名 -->
-                        @if ($errors->has('name'))
-                        <div class="alert text-center alert-warning">
-                            {{ $errors->first('name') }}
-                        </div>
-                        @endif
                         <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">社員名</label>
-                        <input type="text" id="name" name="name" value="{{ old('name') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="山田太郎" required>
+                        <input type="text" id="name" name="name" value="{{ old('name') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="ここに名前を入力">
                     </div>
                     <div>
                         <!-- パスワード -->
-                        @if ($errors->has('password'))
-                        <div class="alert text-center alert-warning">
-                            {{ $errors->first('password') }}
-                        </div>
-                        @endif
                         <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">パスワード</label>
-                        <input type="password" id="password" value="{{ old('password') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="●●●●●●●●">
+                        <input type="password" id="password" name="password" value="{{ old('password') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="●●●●●●●●">
                     </div>
                     <div>
                         <!-- 部下参照権限 -->
@@ -44,21 +44,16 @@
                         </label>
                     </div>
                 </div>
-                <div class="grid gap-6 mb-6 lg:grid-cols-3">
+                @if ($errors->has('management_emplo_id'))
+                <div class="alert text-center alert-warning">
+                    {{ $errors->first('management_emplo_id') }}
+                </div>
+                @endif
+                <div class="grid gap-6 mb-6 lg:grid-cols-2">
                     <div>
                         <!-- 管理者番号 -->
-                        @if ($errors->has('management_emplo_id'))
-                        <div class="alert text-center alert-warning">
-                            {{ $errors->first('management_emplo_id') }}
-                        </div>
-                        @endif
                         <label for="management_emplo_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">管理者番号</label>
-                        <input type="text" id="management_emplo_id" name="management_emplo_id" maxlength="4" value="{{ old('managment_emplo_id') }}" data-toggle="tooltip" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="1000" readonly>
-                    </div>
-                    <div>
-                        <!-- 管理者名 -->
-                        <label for="high_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">管理者名</label>
-                        <input type="high_name" id="high_name" value="{{ old('high_name') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="上司次郎" readonly>
+                        <input type="text" id="management_emplo_id" name="management_emplo_id" maxlength="4" value="{{ old('managment_emplo_id') }}" data-toggle="tooltip" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="管理者検索をすることで反映します" readonly>
                     </div>
                     <div>
                         <!-- 管理者検索 -->
@@ -71,21 +66,31 @@
                         </datalist>
                     </div>
                 </div>
+                @if ($errors->has('restraint_start_time'))
+                <div class="alert text-center alert-warning">
+                    {{ $errors->first('restraint_start_time') }}
+                </div>
+                @endif
+                @if ($errors->has('restraint_closing_time'))
+                <div class="alert text-center alert-warning">
+                    {{ $errors->first('restraint_closing_time') }}
+                </div>
+                @endif
                 <div class="grid gap-6 mb-12 lg:grid-cols-3">
+                    <div>
+                        <!-- 入社日 -->
+                        <label for="hire_date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">入社日</label>
+                        <input type="date" id="hire_date" name="hire_date" value="{{ old('hire_date') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    </div>
                     <div>
                         <!-- 始業時間 -->
                         <label for="restraint_start_time" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">始業時間</label>
-                        <input type="time" id="restraint_start_time" name="restraint_start_time" value="{{ old('restraint_start_time') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="10:00" required>
+                        <input type="time" id="restraint_start_time" name="restraint_start_time" value="{{ old('restraint_start_time') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     </div>
                     <div>
                         <!-- 終業時間 -->
                         <label for="restraint_closing_time" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">終業時間</label>
-                        <input type="time" id="restraint_closing_time" name="restraint_closing_time" value="{{ old('restraint_closing_time') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="15:00" required>
-                    </div>
-                    <div>
-                        <!-- 就業時間 -->
-                        <label for="restraint_total_time" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">就業時間</label>
-                        <input type="time" id="restraint_total_time" name="restraint_total_time" value="{{ old('restraint_total_time') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="5:00" required>
+                        <input type="time" id="restraint_closing_time" name="restraint_closing_time" value="{{ old('restraint_closing_time') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     </div>
                 </div>
                 <!-- ボタン配置 -->

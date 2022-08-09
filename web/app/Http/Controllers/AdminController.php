@@ -6,8 +6,10 @@ use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use App\Libraries\php\Domain\Time;
 use App\Libraries\php\Domain\Common;
-use App\Http\Requests\AllPostRequest;
+use App\Http\Requests\NewPostRequest;
+use App\Http\Requests\UpdateRequest;
 use App\Libraries\php\Domain\DataBase;
 
 // 管理者画面用のコントローラー
@@ -84,13 +86,15 @@ class AdminController extends Controller
     /**
      * 従業員の登録
      *
-     * @param \Illuminate\Http\Request\Request $request
+     * @param App\Http\Requests\NewPostRequest $request
      *
      * @var string $name　従業員名
      * @var string $password パスワード
      * @var string $management_emplo_id 上司社員ID
+     * @var string $hire_date 入社日
      * @var string $restraint_start_time 始業時間
      * @var string $restraint_closing_time 終業時間
+     * @var App\Libraries\php\Domain\Time
      * @var string $restraint_total_time 就業時間
      * @var string $retirement_authority 退職フラグ
      * @var array $subord_authority 部下参照権限
@@ -98,15 +102,16 @@ class AdminController extends Controller
      * @var string $emplo_id 社員ID
      * @var App\Libraries\php\Domain\Common
      */
-    public function store(AllPostRequest $request)
+    public function store(NewPostRequest $request)
     {
         //リクエストの取得
         $name = $request->name;
         $password = Hash::make($request->password);
         $management_emplo_id = $request->management_emplo_id;
+        $hire_date = $request->hire_date;
         $restraint_start_time = $request->restraint_start_time;
         $restraint_closing_time = $request->restraint_closing_time;
-        $restraint_total_time = $request->restraint_total_time;
+        $restraint_total_time = Time::restraint_total_time($restraint_start_time, $restraint_closing_time);
         $retirement_authority = "0";
 
         // トグルがONになっている場合は1、OFFの場合は0
@@ -131,12 +136,13 @@ class AdminController extends Controller
             $management_emplo_id,
             $subord_authority,
             $retirement_authority,
+            $hire_date,
             $restraint_start_time,
             $restraint_closing_time,
             $restraint_total_time
         );
 
-        return redirect()->route('admin.dashboard');
+        return redirect()->route('admin.emplo_details', [$emplo_id, $retirement_authority]);;
     }
 
     /**
@@ -150,11 +156,9 @@ class AdminController extends Controller
      * @var array $employee_lists 選択した従業員の詳細データ
      * @var array $subord_authority_lists 管理者リスト
      */
-    public function show(Request $request)
+    public function show($emplo_id, $retirement_authority)
     {
         // 詳細画面の情報取得
-        $emplo_id = $request->emplo_id;
-        $retirement_authority = $request->retirement_authority;
         $employee_lists = DataBase::SelectEmployee($emplo_id, $retirement_authority);
 
         // 管理者リストの取得
@@ -179,7 +183,7 @@ class AdminController extends Controller
     /**
      * 従業員情報の更新
      *
-     * @param \Illuminate\Http\Request\Request $request
+     * @param \Illuminate\Http\Request\UpdateRequest $request
      *
      * @var string $emplo_id 社員ID
      * @var string $name　従業員名
@@ -189,8 +193,10 @@ class AdminController extends Controller
      * @var string $restraint_total_time 就業時間
      * @var array $subord_authority 部下参照権限
      * @var App\Libraries\php\Domain\Common
+     * 
+     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(UpdateRequest $request)
     {
         //リクエストの取得
         $emplo_id = $request->emplo_id;
@@ -223,7 +229,7 @@ class AdminController extends Controller
             $restraint_total_time
         );
 
-        return redirect()->route('admin.dashboard');
+        return back()->with('status', '更新しました');;
     }
 
     /**
@@ -244,7 +250,7 @@ class AdminController extends Controller
         $employee_lists = DataBase::SelectEmployee($emplo_id, $retirement_authority);
 
         //リダイレクト
-        return view('menu.emplo_detail.emplo_detail06', compact(
+        return view('menu.emplo_detail.emplo_detail05', compact(
             'employee_lists',
         ));
     }

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Libraries\php\Domain\DataBase;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+use App\Rules\PasswordRule;
 
 // 従業員（部下）のパスワードを変更するコントローラー
 class PasswordChangeController extends Controller
@@ -42,7 +43,7 @@ class PasswordChangeController extends Controller
     {
         return Validator::make($data, [
             // reget:英数字混合を指定
-            'password' => ['required', 'string', 'min:8', 'regex:/^(?=.*?[a-z])(?=.*?\d)[a-z\d]+$/i', 'confirmed'],
+            'password' => ['required', 'string', 'min:8', new PasswordRule, 'confirmed'],
         ]);
     }
 

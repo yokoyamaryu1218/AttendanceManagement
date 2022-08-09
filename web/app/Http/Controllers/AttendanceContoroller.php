@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\AllPostRequest;
+use App\Http\Requests\DailyRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Libraries\php\Domain\Common;
 use App\Libraries\php\Domain\DataBase;
@@ -135,14 +135,14 @@ class AttendanceContoroller extends Controller
     /**
      * 日報の登録
      * 
-     * @param \Illuminate\Http\Request\AllPostRequest $request
+     * @param \Illuminate\Http\Request\DailyRequest $request
      * 
      * @var string $emplo_id 社員ID
      * @var string $daily 日報
      * @var string $today 今日の日付
      * @var App\Libraries\php\Domain\DataBase
      */
-    public function daily_store(AllPostRequest $request)
+    public function daily_store(DailyRequest $request)
     {
         // リクエストの取得
         $emplo_id = Auth::guard('employee')->user()->emplo_id;
@@ -160,20 +160,20 @@ class AttendanceContoroller extends Controller
             return redirect()->route('emplo.error');
         }
 
-        return back()->with('status', '日報を登録しました');;
+        return back()->with('status', '日報を登録しました');
     }
 
     /**
      * 日報の更新
      * 
-     * @param \Illuminate\Http\Request\AllPostRequest $request
+     * @param \Illuminate\Http\Request\DailyRequest $request
      * 
      * @var string $emplo_id 社員ID
      * @var string $daily 日報
      * @var string $today 今日の日付
      * @var App\Libraries\php\Domain\DataBase
      */
-    public function daily_update(AllPostRequest $request)
+    public function daily_update(DailyRequest $request)
     {
         // リクエストの取得
         $emplo_id = Auth::guard('employee')->user()->emplo_id;

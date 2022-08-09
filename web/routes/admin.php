@@ -24,6 +24,7 @@ use App\Http\Controllers\PasswordChangeController;
 |
 */
 
+
 // 初期画面(ログイン画面)
 Route::get('/', [AuthenticatedSessionController::class, 'create'])
     ->middleware('guest')
@@ -57,15 +58,15 @@ Route::group(['middleware' => 'auth:admin'], function () {
 
     // 従業員の詳細画面に関するルーティング
     // 選択した従業員の表示
-    Route::get('/detail', [AdminController::class, 'show'])
+    Route::get('/detail/{id}/{id2}', [AdminController::class, 'show'])
         ->name('emplo_details');
 
-    Route::post('/detail', [AdminController::class, 'show'])
+    Route::post('/detail/{id}/{id2}', [AdminController::class, 'show'])
         ->name('emplo_details');
 
     // 従業員の登録情報更新の実行
-    Route::post('/update', [AdminController::class, 'update'])
-        ->name('emplo_update');
+    Route::post('/detail/update', [AdminController::class, 'update'])
+        ->name('details_update');
     // 従業員の詳細画面に関するルーティングここまで
 
     // 退職処理に関するルーティング

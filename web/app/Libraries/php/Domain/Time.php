@@ -102,6 +102,32 @@ class Time
     }
 
     /**
+     * 就業時間を求める
+     *
+     * @param  int  $restraint_start_time 始業時間
+     * @param  int  $restraint_closing_time 終業時間     
+     * 
+     * @var array $work_time_sec 退勤時間から開始時間を引いて、勤務時間(秒)を求める
+     * @var array $work_time_hour 勤務時間(秒)を3600で割ると、時間を求め、小数点を切り捨てる
+     * @var array $work_time_min 勤務時間(秒)から時間を引いた余りを60で割ると、分を求め、小数点を切り捨てる
+     * @var array $work_time_s /勤務時間(秒)から時間を引いた余りを60で割ると、分を求め、小数点を切り捨てる
+     * @var array $restraint_total_time 就業時間
+     * 
+     * @return  array $restraint_total_time
+     */
+    public static function restraint_total_time($restraint_start_time, $restraint_closing_time)
+    {
+        $work_time_sec =  strtotime($restraint_closing_time) - strtotime($restraint_start_time);
+        $work_time_hour = floor($work_time_sec / 3600);
+        $work_time_min  = floor(($work_time_sec - ($work_time_hour * 3600)) / 60);
+        $work_time_s    = $work_time_sec - ($work_time_hour * 3600 + $work_time_min * 60);
+        $restraint_total_time = $work_time_hour . ':' . $work_time_min . ':' . $work_time_s;
+
+        return $restraint_total_time;
+    }
+
+
+    /**
      * 休憩時間を求めるため、総勤務時間を求める
      * 参照：https://sukimanosukima.com/2020/07/18/php-6/
      *

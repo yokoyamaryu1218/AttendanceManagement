@@ -58,15 +58,16 @@ class Common
      * @param  int  $managment_emplo_id 上司社員ID
      * @param  int  $subord_authority 部下参照権限
      * @param  int  $retirement_authority 退職フラグ
+     * @param  int  $hire_date 入社日
      * @param  int  $restraint_start_time 始業時間
      * @param  int  $restraint_closing_time 終業時間
      * @param  int $restraint_total_time 就業時間
      * @var App\Libraries\php\Domain\DataBase
      */
-    public static function insertEmployee($emplo_id, $name, $password, $management_emplo_id, $subord_authority, $retirement_authority, $restraint_start_time, $restraint_closing_time, $restraint_total_time)
+    public static function insertEmployee($emplo_id, $name, $password, $management_emplo_id, $subord_authority, $retirement_authority, $hire_date, $restraint_start_time, $restraint_closing_time, $restraint_total_time)
     {
         // 人員を登録
-        DataBase::insertEmployee($emplo_id, $name, $password, $management_emplo_id, $subord_authority, $retirement_authority);
+        DataBase::insertEmployee($emplo_id, $name, $password, $management_emplo_id, $subord_authority, $retirement_authority, $hire_date);
 
         // 就業時間を登録
         DataBase::insertOverTime($emplo_id, $restraint_start_time, $restraint_closing_time, $restraint_total_time);

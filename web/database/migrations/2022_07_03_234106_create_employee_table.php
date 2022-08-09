@@ -32,6 +32,8 @@ class CreateEmployeeTable extends Migration
                 ->comment('新規登録日');
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))
                 ->comment('更新日');
+            $table->date('hire_date')
+                ->comment('入社日');
             $table->softDeletes()
                 ->comment('退職日');
         });

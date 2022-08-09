@@ -42,8 +42,8 @@ class Database
     {
 
         $data = DB::select('SELECT em1.emplo_id, em1.name, em1.management_emplo_id, 
-        em1.retirement_authority, em1.subord_authority,em1.created_at,em1.updated_at,em1.deleted_at,
-        /* ここまでで社員ID、社員名、上司社員ID、退職フラグ、部下参照権限、新規登録日、更新日、退職日をemployeeテーブルから取得する */
+        em1.retirement_authority, em1.subord_authority,em1.created_at,em1.updated_at,em1.hire_date,em1.deleted_at,
+        /* ここまでで社員ID、社員名、上司社員ID、退職フラグ、部下参照権限、新規登録日、更新日、入社日（退職日）をemployeeテーブルから取得する */
         em2.name AS high_name, 
         /* ここまでで上司名をemployeeテーブルから取得する */        
         ot1.restraint_start_time, ot1.restraint_closing_time, ot1.restraint_total_time FROM employee AS em1
@@ -98,11 +98,12 @@ class Database
      * @param $management_emplo_id　上司社員ID
      * @param $subord_authority　部下参照権限
      * @param $retirement_authority　退職フラグ
+     * @param $$hire_date　入社日
      *
      */
-    public static function insertEmployee($emplo_id, $name, $password, $management_emplo_id, $subord_authority, $retirement_authority)
+    public static function insertEmployee($emplo_id, $name, $password, $management_emplo_id, $subord_authority, $retirement_authority, $hire_date)
     {
-        DB::select('INSERT INTO employee (emplo_id,name,password,management_emplo_id,subord_authority,retirement_authority) VALUE (?,?,?,?,?,?)', [$emplo_id, $name, $password, $management_emplo_id, $subord_authority, $retirement_authority]);
+        DB::select('INSERT INTO employee (emplo_id,name,password,management_emplo_id,subord_authority,retirement_authority,hire_date) VALUE (?,?,?,?,?,?,?)', [$emplo_id, $name, $password, $management_emplo_id, $subord_authority, $retirement_authority, $hire_date]);
     }
 
     /**
