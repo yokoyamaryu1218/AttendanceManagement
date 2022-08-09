@@ -21,6 +21,12 @@
                         </div>
                         @endif
 
+                        @if ($errors->has('password'))
+                        <div class="alert text-center alert-warning">
+                            {{ $errors->first('password') }}
+                        </div>
+                        @endif
+
                         <!-- Password -->
                         <div class="mt-4">
                             <x-label for="old_password" :value="__('現在のパスワード')" />

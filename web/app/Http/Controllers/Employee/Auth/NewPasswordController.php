@@ -33,7 +33,9 @@ class NewPasswordController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'password' => 'required|string|min:6|confirmed',
+            // reget:英数字混合を指定
+            // different:current_passwordは新旧異なるパスワードの確認
+            'password' => ['required', 'string', 'min:8', 'regex:/^(?=.*?[a-z])(?=.*?\d)[a-z\d]+$/i', 'different:current_password', 'confirmed'],
         ]);
     }
 
@@ -46,7 +48,7 @@ class NewPasswordController extends Controller
         }
 
         // 新しいパスワードを確認
-        if (!password_verify($request->password, password_hash($request->password_confirmation,PASSWORD_DEFAULT))) {
+        if (!password_verify($request->password, password_hash($request->password_confirmation, PASSWORD_DEFAULT))) {
             return redirect()->route('employee.change_password')
                 ->with('warning', '新しいパスワードが合致しません。');
         }
