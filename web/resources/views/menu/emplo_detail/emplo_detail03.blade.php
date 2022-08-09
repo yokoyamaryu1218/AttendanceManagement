@@ -11,20 +11,29 @@
             <div class="flex flex-col text-center w-full mb-20">
                 <h1 class="sm:text-4xl text-3xl font-medium title-font mb-2 text-gray-900">新規登録画面</h1>
             </div>
-
             <form method="POST" action="{{ route('admin.emplo_store')}}">
                 @csrf
                 @method('post')
                 <div class="grid gap-6 mb-6 lg:grid-cols-3">
                     <div>
                         <!-- 社員名 -->
+                        @if ($errors->has('name'))
+                        <div class="alert text-center alert-warning">
+                            {{ $errors->first('name') }}
+                        </div>
+                        @endif
                         <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">社員名</label>
                         <input type="text" id="name" name="name" value="{{ old('name') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="山田太郎" required>
                     </div>
                     <div>
                         <!-- パスワード -->
+                        @if ($errors->has('password'))
+                        <div class="alert text-center alert-warning">
+                            {{ $errors->first('password') }}
+                        </div>
+                        @endif
                         <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">パスワード</label>
-                        <input type="password" id="password" value="{{ old('password') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="●●●●●●●●" required>
+                        <input type="password" id="password" value="{{ old('password') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="●●●●●●●●">
                     </div>
                     <div>
                         <!-- 部下参照権限 -->
@@ -38,6 +47,11 @@
                 <div class="grid gap-6 mb-6 lg:grid-cols-3">
                     <div>
                         <!-- 管理者番号 -->
+                        @if ($errors->has('management_emplo_id'))
+                        <div class="alert text-center alert-warning">
+                            {{ $errors->first('management_emplo_id') }}
+                        </div>
+                        @endif
                         <label for="management_emplo_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">管理者番号</label>
                         <input type="text" id="management_emplo_id" name="management_emplo_id" maxlength="4" value="{{ old('managment_emplo_id') }}" data-toggle="tooltip" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="1000" readonly>
                     </div>

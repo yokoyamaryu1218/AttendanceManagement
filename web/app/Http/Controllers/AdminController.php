@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\Libraries\php\Domain\Common;
+use App\Http\Requests\AllPostRequest;
 use App\Libraries\php\Domain\DataBase;
 
 // 管理者画面用のコントローラー
@@ -84,20 +85,20 @@ class AdminController extends Controller
      * 従業員の登録
      *
      * @param \Illuminate\Http\Request\Request $request
-     * 
+     *
      * @var string $name　従業員名
      * @var string $password パスワード
      * @var string $management_emplo_id 上司社員ID
      * @var string $restraint_start_time 始業時間
      * @var string $restraint_closing_time 終業時間
      * @var string $restraint_total_time 就業時間
-     * @var string $retirement_authority 退職フラグ 
+     * @var string $retirement_authority 退職フラグ
      * @var array $subord_authority 部下参照権限
      * @var App\Libraries\php\Domain\DataBase
      * @var string $emplo_id 社員ID
      * @var App\Libraries\php\Domain\Common
      */
-    public function store(Request $request)
+    public function store(AllPostRequest $request)
     {
         //リクエストの取得
         $name = $request->name;
@@ -142,9 +143,9 @@ class AdminController extends Controller
      * 従業員の表示
      *
      * @param \Illuminate\Http\Request\Request $request
-     * 
+     *
      * @var string $emplo_id 社員ID
-     * @var string $retirement_authority 退職フラグ 
+     * @var string $retirement_authority 退職フラグ
      * @var App\Libraries\php\Domain\DataBase
      * @var array $employee_lists 選択した従業員の詳細データ
      * @var array $subord_authority_lists 管理者リスト
@@ -179,7 +180,7 @@ class AdminController extends Controller
      * 従業員情報の更新
      *
      * @param \Illuminate\Http\Request\Request $request
-     * 
+     *
      * @var string $emplo_id 社員ID
      * @var string $name　従業員名
      * @var string $management_emplo_id 上司社員ID
@@ -229,9 +230,9 @@ class AdminController extends Controller
      * 復職処理を行う従業員の詳細取得
      *
      * @param \Illuminate\Http\Request\Request $request
-     * 
+     *
      * @var string $emplo_id 社員ID
-     * @var string $retirement_authority 退職フラグ 
+     * @var string $retirement_authority 退職フラグ
      * @var App\Libraries\php\Domain\DataBase
      * @var array $employee_lists 選択した従業員の詳細データ
      */
@@ -252,9 +253,9 @@ class AdminController extends Controller
      * 復職処理の実行
      *
      * @param \Illuminate\Http\Request\Request $request
-     * 
+     *
      * @var string $emplo_id 社員ID
-     * @var array $retirement_authority 退職フラグ 
+     * @var array $retirement_authority 退職フラグ
      * @var App\Libraries\php\Domain\DataBase
      */
     public function reinstatement_action(Request $request)
@@ -277,9 +278,9 @@ class AdminController extends Controller
      * 退職処理を行う従業員の詳細取得
      *
      * @param \Illuminate\Http\Request\Request $request
-     * 
+     *
      * @var string $emplo_id 社員ID
-     * @var string $retirement_authority 退職フラグ 
+     * @var string $retirement_authority 退職フラグ
      * @var App\Libraries\php\Domain\DataBase
      * @var array $employee_lists 選択した従業員の詳細データ
      */
@@ -300,9 +301,9 @@ class AdminController extends Controller
      * 退職処理の実行
      *
      * @param \Illuminate\Http\Request\Request $request
-     * 
+     *
      * @var string $emplo_id 社員ID
-     * @var array $retirement_authority 退職フラグ 
+     * @var array $retirement_authority 退職フラグ
      * @var App\Libraries\php\Domain\DataBase
      */
     public function destroy(Request $request)

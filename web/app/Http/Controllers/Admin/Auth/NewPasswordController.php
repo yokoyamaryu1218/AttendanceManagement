@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Validator;
+use App\Rules\PasswordRule;
 use Illuminate\Support\Str;
 
 // パスワード変更のコントローラー
@@ -40,7 +41,7 @@ class NewPasswordController extends Controller
         return Validator::make($data, [
             // reget:英数字混合を指定
             // different:current_passwordは新旧異なるパスワードの確認
-            'password' => ['required', 'string', 'min:8', 'regex:/^(?=.*?[a-z])(?=.*?\d)[a-z\d]+$/i', 'different:old_password', 'confirmed'],
+            'password' => ['required', 'string', 'min:8', new PasswordRule, 'different:old_password', 'confirmed'],
         ]);
     }
 
