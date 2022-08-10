@@ -39,7 +39,7 @@ class AdminController extends Controller
         // 在職者だけを表示するため、退職フラグに0を付与
         $retirement_authority = "0";
         $employee_lists = DataBase::getEmployeeAll($retirement_authority);
-        $employee_lists = Employee::paginate(1);
+        $employee_lists = Employee::paginate(10);
 
         // 退職者がいる場合、退職者一覧のリンクを表示するため、退職者リストも取得する
         $retirement_authority = "1";
