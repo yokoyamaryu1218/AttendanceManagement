@@ -33,7 +33,6 @@ class UpdateRequest extends FormRequest
             'management_emplo_id' => 'required',
             'restraint_start_time' => 'required',
             'restraint_closing_time'  => ['required', 'after:restraint_start_time'],
-            'daily' => ['nullable', 'max:1024'],
         ];
     }
 

@@ -1,5 +1,4 @@
 <!-- admin側 復職・退職確認画面に出す従業員詳細画面のblade -->
-@foreach($employee_lists as $emplo)
 @csrf
 @method('post')
 <div class="grid gap-6 mb-6 lg:grid-cols-2">
@@ -49,4 +48,3 @@
     <input class="btn btn-warning my-0" type="button" value="戻る" onclick="window.history.back()">
 </div>
 <!-- ボタンここまで -->
-@endforeach

@@ -71,11 +71,11 @@ Route::group(['middleware' => 'auth:admin'], function () {
 
     // 退職処理に関するルーティング
     // 退職確認画面の表示
-    Route::get('/detail/delete', [AdminController::class, 'destroy_check'])
+    Route::get('/detail/delete/{id}/{id2}', [AdminController::class, 'destroy_check'])
         ->name('destroy_check');
 
     //退職処理実行
-    Route::post('/detail/delete/action', [AdminController::class, 'destroy'])
+    Route::post('/detail/delete/action/{id}', [AdminController::class, 'destroy'])
         ->name('destroy');
     //退職処理に関するルーティングここまで
 
@@ -87,11 +87,11 @@ Route::group(['middleware' => 'auth:admin'], function () {
 
     // 復職処理に関するルーティング
     // 復職確認画面の表示
-    Route::get('/detail/retirement', [AdminController::class, 'reinstatement_check'])
+    Route::get('/detail/retirement/{id}/{id2}', [AdminController::class, 'reinstatement_check'])
         ->name('reinstatement_check');
 
     // 復職処理実行
-    Route::post('/detail/retirement/action', [AdminController::class, 'reinstatement_action'])
+    Route::post('/detail/retirement/action/{id}', [AdminController::class, 'reinstatement_action'])
         ->name('reinstatement_action');
     // 復職処理に関するルーティングここまで
 

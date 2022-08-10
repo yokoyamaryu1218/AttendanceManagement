@@ -193,7 +193,7 @@ class AdminController extends Controller
      * @var string $restraint_total_time 就業時間
      * @var array $subord_authority 部下参照権限
      * @var App\Libraries\php\Domain\Common
-     * 
+     *
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateRequest $request)
@@ -242,11 +242,9 @@ class AdminController extends Controller
      * @var App\Libraries\php\Domain\DataBase
      * @var array $employee_lists 選択した従業員の詳細データ
      */
-    public function reinstatement_check(Request $request)
+    public function reinstatement_check($emplo_id, $retirement_authority)
     {
         // 復職者処理を行う従業員の詳細取得
-        $emplo_id = $request->emplo_id;
-        $retirement_authority = $request->retirement_authority;
         $employee_lists = DataBase::SelectEmployee($emplo_id, $retirement_authority);
 
         //リダイレクト
@@ -264,11 +262,8 @@ class AdminController extends Controller
      * @var array $retirement_authority 退職フラグ
      * @var App\Libraries\php\Domain\DataBase
      */
-    public function reinstatement_action(Request $request)
+    public function reinstatement_action($emplo_id)
     {
-        //リクエストの取得
-        $emplo_id = $request->emplo_id;
-
         //退職フラグに0を付与する
         $retirement_authority = "0";
         DataBase::retirementAssignment($retirement_authority, $emplo_id);
@@ -290,11 +285,9 @@ class AdminController extends Controller
      * @var App\Libraries\php\Domain\DataBase
      * @var array $employee_lists 選択した従業員の詳細データ
      */
-    public function destroy_check(Request $request)
+    public function destroy_check($emplo_id, $retirement_authority)
     {
         // 退職処理を行う従業員の情報取得
-        $emplo_id = $request->emplo_id;
-        $retirement_authority = $request->retirement_authority;
         $employee_lists = DataBase::SelectEmployee($emplo_id, $retirement_authority);
 
         //リダイレクト
@@ -312,11 +305,8 @@ class AdminController extends Controller
      * @var array $retirement_authority 退職フラグ
      * @var App\Libraries\php\Domain\DataBase
      */
-    public function destroy(Request $request)
+    public function destroy($emplo_id)
     {
-        //リクエストの取得
-        $emplo_id = $request->emplo_id;
-
         //退職フラグに1を付与する
         $retirement_authority = "1";
         DataBase::retirementAssignment($retirement_authority, $emplo_id);

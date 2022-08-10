@@ -15,25 +15,21 @@
             <div class="text-right">
                 <!-- 退職フラグが0の場合は、退職ボタンを出し -->
                 @if(($emplo->retirement_authority) == "0")
-                <form method="get" action="{{ route('admin.destroy_check')}}">
+                <form method="get" action="{{ route('admin.destroy_check',[$emplo->emplo_id,$emplo->retirement_authority])}}">
                     @csrf
-                    <input type="hidden" class="form-control" id="emplo_id" name="emplo_id" value="{{$emplo->emplo_id}}">
-                    <input type="hidden" class="form-control" id="retirement_authority" name="retirement_authority" value="{{$emplo->retirement_authority}}">
                     <button class="input-group-text flex mx-auto text-white btn btn btn-danger border-0 py-2 px-8 focus:outline-none rounded text-lg">退職</button>
                 </form>
                 @else
                 <!-- 退職フラグが1の場合は、復職ボタンを出す -->
-                <form method="get" action="{{ route('admin.reinstatement_check')}}">
+                <form method="get" action="{{ route('admin.reinstatement_check',[$emplo->emplo_id,$emplo->retirement_authority])}}">
                     @csrf
-                    <input type="hidden" class="form-control" id="emplo_id" name="emplo_id" value="{{$emplo->emplo_id}}">
-                    <input type="hidden" class="form-control" id="retirement_authority" name="retirement_authority" value="{{$emplo->retirement_authority}}">
                     <button class="input-group-text flex mx-auto text-white btn btn btn-primary border-0 py-2 px-8 focus:outline-none rounded text-lg">復職</button>
                 </form>
                 @endif
                 <!-- ボタンここまで -->
             </div>
             <form method="POST" action="{{ route('admin.details_update') }}">
-            @csrf
+                @csrf
                 @method('post')
                 <!-- フラッシュメッセージの表示 -->
                 @if (session('status'))

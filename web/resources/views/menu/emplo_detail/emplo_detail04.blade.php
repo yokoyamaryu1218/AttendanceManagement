@@ -13,7 +13,7 @@
                 <h1 class="sm:text-4xl text-3xl font-medium title-font mb-2 text-gray-900">退職確認画面</h1>
                 以下の従業員の退職処理を行います。よろしいでしょうか。
             </div>
-            <form method="POST" action="{{ route('admin.destroy')}}">
+            <form method="POST" action="{{ route('admin.destroy',[$emplo->emplo_id])}}">
             <!-- 復職・退職確認画面に出す従業員詳細画面のbladeへ -->
             @include('menu.emplo_detail.emplo_detail07')
             </form>

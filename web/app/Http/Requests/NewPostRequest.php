@@ -34,14 +34,12 @@ class NewPostRequest extends FormRequest
             'management_emplo_id' => 'required',
             'restraint_start_time' => 'required',
             'restraint_closing_time'  => ['required', 'after:restraint_start_time'],
-            'daily' => ['nullable', 'max:1024'],
         ];
     }
 
     public function messages()
     {
         return [
-            'daily.max' => '日報は1,024文字以内で入力してください',
             'name.required' => '社員名を入力してください',
             'name.max' => '社員名は32文字以内で入力してください',
             'password.required' => 'パスワードを入力してください',

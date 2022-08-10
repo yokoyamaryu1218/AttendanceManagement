@@ -25,7 +25,22 @@ class EmployeeSeeder extends Seeder
             ['1002', '部下一郎', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2',  '1001', 0, 0, NULL, NULL, '2010/10/01', NULL], //パスワード：password
             ['1003', '部下次郎', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2',  '1001', 0, 0, NULL, NULL, '2010/10/01', NULL], //パスワード：password
             ['1004', '部下三郎', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2',  '1001', 0, 0, NULL, NULL, '2010/10/01', NULL], //パスワード：password
-
+            ['1005', '上司次郎', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2',  '0001', 0, 0, NULL, NULL, '2010/10/01', NULL], //パスワード：password
+            ['1006', '田中太郎', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2',  '1001', 0, 0, NULL, NULL, '2010/10/01', NULL], //パスワード：password
+            ['1007', '部下一郎', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2',  '1001', 0, 0, NULL, NULL, '2010/10/01', NULL], //パスワード：password
+            ['1008', '部下次郎', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2',  '1001', 0, 0, NULL, NULL, '2010/10/01', NULL], //パスワード：password
+            ['1009', '部下三郎', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2',  '1001', 0, 0, NULL, NULL, '2010/10/01', NULL], //パスワード：password
+            ['1010', '上司次郎', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2',  '0001', 0, 0, NULL, NULL, '2010/10/01', NULL], //パスワード：password
+            ['1011', '田中太郎', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2',  '1001', 0, 0, NULL, NULL, '2010/10/01', NULL], //パスワード：password
+            ['1012', '部下一郎', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2',  '1001', 0, 0, NULL, NULL, '2010/10/01', NULL], //パスワード：password
+            ['1013', '部下次郎', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2',  '1001', 0, 0, NULL, NULL, '2010/10/01', NULL], //パスワード：password
+            ['1014', '部下三郎', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2',  '1001', 0, 0, NULL, NULL, '2010/10/01', NULL], //パスワード：password
+            ['1015', '上司次郎', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2',  '0001', 1, 0, NULL, NULL, '2010/10/01', NULL], //パスワード：password
+            ['1016', '田中太郎', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2',  '1001', 1, 0, NULL, NULL, '2010/10/01', NULL], //パスワード：password
+            ['1017', '部下一郎', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2',  '1001', 0, 0, NULL, NULL, '2010/10/01', NULL], //パスワード：password
+            ['1018', '部下次郎', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2',  '1001', 0, 0, NULL, NULL, '2010/10/01', NULL], //パスワード：password
+            ['1019', '部下三郎', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2',  '1001', 0, 0, NULL, NULL, '2010/10/01', NULL], //パスワード：password
+            ['1020', '部下三郎', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2',  '1001', 0, 0, NULL, NULL, '2010/10/01', NULL], //パスワード：password
         ];
 
         foreach ($employee_insert_data_list as $insert_data) {
