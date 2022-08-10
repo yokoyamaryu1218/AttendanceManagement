@@ -10,8 +10,15 @@
                 </form>
                 <!-- 新規登録ボタンここまで -->
             </div>
+            @if(!(empty($employee_lists[0])))
             <!-- 従業員の一覧を表示する共通用bladeへ -->
             @include('menu.emplo_detail.emplo_detail02')
+            @else
+            <!-- 在職者がいない場合は何も出さない -->
+            <div class="text-center">
+                <h5>現在、在職者はいないようです。</h5></BR>
+            </div>
+            @endif
             <!-- 退職者リストにデータがある場合は退職者一覧のリンクを出す -->
             @if(!(empty($retirement_lists)))
             <div class="text-right">

@@ -20,7 +20,11 @@ class AdminsSeeder extends Seeder
         $admins_holder = '?,?,?,?,?';
         // @var array employeeの挿入データ
         $admins_insert_data_list = [
-            ['admin', '管理用アカウント', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2', NULL, NULL], //パスワード：password
+            ['admin1', '管理用アカウント1', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2', NULL, NULL], //パスワード：password
+            ['admin2', '管理用アカウント2', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2', NULL, NULL], //パスワード：password
+            ['admin3', '管理用アカウント3', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2', NULL, NULL], //パスワード：password
+            ['admin4', '管理用アカウント4', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2', NULL, NULL], //パスワード：password
+            ['admin5', '管理用アカウント5', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2', NULL, NULL], //パスワード：password
         ];
 
         foreach ($admins_insert_data_list as $insert_data) {

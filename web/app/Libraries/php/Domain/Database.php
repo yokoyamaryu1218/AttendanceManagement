@@ -444,22 +444,23 @@ class Database
      * 部下の取得
      *
      * @param $emplo_id　社員ID
+     * @param $retirement_authority 退職フラグ
      *
      * @var   $data 取得データ
      *
      * @return  array $data
      */
-    public static function getSubord($emplo_id)
+    public static function getSubord($emplo_id, $retirement_authority)
     {
 
         $data = DB::select('SELECT em1.emplo_id, em2.emplo_id AS subord_id,
-        em2.name AS subord_name FROM employee AS em1
+        em2.name AS subord_name, em2.retirement_authority FROM employee AS em1
         /* ここまでで勤怠日、ログインしている社員ID、部下の社員IDと部下の名前をemployeeテーブルから取得する */
         LEFT JOIN hierarchy on em1.emplo_id = hierarchy.high_id
         /* hierarchyテーブルの上位IDと、employeeテーブルの社員IDを結合して取得する */
         LEFT JOIN employee AS em2 ON hierarchy.lower_id = em2.emplo_id
         /* 別途hierarchyテーブルの下位IDと、employeeテーブルの社員IDを結合して取得する */
-        WHERE em1.emplo_id = ? ORDER BY subord_id', [$emplo_id]);
+        WHERE em1.emplo_id = ? AND em2.retirement_authority = ? ORDER BY subord_id', [$emplo_id, $retirement_authority]);
         /* 社員IDを検索条件にして情報を取得し、部下の社員IDを基準に並び替える。 */
 
         return $data;

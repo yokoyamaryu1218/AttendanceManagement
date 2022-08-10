@@ -196,13 +196,16 @@ class AttendanceContoroller extends Controller
      * @var string $emplo_id 社員ID
      * @var App\Libraries\php\Domain\DataBase
      * @var array $subord_data 部下情報
+     * @var array $retirement_authority 退職フラグ
      */
     public function subord_index(Request $request)
     {
         // 自分自身の配下の部下一覧を取得する
         if (Auth::guard('employee')->user()->subord_authority == "1") {
             $emplo_id = Auth::guard('employee')->user()->emplo_id;
-            $subord_data = collect(DataBase::getSubord($emplo_id));
+            // 在職者だけ出す
+            $retirement_authority = "0";
+            $subord_data = collect(DataBase::getSubord($emplo_id, $retirement_authority));
 
             // ページネーション
             // 参照：https://qiita.com/wallkickers/items/35d13a62e0d53ce05732

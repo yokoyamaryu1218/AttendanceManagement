@@ -12,24 +12,21 @@
                     </div>
                     <!-- 従業員の一覧表示部分 -->
                     <!-- 退職者リストがある場合、退職者一覧を表示する -->
-                    @if(!(empty($employee_lists)))
+                    @if(!(empty($employee_lists[0])))
                     <!-- 従業員の一覧を表示する共通用bladeへ -->
                     @include('menu.emplo_detail.emplo_detail02')
+                    @else
+                    <div class="text-center">
+                        <!-- 退職者がいない場合は何も出さない -->
+                        <h5>現在、退職者はいないようです。</h5></BR>
+                    </div>
                     <div class="text-right">
                         <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('admin.dashboard') }}">
                             {{ __('従業員一覧へ') }}
                         </a>
                     </div>
-                    @else
-                    <div class="text-center">
-                        <!-- 退職者がいない場合は何も出さない -->
-                        <h5>現在、退職者はいないようです。</h5></BR>
-                        <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('admin.dashboard') }}">
-                            {{ __('従業員一覧へ') }}
-                        </a>
-                    </div>
                     @endif
-                </div>
+            </div>
             </div>
         </section>
     </body>

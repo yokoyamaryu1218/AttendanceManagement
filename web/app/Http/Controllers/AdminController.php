@@ -48,7 +48,6 @@ class AdminController extends Controller
             $request->page,
             array('path' => $request->url())
         );
-       
         // 退職者がいる場合、退職者一覧のリンクを表示するため、退職者リストも取得する
         $retirement_authority = "1";
         $retirement_lists = DataBase::getEmployeeAll($retirement_authority);
