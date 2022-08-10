@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Libraries\php\Domain\Common;
 use App\Libraries\php\Domain\DataBase;
 use App\Libraries\php\Domain\Time;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 // 従業員側 ホーム画面のコントローラー
 class AttendanceContoroller extends Controller
@@ -196,12 +197,22 @@ class AttendanceContoroller extends Controller
      * @var App\Libraries\php\Domain\DataBase
      * @var array $subord_data 部下情報
      */
-    public function subord_index()
+    public function subord_index(Request $request)
     {
         // 自分自身の配下の部下一覧を取得する
         if (Auth::guard('employee')->user()->subord_authority == "1") {
             $emplo_id = Auth::guard('employee')->user()->emplo_id;
-            $subord_data = DataBase::getSubord($emplo_id);
+            $subord_data = collect(DataBase::getSubord($emplo_id));
+
+            // ページネーション
+            // 参照：https://qiita.com/wallkickers/items/35d13a62e0d53ce05732
+            $subord_data = new LengthAwarePaginator(
+                $subord_data->forPage($request->page, 10),
+                count($subord_data),
+                10,
+                $request->page,
+                array('path' => $request->url())
+            );
 
             return view('menu.subord.subord_lists', compact('subord_data'));
         }

@@ -3,15 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
-use App\Models\Admin;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use App\Libraries\php\Domain\Time;
 use App\Libraries\php\Domain\Common;
+use App\Libraries\php\Domain\DataBase;
 use App\Http\Requests\NewPostRequest;
 use App\Http\Requests\UpdateRequest;
-use App\Libraries\php\Domain\DataBase;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 // 管理者画面用のコントローラー
 class AdminController extends Controller
@@ -34,13 +33,22 @@ class AdminController extends Controller
      * @var array $employee_lists 在職者リスト
      * @var array $retirement_lists 退職者リスト
      */
-    public function index()
+    public function index(Request $request)
     {
         // 在職者だけを表示するため、退職フラグに0を付与
         $retirement_authority = "0";
-        $employee_lists = DataBase::getEmployeeAll($retirement_authority);
-        $employee_lists = Employee::paginate(1);
+        $employee_lists =  collect(DataBase::getEmployeeAll($retirement_authority));
 
+        // ページネーション
+        // 参照：https://qiita.com/wallkickers/items/35d13a62e0d53ce05732
+        $employee_lists = new LengthAwarePaginator(
+            $employee_lists->forPage($request->page, 10),
+            count($employee_lists),
+            10,
+            $request->page,
+            array('path' => $request->url())
+        );
+       
         // 退職者がいる場合、退職者一覧のリンクを表示するため、退職者リストも取得する
         $retirement_authority = "1";
         $retirement_lists = DataBase::getEmployeeAll($retirement_authority);
@@ -58,11 +66,20 @@ class AdminController extends Controller
      * @var array $retirement_authority 退職フラグ
      * @var array $retirement_lists 退職者リスト
      */
-    public function retirement()
+    public function retirement(Request $request)
     {
         // 退職者だけを表示するため、退職フラグに1を付与
         $retirement_authority = "1";
-        $employee_lists = DataBase::getEmployeeAll($retirement_authority);
+        $employee_lists = collect(DataBase::getEmployeeAll($retirement_authority));
+        
+        // ページネーション
+        $employee_lists = new LengthAwarePaginator(
+            $employee_lists->forPage($request->page, 10),
+            count($employee_lists),
+            10,
+            $request->page,
+            array('path' => $request->url())
+        );
 
         return view('menu.emplo_detail.emplo_detail06', compact(
             'employee_lists',

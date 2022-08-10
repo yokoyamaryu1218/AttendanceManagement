@@ -25,6 +25,22 @@ class HierarchySeeder extends Seeder
             ['1002', '1001', NULL, NULL],
             ['1003', '1001', NULL, NULL],
             ['1004', '1001', NULL, NULL],
+            ['1005', '1001', NULL, NULL],
+            ['1006', '1001', NULL, NULL],
+            ['1007', '1001', NULL, NULL],
+            ['1008', '1001', NULL, NULL],
+            ['1009', '1001', NULL, NULL],
+            ['1010', '1001', NULL, NULL],
+            ['1011', '1001', NULL, NULL],
+            ['1012', '1001', NULL, NULL],
+            ['1013', '1001', NULL, NULL],
+            ['1014', '1001', NULL, NULL],
+            ['1015', '1001', NULL, NULL],
+            ['1016', '1001', NULL, NULL],
+            ['1017', '1001', NULL, NULL],
+            ['1018', '1001', NULL, NULL],
+            ['1019', '1001', NULL, NULL],
+            ['1020', '1001', NULL, NULL],
         ];
 
         foreach ($hierarchy_insert_data_list as $insert_data) {

@@ -43,3 +43,4 @@
         @endforeach
     </tbody>
 </table>
+{{$employee_lists->links('components.pagenation')}}
