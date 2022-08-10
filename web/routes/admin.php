@@ -44,6 +44,9 @@ Route::group(['middleware' => 'auth:admin'], function () {
     // 在職の従業員の表示
     Route::get('/dashboard', [AdminController::class, 'index'])
         ->name('dashboard');
+    // 検索
+    Route::get('/dashboard/search/{id}', [AdminController::class, 'search']);
+    Route::post('/dashboard/search/{id}', [AdminController::class, 'search'])->name('search');
     // ダッシュボード表示に関するルーティングここまで
 
     // 従業員新規登録に関するルーティング
@@ -145,7 +148,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
 
     // エラーページの表示
     Route::get('/error', [MonthlyController::class, 'errorMsg'])
-    ->name('error');
+        ->name('error');
     // エラーページここまで
 });
 

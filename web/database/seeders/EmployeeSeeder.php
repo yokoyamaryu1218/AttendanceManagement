@@ -40,7 +40,7 @@ class EmployeeSeeder extends Seeder
             ['1017', '部下一郎', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2',  '1001', 0, 0, NULL, NULL, '2010/10/01', NULL], //パスワード：password
             ['1018', '部下次郎', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2',  '1001', 0, 0, NULL, NULL, '2010/10/01', NULL], //パスワード：password
             ['1019', '部下三郎', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2',  '1001', 0, 0, NULL, NULL, '2010/10/01', NULL], //パスワード：password
-            ['1020', '部下三郎', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2',  '1001', 0, 0, NULL, NULL, '2010/10/01', NULL], //パスワード：password
+            ['1020', '部下三郎', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2',  '1001', 0, 1, NULL, NULL, '2010/10/01', NULL], //パスワード：password
         ];
 
         foreach ($employee_insert_data_list as $insert_data) {

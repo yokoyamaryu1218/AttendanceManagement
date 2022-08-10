@@ -20,7 +20,7 @@
             <td class="align-middle button">
                 <form method="POST" action="{{ route('admin.emplo_details', [$emplo->emplo_id,$emplo->retirement_authority]) }}">
                     @csrf
-                  <button class="input-group-text flex mx-auto text-white btn btn-success border-0 py-2 px-8 focus:outline-none rounded text-lg">開く</button>
+                    <button class="input-group-text flex mx-auto text-white btn btn-success border-0 py-2 px-8 focus:outline-none rounded text-lg">開く</button>
                 </form>
             </td>
             <!-- 勤怠一覧 -->
@@ -36,7 +36,7 @@
             <td class="align-middle button">
                 <form method="POST" action="{{ route('admin.emplo_change_password', [ 'emplo_id'=> $emplo->emplo_id , 'name'=> $emplo->name ] )}}">
                     @csrf
-                  <button class="input-group-text flex mx-auto text-white btn btn-success border-0 py-2 px-8 focus:outline-none rounded text-lg">開く</button>
+                    <button class="input-group-text flex mx-auto text-white btn btn-success border-0 py-2 px-8 focus:outline-none rounded text-lg">開く</button>
                 </form>
             </td>
         </tr>

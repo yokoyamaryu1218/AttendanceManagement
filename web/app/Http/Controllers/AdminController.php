@@ -49,11 +49,11 @@ class AdminController extends Controller
             array('path' => $request->url())
         );
         // 退職者がいる場合、退職者一覧のリンクを表示するため、退職者リストも取得する
-        $retirement_authority = "1";
-        $retirement_lists = DataBase::getEmployeeAll($retirement_authority);
+        $retirement_lists = DataBase::getEmployeeAll("1");
 
         return view('admin.dashboard', compact(
             'employee_lists',
+            'retirement_authority',
             'retirement_lists',
         ));
     }
@@ -70,7 +70,7 @@ class AdminController extends Controller
         // 退職者だけを表示するため、退職フラグに1を付与
         $retirement_authority = "1";
         $employee_lists = collect(DataBase::getEmployeeAll($retirement_authority));
-        
+
         // ページネーション
         $employee_lists = new LengthAwarePaginator(
             $employee_lists->forPage($request->page, 10),
@@ -82,6 +82,7 @@ class AdminController extends Controller
 
         return view('menu.emplo_detail.emplo_detail06', compact(
             'employee_lists',
+            'retirement_authority',
         ));
     }
 
@@ -196,6 +197,54 @@ class AdminController extends Controller
     {
         // 就業規則の表示
         return view('menu.another.advanced');
+    }
+
+    /**
+     * 在職の従業員の表示
+     *
+     * @var App\Libraries\php\Domain\DataBase
+     * @var array $retirement_authority 退職フラグ
+     * @var array $employee_lists 在職者リスト
+     * @var array $retirement_lists 退職者リスト
+     */
+    public function search(Request $request, $retirement_authority)
+    {
+        //検索語のチェック
+        if (isset($_GET['search'])) {
+            $_POST['search'] = $_GET['search'];
+        }
+
+        if (is_numeric($request->search)) {
+            $employee_lists =  collect(DataBase::getSearchID($retirement_authority, $request->search));
+        } else {
+            $employee_lists =  collect(DataBase::getSearchName($retirement_authority, $request->search));
+        }
+
+        // ページネーション
+        // 参照：https://qiita.com/wallkickers/items/35d13a62e0d53ce05732
+        $employee_lists = new LengthAwarePaginator(
+            $employee_lists->forPage($request->page, 10),
+            count($employee_lists),
+            10,
+            $request->page,
+            array('path' => $request->url())
+        );
+
+        // 退職者がいる場合、退職者一覧のリンクを表示するため、退職者リストも取得する
+        $retirement_lists = DataBase::getEmployeeAll("1");
+
+        if ($retirement_authority = "0") {
+            return view('admin.dashboard', compact(
+                'employee_lists',
+                'retirement_authority',
+                'retirement_lists',
+            ));
+        } else {
+            return view('menu.emplo_detail.emplo_detail06', compact(
+                'employee_lists',
+                'retirement_authority',
+            ));
+        }
     }
 
     /**

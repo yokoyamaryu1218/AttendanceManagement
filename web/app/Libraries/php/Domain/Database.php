@@ -59,6 +59,42 @@ class Database
     }
 
     /**
+     * 検索した人員情報を取得するメソッド(人名)
+     * @param $retirement_authority 退職フラグ
+     * @param $search 検索文字
+     *
+     * @var   $data 取得データ
+     *
+     * @return  array $data
+     */
+    public static function getSearchName($retirement_authority, $search)
+    {
+
+        $data = DB::select('SELECT emplo_id,name,retirement_authority FROM `employee` WHERE retirement_authority = ?
+        and name like ?', [$retirement_authority, '%' . $search . '%']);
+
+        return $data;
+    }
+
+    /**
+     * 検索した人員情報を取得するメソッド(社員番号)
+     * @param $retirement_authority 退職フラグ
+     * @param $search 検索文字
+     *
+     * @var   $data 取得データ
+     *
+     * @return  array $data
+     */
+    public static function getSearchID($retirement_authority, $search)
+    {
+
+        $data = DB::select('SELECT emplo_id,name,retirement_authority FROM `employee` WHERE retirement_authority = ?
+        and emplo_id like ?', [$retirement_authority, '%' . $search . '%']);
+
+        return $data;
+    }
+
+    /**
      * 部下参照権限がある社員リストの取得
      *
      * @var   $list 取得データ
