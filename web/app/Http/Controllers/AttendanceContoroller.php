@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employee;
 use Illuminate\Http\Request;
 use App\Http\Requests\DailyRequest;
 use Illuminate\Support\Facades\Auth;
@@ -202,6 +203,7 @@ class AttendanceContoroller extends Controller
         if (Auth::guard('employee')->user()->subord_authority == "1") {
             $emplo_id = Auth::guard('employee')->user()->emplo_id;
             $subord_data = DataBase::getSubord($emplo_id);
+            $subord_data = Employee::paginate(10);
 
             return view('menu.subord.subord_lists', compact('subord_data'));
         }

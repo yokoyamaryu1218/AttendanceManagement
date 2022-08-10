@@ -24,24 +24,22 @@
                             @foreach($subord_data as $subord)
                             <tr>
                                 <!-- 社員番号 -->
-                                <th class="fix-col">{{$subord->subord_id}}</td>
+                                <th class="fix-col">{{$subord->emplo_id}}</td>
                                     <!-- 従業員名 -->
-                                <td class="fix-col">{{$subord->subord_name}}</td>
+                                <td class="fix-col">{{$subord->name}}</td>
                                 <!-- 勤怠一覧 -->
                                 <td class="fix-col">
                                     <form method="POST" action="{{ route('employee.subord_monthly')}}">
                                         @csrf
-                                        <input type="hidden" class="form-control" id="subord_id" name="subord_id" value="{{$subord->subord_id}}">
-                                        <input type="hidden" class="form-control" id="subord_name" name="subord_name" value="{{$subord->subord_name}}">
+                                        <input type="hidden" class="form-control" id="subord_id" name="subord_id" value="{{$subord->emplo_id}}">
+                                        <input type="hidden" class="form-control" id="subord_name" name="subord_name" value="{{$subord->name}}">
                                         <button class="input-group-text flex mx-auto text-white btn btn-success border-0 py-2 px-8 focus:outline-none rounded text-lg">開く</button>
                                     </form>
                                 </td>
                                 <!-- パスワード変更 -->
                                 <td class="fix-col">
-                                    <form method="POST" action="{{ route('employee.subord.change_password', [ 'emplo_id'=> $subord->subord_id , 'name'=> $subord->subord_name ] )}}">
+                                    <form method="POST" action="{{ route('employee.subord.change_password', [ 'emplo_id'=> $subord->emplo_id , 'name'=> $subord->name ] )}}">
                                         @csrf
-                                        <input type="hidden" class="form-control" id="emplo_id" name="emplo_id" value="{{$subord->subord_id}}">
-                                        <input type="hidden" class="form-control" id="name" name="name" value="{{$subord->subord_name}}">
                                         <button class="input-group-text flex mx-auto text-white btn btn-success border-0 py-2 px-8 focus:outline-none rounded text-lg">開く</button>
                                     </form>
                                 </td>
