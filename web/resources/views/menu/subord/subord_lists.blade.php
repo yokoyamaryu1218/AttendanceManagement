@@ -49,7 +49,7 @@
                             @endforeach
                         </tbody>
                     </table>
-                    {{$subord_data->links('components.pagenation')}}
+                        {{$subord_data->links('components.pagenation')}}
                 </div>
             </div>
         </section>
