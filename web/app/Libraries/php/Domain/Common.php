@@ -102,17 +102,19 @@ class Common
     }
 
     /**
-     * 従業員情報を更新するクラス
+     * 出勤日数・総勤務時間・残業時間を合計するクラス
      *
      * @param  int  $emplo_id 社員ID
-     * @param  int  $name 社員名
-     * @param  int  $managment_emplo_id 上司社員ID
-     * @param  int  $subord_authority 部下参照権限
-     * @param  int  $retirement_authority 退職フラグ
-     * @param  int  $restraint_start_time 始業時間
-     * @param  int  $restraint_closing_time 終業時間
-     * @param  int $restraint_total_time 就業時間
+     * @param  int  $ym 年月
      * @var App\Libraries\php\Domain\DataBase
+     * @var array $total_days 出勤日数
+     * @var array $cloumns_name カラム名
+     * @var array $total_name 合計値の命名
+     * @var array $total_achievement_time 総勤務時間
+     * @var array $total_over_time 総残業時間
+     * @var array $total_data 出勤日数・総勤務時間・残業時間をまとめたもの
+     * 
+     * @return  array $total_data
      */
     public static function totalTime($emplo_id, $ym)
     {
@@ -140,17 +142,20 @@ class Common
     }
 
     /**
-     * 従業員情報を更新するクラス
+     * 指定期間内の出勤日数・総勤務時間・残業時間を合計するクラス
      *
      * @param  int  $emplo_id 社員ID
-     * @param  int  $name 社員名
-     * @param  int  $managment_emplo_id 上司社員ID
-     * @param  int  $subord_authority 部下参照権限
-     * @param  int  $retirement_authority 退職フラグ
-     * @param  int  $restraint_start_time 始業時間
-     * @param  int  $restraint_closing_time 終業時間
-     * @param  int $restraint_total_time 就業時間
+     * @param  int  $first_day 指定開始日
+     * @param  int  $end_day 指定終了日
      * @var App\Libraries\php\Domain\DataBase
+     * @var array $total_days 出勤日数
+     * @var array $cloumns_name カラム名
+     * @var array $total_name 合計値の命名
+     * @var array $total_achievement_time 総勤務時間
+     * @var array $total_over_time 総残業時間
+     * @var array $total_data 出勤日数・総勤務時間・残業時間をまとめたもの
+     * 
+     * @return  array $total_data
      */
     public static function SearchtotalTime($emplo_id, $first_day, $end_day)
     {

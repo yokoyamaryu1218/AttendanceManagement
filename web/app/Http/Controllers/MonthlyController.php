@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Http\Requests\MonthlyRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Libraries\php\Domain\DataBase;
@@ -229,7 +229,7 @@ class MonthlyController extends Controller
      * @var array $monthly_data 勤怠データ
      * @var array $total_data 期間内の出勤日数、総勤務時間、残業時間の配列
      */
-    public function search(Request $request, $emplo_id)
+    public function search(MonthlyRequest $request, $emplo_id, $name)
     {
         $first_day = $request->first_day;
         $end_day = $request->end_day;
@@ -237,11 +237,28 @@ class MonthlyController extends Controller
         // 指定した期間内の出勤日数、総勤務時間、残業時間を求める
         $total_data = Common::SearchtotalTime($emplo_id, $first_day, $end_day);
 
-        dd($total_data);
         if (Auth::guard('employee')->check()) {
-            return view('menu.attendance.attendance01');
+            return view(
+                'menu.attendance.attendance03',
+                compact(
+                    'first_day',
+                    'end_day',
+                    'emplo_id',
+                    'name',
+                    'total_data'
+                )
+            );
         } elseif (Auth::guard('admin')->check()) {
-            return view('menu.attendance.attendance02');
+            return view(
+                'menu.attendance.attendance03',
+                compact(
+                    'first_day',
+                    'end_day',
+                    'emplo_id',
+                    'name',
+                    'total_data'
+                )
+            );
         }
     }
 

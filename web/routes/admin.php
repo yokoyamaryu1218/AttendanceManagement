@@ -114,6 +114,10 @@ Route::group(['middleware' => 'auth:admin'], function () {
     // 従業員の勤怠修正処理の実行
     Route::post('monthly/update', [MonthlyController::class, 'update'])
         ->name('monthly.update');
+
+    // 勤怠絞り込み
+    Route::post('/monthly/search/{id}/{id2}', [MonthlyController::class, 'search'])
+        ->name('monthly_search');
     // 選択した従業員の勤怠一覧表示に関するルーティングここまで
 
     // 選択した従業員のパスワード変更に関するルーティング

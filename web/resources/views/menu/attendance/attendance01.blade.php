@@ -2,7 +2,6 @@
 <x-app-layout>
     <x-slot name="header">
     </x-slot>
-    <link rel="stylesheet" href="{{ asset('css/accordion.css') }}">
 
     <body>
         <section class="text-gray-600 body-font">
@@ -32,37 +31,19 @@
                     <!-- 月度プルダウン部分ここまで -->
                     <!-- 戻るボタン配置 -->
                     <div class="text-right mb-1">
-                        <button class="title btn btn-secondary">絞り込み</button>
-                        <div class="box">
-                            <form method="POST" action="{{ route('employee.monthly_search',[$emplo_id] )}}" name="monthly_change">
-                                @csrf
-                                <small><b>指定期間内の出勤日数・総勤務時間・残業時間を表示します。</b></small></BR>
-                                <input type="date" id="first_day" name="first_day" value="{{ old('first_day') }}">
-                                ～ <input type="date" id="end_day" name="end_day" value="{{ old('end_day') }}">
-                                <button class="main_button_style" data-toggle="tooltip" type="submit">
-                                    <input class="main_button_img" type="image" src="data:image/png;base64,{{Config::get('base64.musi')}}" alt="検索">
-                                </button>
-                            </form>
-                        </div>
+                        <input class="btn btn-warning" type="button" value="戻る" onclick="window.history.back()">
                     </div>
                     <!-- 戻るボタンここまで -->
+                    <!-- 絞り込み部分 -->
+                    @include('menu.attendance.search01')
+                    <!-- 絞り込み部分ここまで -->
                     <!-- フラッシュメッセージの表示 -->
-                    @if (session('warning'))
-                    <div class="alert alert-warning">
-                        {{ session('warning') }}
-                    </div>
-                    @endif
-                    @if (session('status'))
-                    <div class="alert alert-info">
-                        {{ session('status') }}
-                    </div>
-                    @endif
-                    @if ($errors->has('daily'))
-                    <div class="alert text-center alert-warning">
-                        {{ $errors->first('daily') }}
-                    </div>
-                    @endif
+                    @include('menu.attendance.validation')
                     <!-- フラッシュメッセージここまで -->
+
+                    <!-- 勤怠一覧の合計表示部分 -->
+                    @include('menu.attendance.search02')
+                    <!-- 合計表示部分ここまで -->
 
                     <!-- ここから月別勤怠一覧部分 -->
                     @include('menu.attendance.attend-lists01')
@@ -79,7 +60,5 @@
             @endif
             <!-- モーダルここまで -->
         </section>
-        <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-        <script src="{{ asset('js/accordion.js') }}" defer></script>
     </body>
 </x-app-layout>

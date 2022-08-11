@@ -35,19 +35,16 @@
                         <input class="btn btn-warning" type="button" value="戻る" onclick="window.history.back()">
                     </div>
                     <!-- 戻るボタンここまで -->
+                    <!-- 絞り込み部分 -->
+                    @include('menu.attendance.search03')
+                    <!-- 絞り込み部分ここまで -->
                     <!-- フラッシュメッセージの表示 -->
-                    @if (session('warning'))
-                    <div class="alert alert-warning">
-                        {{ session('warning') }}
-                    </div>
-                    @endif
-                    @if (session('status'))
-                    <div class="alert alert-info">
-                        {{ session('status') }}
-                    </div>
-                    @endif
+                    @include('menu.attendance.validation')
                     <!-- フラッシュメッセージここまで -->
 
+                    <!-- 勤怠一覧の合計表示部分 -->
+                    @include('menu.attendance.search02')
+                    <!-- 合計表示部分ここまで -->
                     <!-- ここから月別勤怠一覧部分 -->
                     @include('menu.attendance.attend-lists02')
                     <!-- 月別勤怠一覧部分ここまで -->
