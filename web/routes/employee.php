@@ -70,6 +70,11 @@ Route::group(['middleware' => 'auth:employee'], function () {
     // プルダウンで月度を変える処理
     Route::post('/monthly/change', [MonthlyController::class, 'store'])
         ->name('monthly_change');
+
+    // 勤怠一覧表示
+    Route::post('/monthly/search', [MonthlyController::class, 'search'])
+        ->name('monthly_search');
+
     //　自分自身の勤怠一覧表示に関するルーティングここまで
 
     // 部下の勤怠一覧表示やパスワード変更に関するルーティング

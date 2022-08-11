@@ -12,12 +12,12 @@ class Time
 {
     /**
      * 勤怠を新規登録するクラス
-     * 
+     *
      * @param  int  $emplo_id 社員ID
      * @param  int  $start_time 出勤時間
      * @param  int  $closing_time 退勤時間
      * @param  int  $target_date 選択した日付
-     * 
+     *
      * @var App\Libraries\php\Domain\DataBase
      * @var App\Libraries\php\Domain\Time
      * @var array $restraint_time 就業時間
@@ -42,17 +42,17 @@ class Time
         $over_time = Time::over_time($achievement_time, $restraint_time[0]->restraint_total_time);
 
         // データベースに登録する
-        DataBase::insertTime($emplo_id, $target_date, $start_time, $closing_time, $rest_time, $achievement_time, $over_time);
+        DataBase::insertEndTime($closing_time, $rest_time, $achievement_time, $over_time, $emplo_id, $target_date);
     }
 
     /**
      * 勤怠を更新するクラス
-     * 
+     *
      * @param  int  $emplo_id 社員ID
      * @param  int  $start_time 出勤時間
      * @param  int  $closing_time 退勤時間
      * @param  int  $target_date 選択した日付
-     * 
+     *
      * @var App\Libraries\php\Domain\DataBase
      * @var App\Libraries\php\Domain\Time
      * @var array $restraint_time 就業時間
@@ -83,12 +83,12 @@ class Time
 
     /**
      * 日報の登録（更新）を行うクラス
-     * 
+     *
      * @param  int  $emplo_id 社員ID
      * @param  int  $target_date 選択した日付
      * @param  int  $daily 日報
      * @param  int  $daily_data 日報データ
-     * 
+     *
      * @var App\Libraries\php\Domain\DataBase
      */
     public static function Daily($emplo_id, $target_date, $daily, $daily_data)
@@ -105,14 +105,14 @@ class Time
      * 就業時間を求める
      *
      * @param  int  $restraint_start_time 始業時間
-     * @param  int  $restraint_closing_time 終業時間     
-     * 
+     * @param  int  $restraint_closing_time 終業時間
+     *
      * @var array $work_time_sec 退勤時間から開始時間を引いて、勤務時間(秒)を求める
      * @var array $work_time_hour 勤務時間(秒)を3600で割ると、時間を求め、小数点を切り捨てる
      * @var array $work_time_min 勤務時間(秒)から時間を引いた余りを60で割ると、分を求め、小数点を切り捨てる
      * @var array $work_time_s /勤務時間(秒)から時間を引いた余りを60で割ると、分を求め、小数点を切り捨てる
      * @var array $restraint_total_time 就業時間
-     * 
+     *
      * @return  array $restraint_total_time
      */
     public static function restraint_total_time($restraint_start_time, $restraint_closing_time)
@@ -134,12 +134,12 @@ class Time
      * @param  int  $start_time 出勤時間
      * @param  int  $closing_time 退勤時間
      * @param  int  $restraint_start_time 始業時間
-     * 
+     *
      * @var array $work_time_sec 退勤時間から開始時間を引いて、勤務時間(秒)を求める
      * @var array $work_time_hour 勤務時間(秒)を3600で割ると、時間を求め、小数点を切り捨てる
      * @var array $work_time_min 勤務時間(秒)から時間を引いた余りを60で割ると、分を求め、小数点を切り捨てる
      * @var array $total_time 総勤務時間
-     * 
+     *
      * @return  array $total_time
      */
     public static function total_time($start_time, $closing_time, $restraint_start_time)
@@ -162,9 +162,9 @@ class Time
      * 休憩時間を求める
      *
      * @param  int  $todal_time 総勤務時間
-     *      
+     *
      * @var array $rest_time 休憩時間
-     * 
+     *
      * @return  array $rest_time
      */
     public static function rest_time($total_time)
@@ -184,14 +184,14 @@ class Time
      * 実績時間を求める
      *
      * @param  int  $todal_time 総勤務時間
-     * @param  int  $rest_time 休憩時間     
-     * 
+     * @param  int  $rest_time 休憩時間
+     *
      * @var array $work_time_sec 退勤時間から開始時間を引いて、勤務時間(秒)を求める
      * @var array $work_time_hour 勤務時間(秒)を3600で割ると、時間を求め、小数点を切り捨てる
      * @var array $work_time_min 勤務時間(秒)から時間を引いた余りを60で割ると、分を求め、小数点を切り捨てる
      * @var array $work_time_s /勤務時間(秒)から時間を引いた余りを60で割ると、分を求め、小数点を切り捨てる
      * @var array $achievement_time 実績時間
-     * 
+     *
      * @return  array $achievement_time
      */
     public static function achievement_time($total_time, $rest_time)
@@ -209,14 +209,14 @@ class Time
      * 残業時間を求める
      *
      * @param  int  $achievement_time 実績時間
-     * @param  int  $restraint_total_time 就業時間    
-     * 
+     * @param  int  $restraint_total_time 就業時間
+     *
      * @var array $work_time_sec 退勤時間から開始時間を引いて、勤務時間(秒)を求める
      * @var array $work_time_hour 勤務時間(秒)を3600で割ると、時間を求め、小数点を切り捨てる
      * @var array $work_time_min 勤務時間(秒)から時間を引いた余りを60で割ると、分を求め、小数点を切り捨てる
      * @var array $work_time_s /勤務時間(秒)から時間を引いた余りを60で割ると、分を求め、小数点を切り捨てる
      * @var array $over_time 残業時間
-     * 
+     *
      * @return  array $over_time
      */
     public static function over_time($achievement_time, $restraint_total_time)

@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 
 use Illuminate\Http\Request;
-use App\Http\Requests\AllPostRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Libraries\php\Domain\DataBase;
 use App\Libraries\php\Domain\Common;
@@ -15,9 +14,9 @@ class MonthlyController extends Controller
 {
     /**
      * 勤怠一覧の表示
-     * 
+     *
      * @param \Illuminate\Http\Request\Request $request
-     * 
+     *
      * @var string $emplo_id 社員ID
      * @var string $name 社員名
      * @var App\Libraries\php\Domain\Common $format
@@ -25,6 +24,7 @@ class MonthlyController extends Controller
      * @var string $day_count 月の日数
      * @var App\Libraries\php\Domain\DataBase
      * @var array $monthly_data 勤怠データ
+     * @var array $total_data 期間内の出勤日数、総勤務時間、残業時間の配列
      */
     public function index(Request $request)
     {
@@ -70,6 +70,9 @@ class MonthlyController extends Controller
         // 今月の勤怠一覧を取得
         $monthly_data = DataBase::getMonthly($emplo_id, $ym);
 
+        // 期間内の出勤日数、総勤務時間、残業時間を求める
+        $total_data = Common::totalTime($emplo_id, $ym);
+
         if (Auth::guard('employee')->check()) {
             return view('menu.attendance.attendance01', compact(
                 'monthly_data',
@@ -77,7 +80,8 @@ class MonthlyController extends Controller
                 'emplo_id',
                 'name',
                 'ym',
-                'format'
+                'format',
+                'total_data'
             ));
         } elseif (Auth::guard('admin')->check()) {
             return view('menu.attendance.attendance02', compact(
@@ -86,16 +90,17 @@ class MonthlyController extends Controller
                 'emplo_id',
                 'name',
                 'ym',
-                'format'
+                'format',
+                'total_data'
             ));
         }
     }
 
     /**
      * プロダウンで選んだ年度の勤怠一覧の表示
-     * 
+     *
      * @param \Illuminate\Http\Request\Request $request
-     * 
+     *
      * @var string $emplo_id 社員ID
      * @var string $name 社員名
      * @var string $ym 選択した年月
@@ -103,6 +108,7 @@ class MonthlyController extends Controller
      * @var App\Libraries\php\Domain\Common $format
      * @var App\Libraries\php\Domain\DataBase
      * @var array $monthly_data 勤怠データ
+     * @var array $total_data 期間内の出勤日数、総勤務時間、残業時間の配列
      */
     public function store(Request $request)
     {
@@ -121,6 +127,10 @@ class MonthlyController extends Controller
 
         // 勤怠一覧の取得
         $monthly_data = DataBase::getMonthly($emplo_id, $ym);
+
+        // 期間内の出勤日数、総勤務時間、残業時間を求める
+        $total_data = Common::totalTime($emplo_id, $ym);
+
         // フォーマットの取得
         $format = new Common();
 
@@ -131,7 +141,8 @@ class MonthlyController extends Controller
                 'name',
                 'emplo_id',
                 'ym',
-                'format'
+                'format',
+                'total_data'
             ));
         } elseif (Auth::guard('admin')->check()) {
             return view('menu.attendance.attendance02', compact(
@@ -140,16 +151,17 @@ class MonthlyController extends Controller
                 'emplo_id',
                 'name',
                 'ym',
-                'format'
+                'format',
+                'total_data'
             ));
         }
     }
 
     /**
      * 勤怠の修正
-     * 
+     *
      * @param \Illuminate\Http\Request\Request $request
-     * 
+     *
      * @var string $nama　従業員名
      * @var string $emplo_id 社員ID
      * @var string $target_date 選択した日付
@@ -163,7 +175,7 @@ class MonthlyController extends Controller
      * @var array $daily_data 日報データ
      * @var App\Libraries\php\Domain\Time
      */
-    public function update(AllPostRequest $request)
+    public function update(Request $request)
     {
         // リクエスト処理の取得
         $name = $request->modal_name;
@@ -200,6 +212,37 @@ class MonthlyController extends Controller
             } elseif (Auth::guard('admin')->check()) {
                 return redirect()->route('admin.monthly', compact('emplo_id', 'name',))->with('status', '新規登録しました');
             }
+        }
+    }
+
+    /**
+     * プロダウンで選んだ年度の勤怠一覧の表示
+     *
+     * @param \Illuminate\Http\Request\Request $request
+     *
+     * @var string $emplo_id 社員ID
+     * @var string $name 社員名
+     * @var string $ym 選択した年月
+     * @var string $day_count 月の日数
+     * @var App\Libraries\php\Domain\Common $format
+     * @var App\Libraries\php\Domain\DataBase
+     * @var array $monthly_data 勤怠データ
+     * @var array $total_data 期間内の出勤日数、総勤務時間、残業時間の配列
+     */
+    public function search(Request $request)
+    {
+        $first_day = $request->first_day;
+        $end_day = $request->end_day;
+        
+        $emplo_id = Auth::guard('employee')->user()->emplo_id;
+
+        // 指定した期間内の出勤日数、総勤務時間、残業時間を求める
+        $total_data = Common::SearchtotalTime($emplo_id, $first_day, $end_day);
+
+        if (Auth::guard('employee')->check()) {
+            return view('menu.attendance.attendance01');
+        } elseif (Auth::guard('admin')->check()) {
+            return view('menu.attendance.attendance02');
         }
     }
 

@@ -27,7 +27,6 @@ class Database
         return $data;
     }
 
-
     /**
      * 選択した従業員詳細の取得
      *
@@ -257,6 +256,86 @@ class Database
         $stmt->bindValue(':date', $ym, PDO::PARAM_STR);
         $stmt->execute();
         $data = $stmt->fetchAll(PDO::FETCH_UNIQUE);
+
+        return $data;
+    }
+
+    /**
+     * 選択した社員の出勤日数を取得する
+     *
+     * @param $emplo_id 社員ID
+     * @param $ym 年月
+     *
+     * @var   $data 取得データ
+     *
+     * @return  array $data
+     */
+    public static function getTotalDays($emplo_id, $ym)
+    {
+        $data = DB::select("SELECT COUNT( date ) AS total_days FROM works
+        WHERE emplo_id = ?
+        AND DATE_FORMAT(date, '%Y-%m') = ?", [$emplo_id, $ym]);
+
+        return $data;
+    }
+
+    /**
+     * 期間を絞り込んで選択した社員の出勤日数を取得する
+     *
+     * @param $emplo_id 社員ID
+     * @param $ym 年月
+     *
+     * @var   $data 取得データ
+     *
+     * @return  array $data
+     */
+    public static function SearchTotalDays($emplo_id, $first_day, $end_day)
+    {
+        $data = DB::select("SELECT COUNT( date ) AS total_days FROM works
+        WHERE emplo_id = ?
+        AND date BETWEEN ? AND ?", [$emplo_id, $first_day, $end_day]);
+
+        return $data;
+    }
+
+    /**
+     * 選択した社員の総勤務時間・残業時間を取得する
+     *
+     * @param $cloumns_name カラム名
+     * @param $total_name 合計した時の名称
+     * @param $emplo_id 社員ID
+     * @param $ym 年月
+     *
+     * @var   $data 取得データ
+     *
+     * @return  array $data
+     */
+    public static function getTotalWorking($cloumns_name, $total_name, $emplo_id, $ym)
+    {
+        $data = DB::select("SELECT sec_to_time(sum( time_to_sec($cloumns_name))) AS $total_name FROM works
+        WHERE emplo_id = ?
+        AND DATE_FORMAT(date, '%Y-%m') = ?", [$emplo_id, $ym]);
+
+        return $data;
+    }
+
+    /**
+     * 期間を絞り込んで選択した社員の総勤務時間・残業時間を取得する
+     *
+     * @param $cloumns_name カラム名
+     * @param $total_name 合計した時の名称
+     * @param $emplo_id 社員ID
+     * @param $ym 年月
+     *
+     * @var   $data 取得データ
+     *
+     * @return  array $data
+     */
+    public static function SearchTotalWorking($cloumns_name, $total_name, $emplo_id, $first_day, $end_day)
+    {
+        $data = DB::select("SELECT sec_to_time(sum( time_to_sec($cloumns_name))) AS $total_name FROM works
+        WHERE emplo_id = ?
+        AND date BETWEEN ? AND ?", [$emplo_id, $first_day, $end_day]);
 
         return $data;
     }

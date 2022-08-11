@@ -11,10 +11,10 @@ class Common
     /**
      * 曜日を表示する
      * @param  int  $date 日付
-     * 
+     *
      * @var array $week 曜日
      * @var array $format_date 曜日を表示するフォーマットデータ
-     * 
+     *
      * @return  array $format_date
      */
     function time_format_dw($date)
@@ -31,9 +31,9 @@ class Common
 
     /**
      * 今月の年月を表示する
-     * 
+     *
      * @var string $ym 今月の年月
-     * 
+     *
      * @return  array $ym
      */
     function to_monthly()
@@ -51,7 +51,7 @@ class Common
 
     /**
      * 従業員情報を登録するクラス
-     * 
+     *
      * @param  int  $emplo_id 社員ID
      * @param  int  $name 社員名
      * @param  int  $password パスワード
@@ -78,7 +78,7 @@ class Common
 
     /**
      * 従業員情報を更新するクラス
-     *      
+     *
      * @param  int  $emplo_id 社員ID
      * @param  int  $name 社員名
      * @param  int  $managment_emplo_id 上司社員ID
@@ -99,5 +99,81 @@ class Common
 
         //階層に更新
         DataBase::updateHierarchy($management_emplo_id, $emplo_id);
+    }
+
+    /**
+     * 従業員情報を更新するクラス
+     *
+     * @param  int  $emplo_id 社員ID
+     * @param  int  $name 社員名
+     * @param  int  $managment_emplo_id 上司社員ID
+     * @param  int  $subord_authority 部下参照権限
+     * @param  int  $retirement_authority 退職フラグ
+     * @param  int  $restraint_start_time 始業時間
+     * @param  int  $restraint_closing_time 終業時間
+     * @param  int $restraint_total_time 就業時間
+     * @var App\Libraries\php\Domain\DataBase
+     */
+    public static function totalTime($emplo_id, $ym)
+    {
+        // 出勤日数を求める
+        $total_days = DataBase::getTotalDays($emplo_id, $ym);
+
+        // 総勤務時間を求める
+        $cloumns_name = "achievement_time";
+        $total_name = "total_achievement_time";
+        $total_achievement_time = DataBase::getTotalWorking($cloumns_name, $total_name, $emplo_id, $ym);
+
+        // 残業時間を求める
+        $cloumns_name = "over_time";
+        $total_name = "total_over_time";
+        $total_over_time = DataBase::getTotalWorking($cloumns_name, $total_name, $emplo_id, $ym);
+
+        // それぞれの結果を配列に格納する
+        $total_data = array(
+            "total_days" => $total_days[0]->total_days,
+            "total_achievement_time" => $total_achievement_time[0]->total_achievement_time,
+            "total_over_time" => $total_over_time[0]->total_over_time
+        );
+
+        return $total_data;
+    }
+
+    /**
+     * 従業員情報を更新するクラス
+     *
+     * @param  int  $emplo_id 社員ID
+     * @param  int  $name 社員名
+     * @param  int  $managment_emplo_id 上司社員ID
+     * @param  int  $subord_authority 部下参照権限
+     * @param  int  $retirement_authority 退職フラグ
+     * @param  int  $restraint_start_time 始業時間
+     * @param  int  $restraint_closing_time 終業時間
+     * @param  int $restraint_total_time 就業時間
+     * @var App\Libraries\php\Domain\DataBase
+     */
+    public static function SearchtotalTime($emplo_id, $first_day, $end_day)
+    {
+        // 出勤日数を求める
+        $total_days = DataBase::SearchTotalDays($emplo_id, $first_day, $end_day);
+
+        // 総勤務時間を求める
+        $cloumns_name = "achievement_time";
+        $total_name = "total_achievement_time";
+        $total_achievement_time = DataBase::SearchTotalWorking($cloumns_name, $total_name, $emplo_id, $first_day, $end_day);
+
+        // 残業時間を求める
+        $cloumns_name = "over_time";
+        $total_name = "total_over_time";
+        $total_over_time = DataBase::SearchTotalWorking($cloumns_name, $total_name, $emplo_id, $first_day, $end_day);
+
+        // それぞれの結果を配列に格納する
+        $total_data = array(
+            "total_days" => $total_days[0]->total_days,
+            "total_achievement_time" => $total_achievement_time[0]->total_achievement_time,
+            "total_over_time" => $total_over_time[0]->total_over_time
+        );
+
+        return $total_data;
     }
 }

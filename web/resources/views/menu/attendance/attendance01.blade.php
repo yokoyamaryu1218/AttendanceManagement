@@ -2,15 +2,15 @@
 <x-app-layout>
     <x-slot name="header">
     </x-slot>
+    <link rel="stylesheet" href="{{ asset('css/accordion.css') }}">
 
     <body>
         <section class="text-gray-600 body-font">
-            <!-- レスポンシブはhttps://tailwindcss.jp/docs/marginを参照にする -->
-            <div class="pt-20 ml-64">
-                <!-- 月度プルダウン部分 -->
-                <label>
+            <div class="container px-5 py-4 mt-20 mx-auto">
+                <div class="lg:w-2/3 w-full mx-auto overflow-auto">
+                    <!-- 月度プルダウン部分 -->
                     <!-- プルダウンの月度を変更すれば、下の一覧も変わる -->
-                    <form method="POST" action="{{ route('employee.monthly_change')}}" name="monthly_change">
+                    <form method="POST" class="mb-4" action="{{ route('employee.monthly_change')}}" name="monthly_change">
                         @csrf
                         <input type="hidden" class="form-control" id="emplo_id" name="emplo_id" value="{{$emplo_id}}">
                         <input type="hidden" class="form-control" id="name" name="name" value="{{$name}}">
@@ -29,12 +29,23 @@
                         {{ $name }}さん
                         <!-- 名前表示部分ここまで -->
                     </form>
-                </label>
-                <!-- 月度プルダウン部分ここまで -->
-            </div>
-
-            <div class="container px-5 py-4 mx-auto">
-                <div class="lg:w-2/3 w-full mx-auto overflow-auto">
+                    <!-- 月度プルダウン部分ここまで -->
+                    <!-- 戻るボタン配置 -->
+                    <div class="text-right mb-1">
+                        <button class="title btn btn-secondary">絞り込み</button>
+                        <div class="box">
+                            <form method="POST" action="{{ route('employee.monthly_search')}}" name="monthly_change">
+                                @csrf
+                                <small><b>指定期間内の出勤日数・総勤務時間・残業時間を表示します。</b></small></BR>
+                                <input type="date" id="first_day" name="first_day" value="{{ old('first_day') }}">
+                                ～ <input type="date" id="end_day" name="end_day" value="{{ old('end_day') }}">
+                                <button class="main_button_style" data-toggle="tooltip" type="submit">
+                                    <input class="main_button_img" type="image" src="data:image/png;base64,{{Config::get('base64.musi')}}" alt="検索">
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- 戻るボタンここまで -->
                     <!-- フラッシュメッセージの表示 -->
                     @if (session('warning'))
                     <div class="alert alert-warning">
@@ -67,7 +78,8 @@
             @include('menu.modal.modal03')
             @endif
             <!-- モーダルここまで -->
-
         </section>
+        <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+        <script src="{{ asset('js/accordion.js') }}" defer></script>
     </body>
 </x-app-layout>

@@ -1,4 +1,15 @@
 <!-- employee側　勤怠一覧メイン部分のblade -->
+<table class="table table-sm table-dark mb-2">
+    <thead>
+        <tr>
+            <th scope="col"></th>
+            <th scope="col">・出勤日数：{{ $total_data['total_days'] }}日</th>
+            <th scope="col">・総勤務時間：{{ $total_data['total_achievement_time'] }}</th>
+            <th scope="col">・残業時間：{{ $total_data['total_over_time'] }}</th>
+        </tr>
+    </thead>
+</table>
+
 <table class="table-auto w-full text-left whitespace-no-wrap">
     <thead>
         <tr>
