@@ -1,4 +1,21 @@
 <!-- admin側 従業員の一覧を表示する共通用blade -->
+@if($employee_lists->all())
+<!-- 検索機能 -->
+<div class="text-right">
+    <form action="{{ route('admin.search', [$retirement_authority])}}" method="post">
+        @csrf
+        @method('post')
+        @if(!empty($_POST['search']))
+        <input type="search" name="search" class="top" maxlength="32" placeholder="人員検索" value="{{ $_POST['search'] }}">
+        @else
+        <input type="search" name="search" class="top" maxlength="32" placeholder="人員検索">
+        @endif
+        <button class="main_button_style" data-toggle="tooltip" type="submit">
+            <input class="main_button_img" type="image" src="data:image/png;base64,{{Config::get('base64.musi')}}" alt="検索">
+        </button>
+    </form>
+</div>
+<!-- 検索機能ここまで -->
 <table class="table table-striped table-hover table-sm my-2">
     <thead>
         <tr>
@@ -44,3 +61,6 @@
     </tbody>
 </table>
 {{$employee_lists->links('components.pagenation')}}
+@else
+該当する社員がいません。
+@endif

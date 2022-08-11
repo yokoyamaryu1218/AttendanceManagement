@@ -214,6 +214,7 @@ class AdminController extends Controller
             $_POST['search'] = $_GET['search'];
         }
 
+        // dd($retirement_authority);
         if (is_numeric($request->search)) {
             $employee_lists =  collect(DataBase::getSearchID($retirement_authority, $request->search));
         } else {
@@ -233,7 +234,7 @@ class AdminController extends Controller
         // 退職者がいる場合、退職者一覧のリンクを表示するため、退職者リストも取得する
         $retirement_lists = DataBase::getEmployeeAll("1");
 
-        if ($retirement_authority = "0") {
+        if ($retirement_authority == "0") {
             return view('admin.dashboard', compact(
                 'employee_lists',
                 'retirement_authority',
