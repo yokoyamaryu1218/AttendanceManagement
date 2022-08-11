@@ -34,7 +34,7 @@
                     <div class="text-right mb-1">
                         <button class="title btn btn-secondary">絞り込み</button>
                         <div class="box">
-                            <form method="POST" action="{{ route('employee.monthly_search')}}" name="monthly_change">
+                            <form method="POST" action="{{ route('employee.monthly_search',[$emplo_id] )}}" name="monthly_change">
                                 @csrf
                                 <small><b>指定期間内の出勤日数・総勤務時間・残業時間を表示します。</b></small></BR>
                                 <input type="date" id="first_day" name="first_day" value="{{ old('first_day') }}">

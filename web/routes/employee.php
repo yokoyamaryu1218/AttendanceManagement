@@ -72,7 +72,7 @@ Route::group(['middleware' => 'auth:employee'], function () {
         ->name('monthly_change');
 
     // 勤怠一覧表示
-    Route::post('/monthly/search', [MonthlyController::class, 'search'])
+    Route::post('/monthly/search/{id}', [MonthlyController::class, 'search'])
         ->name('monthly_search');
 
     //　自分自身の勤怠一覧表示に関するルーティングここまで
