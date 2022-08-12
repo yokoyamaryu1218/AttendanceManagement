@@ -57,14 +57,16 @@ class NewPasswordController extends Controller
     {
         // 現在のパスワードを確認
         if (!password_verify($request->old_password, Auth::guard('admin')->user()->password)) {
+            $message = "現在のパスワードが違います";
             return redirect()->route('admin.change_password')
-                ->with('warning', '現在のパスワードが違います。');
+                ->with('warning', $message);
         }
 
         // 新しいパスワードを確認
         if (!password_verify($request->password, password_hash($request->password_confirmation, PASSWORD_DEFAULT))) {
+            $message = "新しいパスワードが合致しません";
             return redirect()->route('admin.change_password')
-                ->with('warning', '新しいパスワードが合致しません。');
+                ->with('warning', $message);
         }
 
         // パスワードは6文字以上あるか，2つが一致しているかなどのチェックF
@@ -73,7 +75,8 @@ class NewPasswordController extends Controller
         // パスワードを保存
         Auth::guard('admin')->user()->password = bcrypt($request->password);
         Auth::guard('admin')->user()->save();
+        $message = "パスワードを変更しました";
         return redirect()->route('admin.change_password')
-            ->with('status', 'パスワードを変更しました');
+            ->with('status', $message);
     }
 }

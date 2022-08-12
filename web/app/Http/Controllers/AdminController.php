@@ -297,7 +297,8 @@ class AdminController extends Controller
             $restraint_total_time
         );
 
-        return back()->with('status', '更新しました');;
+        $message = "更新しました";
+        return back()->with('status', $message);;
     }
 
     /**

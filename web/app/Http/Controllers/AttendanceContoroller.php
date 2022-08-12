@@ -25,7 +25,7 @@ class AttendanceContoroller extends Controller
 
     /**
      * 出勤画面と日報の表示
-     * 
+     *
      * @var string $today 今日の日付
      * @var App\Libraries\php\Domain\Common
      * @var string $ym 今月の年月
@@ -74,7 +74,7 @@ class AttendanceContoroller extends Controller
 
     /**
      * 出勤時間の打刻
-     * 
+     *
      * @var string $today 今日の日付
      * @var string $start_time 出勤時間
      * @var array $message 出勤画面に出すメッセージ
@@ -94,17 +94,19 @@ class AttendanceContoroller extends Controller
 
         if ($check_date) {
             // 重複登録の場合
-            return back()->with('works_warning', 'すでに打刻済みです。');
+            $message = "すでに打刻済みです";
+            return back()->with('works_warning', $message);
         } else {
             // 勤務開始時間をデータベースに登録する
             DataBase::insertStartTime($emplo_id, $today, $start_time);
-            return back()->with('works_status', '出勤時間を登録しました');;
+            $message = "出勤時間を登録しました";
+            return back()->with('works_status', $message);
         }
     }
 
     /**
      * 退勤時間の打刻
-     * 
+     *
      * @var string $today 今日の日付
      * @var string $closing_time 退勤時間
      * @var string $emplo_id 社員ID
@@ -128,16 +130,18 @@ class AttendanceContoroller extends Controller
         // 出勤時間が打刻されている場合は新規登録し、未打刻の場合は警告MSGを出す
         if ($start_time) {
             Time::insertTime($emplo_id, $start_time[0]->start_time, $closing_time, $today);
-            return back()->with('works_status', '退勤時間を登録しました');
+            $message = "退勤時間を登録しました";
+            return back()->with('works_status', $message);
         }
-        return back()->with('works_warning', '出勤時間が打刻されていません');
+        $message = "出勤時間が打刻されていません";
+        return back()->with('works_warning', $message);
     }
 
     /**
      * 日報の登録
-     * 
+     *
      * @param \Illuminate\Http\Request\DailyRequest $request
-     * 
+     *
      * @var string $emplo_id 社員ID
      * @var string $daily 日報
      * @var string $today 今日の日付
@@ -161,14 +165,15 @@ class AttendanceContoroller extends Controller
             return redirect()->route('emplo.error');
         }
 
-        return back()->with('status', '日報を登録しました');
+        $message = "日報を登録しました";
+        return back()->with('status', $message);
     }
 
     /**
      * 日報の更新
-     * 
+     *
      * @param \Illuminate\Http\Request\DailyRequest $request
-     * 
+     *
      * @var string $emplo_id 社員ID
      * @var string $daily 日報
      * @var string $today 今日の日付
@@ -187,12 +192,13 @@ class AttendanceContoroller extends Controller
         // 日報の更新
         DataBase::updateDaily($emplo_id, $today, $daily);
 
-        return back()->with('status', '日報を更新しました');;
+        $message = "日報を更新しました";
+        return back()->with('status', $message);
     }
 
     /**
      * 部下一覧の表示
-     * 
+     *
      * @var string $emplo_id 社員ID
      * @var App\Libraries\php\Domain\DataBase
      * @var array $subord_data 部下情報

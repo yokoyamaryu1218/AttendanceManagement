@@ -73,15 +73,17 @@ class PasswordChangeController extends Controller
         Database::subord_updatepassword($password, $emplo_id);
 
         if (Auth::guard('employee')->check()) {
+            $message = "パスワードを変更しました";
             return redirect()->route('employee.subord.change_password', compact(
                 'emplo_id',
                 'name',
-            ))->with('status', 'パスワードを変更しました');
+            ))->with('status', $message);
         } elseif (Auth::guard('admin')->check()) {
+            $message = "パスワードを変更しました";
             return redirect()->route('admin.emplo_change_password', compact(
                 'emplo_id',
                 'name',
-            ))->with('status', 'パスワードを変更しました');
+            ))->with('status', $message);
         }
     }
 }
