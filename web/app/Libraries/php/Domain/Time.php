@@ -42,6 +42,7 @@ class Time
         $over_time = Time::over_time($achievement_time, $restraint_time[0]->restraint_total_time);
 
         // データベースに登録する
+        DataBase::insertStartTime($emplo_id, $target_date, $start_time);
         DataBase::insertEndTime($closing_time, $rest_time, $achievement_time, $over_time, $emplo_id, $target_date);
     }
 

@@ -156,23 +156,51 @@ class MonthlyController extends Controller
         $table_name = "daily";
         $daily_data = DataBase::getStartTimeOrDaily($cloumns_name, $table_name, $emplo_id, $target_date);
 
+        // ここから追記↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
+
+        $err = array();
+
+        // 出勤時間の必須／形式チェック
+        if (empty($start_time)) {
+            $err['modal_start_time'] = '出勤時間を入力してください。';
+            return redirect()->route('employee.monthly', [$emplo_id, $name])
+            ->with('warning', '出勤時間を入力してください。');
+        }
+
+        // 退勤時間のチェック
+        if ($start_time < $closing_time); {
+            $err['modal_closing_time'] = '退勤時間は出勤時間より後の時間を入力してください。';
+            return redirect()->route('employee.monthly', [$emplo_id, $name])
+            ->with('warning', '退勤時間は、出勤時間より後の時間を入力してください。');
+        }
+
+        // 日報の最大サイズチェック
+        if (mb_strlen($daily, 'utf-8') > 1024) {
+            $err['modal_daiy'] = '日報は1,024文字以内で入力してください。';
+            return redirect()->route('employee.monthly', [$emplo_id, $name])
+            ->with('warning', '日報は、1,024文字以内で入力してください。');
+        }
+
+
+        // 追記ここまで↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
+
         if ($check_date) {
             // 対象日にデータがある場合は、更新処理を行う
             Time::updateTime($emplo_id, $start_time, $closing_time, $target_date);
             TIme::Daily($emplo_id, $target_date, $daily, $daily_data);
             if (Auth::guard('employee')->check()) {
-                return redirect()->route('employee.monthly', compact('emplo_id', 'name',))->with('status', '変更しました');
+                return redirect()->route('employee.monthly', [$emplo_id, $name])->with('status', '変更しました');
             } elseif (Auth::guard('admin')->check()) {
-                return redirect()->route('admin.monthly', compact('emplo_id', 'name',))->with('status', '変更しました');
+                return redirect()->route('admin.monthly', [$emplo_id, $name])->with('status', '変更しました');
             }
         } else {
             // 対象日にデータがない場合は、新規登録処理を行う
             Time::insertTime($emplo_id, $start_time, $closing_time, $target_date);
             Time::Daily($emplo_id, $target_date, $daily, $daily_data);
             if (Auth::guard('employee')->check()) {
-                return redirect()->route('employee.monthly', compact('emplo_id', 'name',))->with('status', '新規登録しました');
+                return redirect()->route('employee.monthly', [$emplo_id, $name])->with('status', '新規登録しました');
             } elseif (Auth::guard('admin')->check()) {
-                return redirect()->route('admin.monthly', compact('emplo_id', 'name',))->with('status', '新規登録しました');
+                return redirect()->route('admin.monthly', [$emplo_id, $name])->with('status', '新規登録しました');
             }
         }
     }

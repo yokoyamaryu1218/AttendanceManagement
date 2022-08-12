@@ -113,7 +113,7 @@ class Common
      * @var array $total_achievement_time 総勤務時間
      * @var array $total_over_time 総残業時間
      * @var array $total_data 出勤日数・総勤務時間・残業時間をまとめたもの
-     * 
+     *
      * @return  array $total_data
      */
     public static function totalTime($emplo_id, $ym)
@@ -154,7 +154,7 @@ class Common
      * @var array $total_achievement_time 総勤務時間
      * @var array $total_over_time 総残業時間
      * @var array $total_data 出勤日数・総勤務時間・残業時間をまとめたもの
-     * 
+     *
      * @return  array $total_data
      */
     public static function SearchtotalTime($emplo_id, $first_day, $end_day)

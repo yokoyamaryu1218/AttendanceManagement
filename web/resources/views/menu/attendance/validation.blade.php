@@ -21,3 +21,10 @@
     {{ $errors->first('end_day') }}
 </div>
 @endif
+
+@if ($errors->has('end_day'))
+<div class="alert text-center alert-warning">
+    {{ $errors->first('end_day') }}
+</div>
+@endif
+
