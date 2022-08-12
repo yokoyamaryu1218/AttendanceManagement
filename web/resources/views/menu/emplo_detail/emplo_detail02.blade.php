@@ -35,17 +35,15 @@
             <td class="align-middle">{{$emplo->name}}</td>
             <!-- 詳細画面 -->
             <td class="align-middle button">
-                <form method="POST" action="{{ route('admin.emplo_details', [$emplo->emplo_id,$emplo->retirement_authority]) }}">
+                <form method="POST" action="{{ route('admin.emplo_details', [$emplo->emplo_id, $emplo->retirement_authority]) }}">
                     @csrf
                     <button class="input-group-text flex mx-auto text-white btn btn-success border-0 py-2 px-8 focus:outline-none rounded text-lg">開く</button>
                 </form>
             </td>
             <!-- 勤怠一覧 -->
             <td class="align-middle button">
-                <form method="POST" action="{{ route('admin.monthly')}}">
+                <form method="POST" action="{{ route('admin.monthly',[$emplo->emplo_id, $emplo->name]) }}">
                     @csrf
-                    <input type="hidden" class="form-control" id="emplo_id" name="emplo_id" value="{{$emplo->emplo_id}}">
-                    <input type="hidden" class="form-control" id="name" name="name" value="{{$emplo->name}}">
                     <button class="input-group-text flex mx-auto text-white btn btn-success border-0 py-2 px-8 focus:outline-none rounded text-lg">開く</button>
                 </form>
             </td>

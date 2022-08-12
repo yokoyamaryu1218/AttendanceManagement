@@ -100,15 +100,19 @@ Route::group(['middleware' => 'auth:admin'], function () {
 
     // 選択した従業員の勤怠一覧表示に関するルーティング
     // 選択した従業員の勤怠一覧の表示
-    Route::post('/monthly', [MonthlyController::class, 'index'])
+    Route::post('/monthly/{id}/{id2}', [MonthlyController::class, 'index'])
         ->name('monthly');
 
     // 勤怠修正後に再度勤怠一覧画面へ遷移するための記載
-    Route::get('/monthly', [MonthlyController::class, 'index'])
+    Route::get('/monthly/{id}/{id2}', [MonthlyController::class, 'index'])
         ->name('monthly');
 
     // プルダウンで月度を変える処理
-    Route::post('/monthly/change', [MonthlyController::class, 'store'])
+    Route::post('/monthly/change/{id}/{id2}', [MonthlyController::class, 'store'])
+        ->name('monthly_change');
+
+    // バリエーションエラーを表示するための記載
+    Route::get('/monthly/change/{id}/{id2}', [MonthlyController::class, 'store'])
         ->name('monthly_change');
 
     // 従業員の勤怠修正処理の実行
@@ -118,6 +122,11 @@ Route::group(['middleware' => 'auth:admin'], function () {
     // 勤怠絞り込み
     Route::post('/monthly/search/{id}/{id2}', [MonthlyController::class, 'search'])
         ->name('monthly_search');
+
+    // バリエーションエラーを表示するための記載
+    Route::get('/monthly/search/{id}/{id2}', [MonthlyController::class, 'search'])
+        ->name('monthly_search');
+
     // 選択した従業員の勤怠一覧表示に関するルーティングここまで
 
     // 選択した従業員のパスワード変更に関するルーティング

@@ -10,10 +10,8 @@
                     <!-- レスポンシブはhttps://tailwindcss.jp/docs/marginを参照にする -->
                     <!-- 月度プルダウン部分 -->
                     <!-- プルダウンの月度を変更すれば、下の一覧も変わる -->
-                    <form method="POST" action="{{ route('admin.monthly_change')}}" name="monthly_change">
+                    <form method="POST" action="{{ route('admin.monthly_change',[$emplo_id, $name])}}" name="monthly_change">
                         @csrf
-                        <input type="hidden" class="form-control" id="emplo_id" name="emplo_id" value="{{$emplo_id}}">
-                        <input type="hidden" class="form-control" id="name" name="name" value="{{$name}}">
                         <select class="rounded-pill mb-1" name="monthly_change" onchange="submit(this.form)">
                             <option value="{{ date('Y-m') }}">
                                 {{ date('Y年m月') }}

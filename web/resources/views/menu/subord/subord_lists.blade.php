@@ -29,10 +29,8 @@
                                 <td class="fix-col">{{$subord->subord_name}}</td>
                                 <!-- 勤怠一覧 -->
                                 <td class="fix-col">
-                                    <form method="POST" action="{{ route('employee.subord_monthly')}}">
+                                    <form method="POST" action="{{ route('employee.subord_monthly',[$subord->subord_id, $subord->subord_name]) }}">
                                         @csrf
-                                        <input type="hidden" class="form-control" id="subord_id" name="subord_id" value="{{$subord->subord_id}}">
-                                        <input type="hidden" class="form-control" id="subord_name" name="subord_name" value="{{$subord->subord_name}}">
                                         <button class="input-group-text flex mx-auto text-white btn btn-success border-0 py-2 px-8 focus:outline-none rounded text-lg">開く</button>
                                     </form>
                                 </td>
@@ -49,7 +47,7 @@
                             @endforeach
                         </tbody>
                     </table>
-                        {{$subord_data->links('components.pagenation')}}
+                    {{$subord_data->links('components.pagenation')}}
                 </div>
             </div>
         </section>

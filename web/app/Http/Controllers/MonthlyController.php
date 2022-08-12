@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\MonthlyRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Libraries\php\Domain\DataBase;
 use App\Libraries\php\Domain\Common;
 use App\Libraries\php\Domain\Time;
+use App\Http\Requests\MonthlyRequest;
 
 // 勤怠一覧のコントローラー
 class MonthlyController extends Controller
@@ -26,42 +26,8 @@ class MonthlyController extends Controller
      * @var array $monthly_data 勤怠データ
      * @var array $total_data 期間内の出勤日数、総勤務時間、残業時間の配列
      */
-    public function index(Request $request)
+    public function index(Request $request, $emplo_id, $name)
     {
-        if (Auth::guard('employee')->check()) {
-            // 従業員のIDの取得
-            if ($request->subord_id) {
-                // 部下一覧からのアクセスの場合、部下のIDを取得
-                $emplo_id = $request->subord_id;
-            } elseif ($request->emplo_id) {
-                // 勤怠修正をした場合、修正した社員のIDを取得
-                $emplo_id = $request->emplo_id;
-            } else {
-                //　自分自身の勤怠を見る場合、自分のIDを取得
-                $emplo_id = Auth::guard('employee')->user()->emplo_id;
-            };
-        } elseif (Auth::guard('admin')->check()) {
-            // 従業員情報の取得
-            $emplo_id = $request->emplo_id;
-        }
-
-        if (Auth::guard('employee')->check()) {
-            // 従業員の名前を取得
-            if ($request->subord_name) {
-                // 部下一覧からのアクセスの場合、部下の名前を取得
-                $name = $request->subord_name;
-            } elseif ($request->name) {
-                // 勤怠修正をした場合、修正した社員の名前を取得
-                $name = $request->name;
-            } else {
-                //　自分自身の勤怠を見る場合、自分の名前を取得
-                $name = Auth::guard('employee')->user()->name;
-            };
-        } elseif (Auth::guard('admin')->check()) {
-            //従業員の名前を取得
-            $name = $request->name;
-        }
-
         // 今月の年月を表示
         $format = new Common();
         $ym = $format->to_monthly();
@@ -110,12 +76,8 @@ class MonthlyController extends Controller
      * @var array $monthly_data 勤怠データ
      * @var array $total_data 期間内の出勤日数、総勤務時間、残業時間の配列
      */
-    public function store(Request $request)
+    public function store(Request $request, $emplo_id, $name)
     {
-        // 従業員情報の取得
-        $emplo_id = $request->emplo_id;
-        $name = $request->name;
-
         // プルダウンで選んだ年月と月数の取得
         if (isset($request->monthly_change)) {
             $ym = $request->monthly_change;
@@ -229,7 +191,7 @@ class MonthlyController extends Controller
      * @var array $monthly_data 勤怠データ
      * @var array $total_data 期間内の出勤日数、総勤務時間、残業時間の配列
      */
-    public function search(MonthlyRequest $request, $emplo_id, $name)
+    public function search(Request $request, $emplo_id, $name)
     {
         $first_day = $request->first_day;
         $end_day = $request->end_day;

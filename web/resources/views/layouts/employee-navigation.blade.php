@@ -21,7 +21,7 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('employee.monthly')">
+                    <x-nav-link :href="route('employee.monthly',[Auth::guard('employee')->user()->emplo_id, Auth::guard('employee')->user()->name])">
                         {{ __('月別勤怠一覧') }}
                     </x-nav-link>
                 </div>

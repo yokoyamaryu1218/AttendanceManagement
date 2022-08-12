@@ -64,16 +64,22 @@ Route::group(['middleware' => 'auth:employee'], function () {
 
     // 自分自身の勤怠一覧表示に関するルーティング
     // 勤怠一覧表示
-    Route::get('/monthly', [MonthlyController::class, 'index'])
+    Route::get('/monthly/{id}/{id2}', [MonthlyController::class, 'index'])
         ->name('monthly');
 
     // プルダウンで月度を変える処理
-    Route::post('/monthly/change', [MonthlyController::class, 'store'])
+    Route::post('/monthly/change/{id}/{id2}', [MonthlyController::class, 'store'])
+        ->name('monthly_change');
+
+    // バリエーションエラーを表示するための記載
+    Route::get('/monthly/change/{id}/{id2}', [MonthlyController::class, 'store'])
         ->name('monthly_change');
 
     // 勤怠絞り込み
     Route::post('/monthly/search/{id}/{id2}', [MonthlyController::class, 'search'])
         ->name('monthly_search');
+
+    // バリエーションエラーを表示するための記載
     Route::get('/monthly/search/{id}/{id2}', [MonthlyController::class, 'search'])
         ->name('monthly_search');
 
@@ -85,7 +91,11 @@ Route::group(['middleware' => 'auth:employee'], function () {
         ->name('subord');
 
     // 部下の勤怠一覧を表示
-    Route::post('/subord/monthly', [MonthlyController::class, 'index'])
+    Route::post('/subord/monthly/{id}/{id2}', [MonthlyController::class, 'index'])
+        ->name('subord_monthly');
+
+    // バリエーションエラーを表示するための記載
+    Route::get('/subord/monthly/{id}/{id2}', [MonthlyController::class, 'index'])
         ->name('subord_monthly');
 
     // 部下の勤怠内容を変更する処理
@@ -93,7 +103,7 @@ Route::group(['middleware' => 'auth:employee'], function () {
         ->name('subord_monthly.update');
 
     // 部下のパスワード変更画面の表示
-    Route::get('subord/change_password', [PasswordChangeController::class, 'index'])
+    Route::get('subord/change_password/{id}/{id2}', [PasswordChangeController::class, 'index'])
         ->name('subord.change_password');
 
     // パスワード変更後に同じ画面へ遷移するための記載

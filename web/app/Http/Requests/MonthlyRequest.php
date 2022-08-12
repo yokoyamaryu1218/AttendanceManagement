@@ -25,7 +25,7 @@ class MonthlyRequest extends FormRequest
     public function rules(Request $request)
     {
         return [
-            'end_day'  => ['after:first_day'],
+            //
         ];
     }
 

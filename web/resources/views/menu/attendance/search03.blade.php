@@ -2,9 +2,9 @@
 <div class="text-right mb-1">
     <button class="title btn btn-secondary">絞り込み</button>
     <div class="box">
-        @if (Auth::guard('employee')->check()) 
+        @if (Auth::guard('employee')->check())
         <form method="POST" action="{{ route('employee.monthly_search',[$emplo_id,$name] )}}" name="monthly_change">
-            @elseif  (Auth::guard('admin')->check()) 
+            @elseif  (Auth::guard('admin')->check())
             <form method="POST" action="{{ route('admin.monthly_search',[$emplo_id,$name] )}}" name="monthly_change">
                 @endif
                 @csrf
