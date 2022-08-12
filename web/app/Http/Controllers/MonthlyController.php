@@ -87,8 +87,6 @@ class MonthlyController extends Controller
             $day_count = date('t');
         }
 
-        dd($ym,$day_count);
-
         // 勤怠一覧の取得
         $monthly_data = DataBase::getMonthly($emplo_id, $ym);
 
@@ -162,22 +160,37 @@ class MonthlyController extends Controller
         // 出勤時間の必須／形式チェック
         if (empty($start_time)) {
             $message = '出勤時間を入力してください。';
-            return redirect()->route('employee.monthly', [$emplo_id, $name])
-                ->with('warning', $message);
+            if (Auth::guard('employee')->check()) {
+                return redirect()->route('employee.monthly', [$emplo_id, $name])
+                    ->with('warning', $message);
+            } elseif (Auth::guard('admin')->check()) {
+                return redirect()->route('admin.monthly', [$emplo_id, $name])
+                    ->with('warning', $message);
+            }
         }
 
         // 退勤時間のチェック
         if (!($start_time < $closing_time)) {
-            $message = '退勤時間は出勤時間より後の時間を入力してください。';
-            return redirect()->route('employee.monthly', [$emplo_id, $name])
-                ->with('warning', $message);
+            $message = '退勤時間は、出勤時間より後の時間を入力してください。';
+            if (Auth::guard('employee')->check()) {
+                return redirect()->route('employee.monthly', [$emplo_id, $name])
+                    ->with('warning', $message);
+            } elseif (Auth::guard('admin')->check()) {
+                return redirect()->route('admin.monthly', [$emplo_id, $name])
+                    ->with('warning', $message);
+            }
         }
 
         // 日報の最大サイズチェック
         if (mb_strlen($daily, 'utf-8') > 1024) {
-            $message = '日報は1,024文字以内で入力してください。';
-            return redirect()->route('employee.monthly', [$emplo_id, $name])
-                ->with('warning', $message);
+            $message = '日報は、1,024文字以内で入力してください。';
+            if (Auth::guard('employee')->check()) {
+                return redirect()->route('employee.monthly', [$emplo_id, $name])
+                    ->with('warning', $message);
+            } elseif (Auth::guard('admin')->check()) {
+                return redirect()->route('admin.monthly', [$emplo_id, $name])
+                    ->with('warning', $message);
+            }
         }
         // バリデーションここまで
 
@@ -187,9 +200,11 @@ class MonthlyController extends Controller
             TIme::Daily($emplo_id, $target_date, $daily, $daily_data);
             $message = "変更しました";
             if (Auth::guard('employee')->check()) {
-                return redirect()->route('employee.monthly', [$emplo_id, $name])->with('status', $message);
+                return redirect()->route('employee.monthly', [$emplo_id, $name])
+                    ->with('warning', $message);
             } elseif (Auth::guard('admin')->check()) {
-                return redirect()->route('admin.monthly', [$emplo_id, $name])->with('status', $message);
+                return redirect()->route('admin.monthly', [$emplo_id, $name])
+                    ->with('warning', $message);
             }
         } else {
             // 対象日にデータがない場合は、新規登録処理を行う
@@ -197,9 +212,11 @@ class MonthlyController extends Controller
             Time::Daily($emplo_id, $target_date, $daily, $daily_data);
             $message = "新規登録しました";
             if (Auth::guard('employee')->check()) {
-                return redirect()->route('employee.monthly', [$emplo_id, $name])->with('status', $message);
+                return redirect()->route('employee.monthly', [$emplo_id, $name])
+                    ->with('warning', $message);
             } elseif (Auth::guard('admin')->check()) {
-                return redirect()->route('admin.monthly', [$emplo_id, $name])->with('status', $message);
+                return redirect()->route('admin.monthly', [$emplo_id, $name])
+                    ->with('warning', $message);
             }
         }
     }
