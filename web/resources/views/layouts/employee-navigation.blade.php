@@ -66,12 +66,6 @@
 
         <!-- Responsive Navigation Menu -->
         <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-            <div class="pt-2 pb-3 space-y-1">
-                <x-responsive-nav-link :href="route('employee.dashboard')" :active="request()->routeIs('dashboard')">
-                    {{ __('Dashboard') }}
-                </x-responsive-nav-link>
-            </div>
-
             <!-- Responsive Settings Options -->
             <div class="pt-4 pb-1 border-t border-gray-200">
                 <div class="flex items-center px-4">
@@ -85,6 +79,32 @@
                         <div class="font-medium text-base text-gray-800">名前：{{ Auth::guard('employee')->user()->name }}</div>
                         <div class="font-medium text-sm text-gray-500">社員ID:{{ Auth::guard('employee')->user()->emplo_id }}</div>
                     </div>
+                </div>
+
+                <div class="mt-3 space-y-1">
+                    <x-responsive-nav-link :href="route('employee.dashboard')" :active="request()->routeIs('dashboard')">
+                        {{ __('HOME') }}
+                    </x-responsive-nav-link>
+                </div>
+
+                <div class="mt-3 space-y-1">
+                    <x-responsive-nav-link :href="route('employee.monthly',[Auth::guard('employee')->user()->emplo_id, Auth::guard('employee')->user()->name])">
+                        {{ __('月別勤怠一覧') }}
+                    </x-responsive-nav-link>
+                </div>
+
+                @if (Auth::guard('employee')->user()->subord_authority == "1")
+                <div class="mt-3 space-y-1">
+                    <x-responsive-nav-link :href="route('employee.subord')">
+                        {{ __('部下一覧') }}
+                    </x-responsive-nav-link>
+                </div>
+                @endif
+
+                <div class="mt-3 space-y-1">
+                    <x-responsive-nav-link :href="route('employee.change_password')">
+                        {{ __('パスワード変更') }}
+                    </x-responsive-nav-link>
                 </div>
 
                 <div class="mt-3 space-y-1">

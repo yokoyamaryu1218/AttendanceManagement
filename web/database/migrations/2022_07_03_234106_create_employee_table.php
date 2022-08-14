@@ -36,6 +36,8 @@ class CreateEmployeeTable extends Migration
                 ->comment('入社日');
             $table->softDeletes()
                 ->comment('退職日');
+            $table->string('remember_token')->nullable()
+                ->comment('ログイン情報の保持');
         });
     }
 
