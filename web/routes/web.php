@@ -23,9 +23,4 @@ Route::get('/dashboard', function () {
     return view('user.dashboard');
 })->middleware(['auth:users'])->name('dashboard');
 
-// エラーページの表示
-Route::get('/error', [MonthlyController::class, 'errorMsg'])
-    ->name('error');
-// エラーページここまで
-
 require __DIR__ . '/auth.php';

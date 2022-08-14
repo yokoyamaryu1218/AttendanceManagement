@@ -2,13 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Employee\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\Employee\Auth\ConfirmablePasswordController;
-use App\Http\Controllers\Employee\Auth\EmailVerificationNotificationController;
-use App\Http\Controllers\Employee\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Employee\Auth\NewPasswordController;
-use App\Http\Controllers\Employee\Auth\PasswordResetLinkController;
-use App\Http\Controllers\Employee\Auth\RegisteredUserController;
-use App\Http\Controllers\Employee\Auth\VerifyEmailController;
 use App\Http\Controllers\AttendanceContoroller;
 use App\Http\Controllers\MonthlyController;
 use App\Http\Controllers\PasswordChangeController;
@@ -129,45 +123,3 @@ Route::group(['middleware' => 'auth:employee'], function () {
         ->name('error');
     // エラーページここまで
 });
-
-// Route::post('/register', [RegisteredUserController::class, 'store'])
-//     ->middleware('guest');
-
-// Route::get('/register', [RegisteredUserController::class, 'create'])
-//     ->middleware('guest')
-//     ->name('register');
-
-// Route::get('/forgot-password', [PasswordResetLinkController::class, 'create'])
-//     ->middleware('guest')
-//     ->name('password.request');
-
-// Route::post('/forgot-password', [PasswordResetLinkController::class, 'store'])
-//     ->middleware('guest')
-//     ->name('password.email');
-
-// Route::get('/reset-password/{token}', [NewPasswordController::class, 'create'])
-//     ->middleware('guest')
-//     ->name('password.reset');
-
-// Route::post('/reset-password', [NewPasswordController::class, 'store'])
-//     ->middleware('guest')
-//     ->name('password.update');
-
-// Route::get('/verify-email', [EmailVerificationPromptController::class, '__invoke'])
-//     ->middleware('auth:employee')
-//     ->name('verification.notice');
-
-// Route::get('/verify-email/{id}/{hash}', [VerifyEmailController::class, '__invoke'])
-//     ->middleware(['auth:employee', 'signed', 'throttle:6,1'])
-//     ->name('verification.verify');
-
-// Route::post('/email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
-//     ->middleware(['auth:employee', 'throttle:6,1'])
-//     ->name('verification.send');
-
-// Route::get('/confirm-password', [ConfirmablePasswordController::class, 'show'])
-//     ->middleware('auth:employee')
-//     ->name('password.confirm');
-
-// Route::post('/confirm-password', [ConfirmablePasswordController::class, 'store'])
-//     ->middleware('auth:employee');
