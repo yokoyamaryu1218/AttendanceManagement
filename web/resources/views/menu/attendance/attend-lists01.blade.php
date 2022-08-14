@@ -43,7 +43,7 @@
                     $over_time = date('H:i', strtotime($work['over_time']));
                 }
                 if (nl2br($work['daily'])) {
-                    $daily = mb_strimwidth($work['daily'], 0, 40, '...');
+                    $daily = mb_strimwidth($work['daily'], 0, 15, '...');
                     $daily_long = $work['daily'];
                 }
             }

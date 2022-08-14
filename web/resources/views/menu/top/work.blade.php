@@ -11,6 +11,7 @@
             <div class="font-bold text-left text-2xl mb-5">{{ $ym }}/{{ $format->time_format_dw($today) }}</div>
             <!-- 日付表示ここまで -->
             <!-- メッセージ表示部分 -->
+            <!-- 名前は7文字までだったら、1行で表示できる -->
             <div class="text-right mb-5">{{ $message }}</div>
             <!-- メッセージ表示部分ここまで -->
             <!-- 時間表示部分 -->
