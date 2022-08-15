@@ -15,7 +15,7 @@ class EmployeeSeeder extends Seeder
     public function run()
     {
         //@var string employeeのカラム列
-        $employee_cloumns = 'emplo_id,name,password,management_emplo_id,subord_authority,retirement_authority,created_at,updated_at,hire_date,deleted_at';
+        $employee_cloumns = 'emplo_id,name,password,management_emplo_id,subord_authority,retirement_authority,created_at,updated_at,hire_date,retirement_date';
         //@var string カラム列のホルダー
         $employee_holder = '?,?,?,?,?,?,?,?,?,?';
         // @var array employeeの挿入データ
@@ -35,8 +35,8 @@ class EmployeeSeeder extends Seeder
             ['1012', '森口博美', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2',  '1003', 0, 0, NULL, NULL, '2012/10/01', NULL], //パスワード：password
             ['1013', '安田あさみ', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2',  '1003', 0, 0, NULL, NULL, '2015/04/01', NULL], //パスワード：password
             ['1014', 'JohnKeben', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2',  '1003', 0, 0, NULL, NULL, '2015/04/01', NULL], //パスワード：password
-            ['1015', 'KenTanaka', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2',  '1003', 1, 0, NULL, NULL, '2015/04/01', NULL], //パスワード：password
-            ['1016', 'SonMasanobu', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2',  '1003', 1, 0, NULL, NULL, '2018/04/01', NULL], //パスワード：password
+            ['1015', 'KenTanaka', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2',  '1003', 0, 0, NULL, NULL, '2015/04/01', NULL], //パスワード：password
+            ['1016', 'SonMasanobu', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2',  '1003', 0, 0, NULL, NULL, '2018/04/01', NULL], //パスワード：password
             ['1017', 'KeinKosugi', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2',  '1004', 0, 0, NULL, NULL, '2018/04/01', NULL], //パスワード：password
             ['1018', 'MituyaYuji', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2',  '1004', 0, 0, NULL, NULL, '2018/04/01', NULL], //パスワード：password
             ['1019', '横山隆', '$2y$10$DUOOak6MWz3lJ2.x8A5B2uWTtTFPPDvoenMn2Q3A1i.YHdzbPttx2',  '1004', 0, 1, NULL, NULL, '2018/08/01', '2022/08/01'], //パスワード：password

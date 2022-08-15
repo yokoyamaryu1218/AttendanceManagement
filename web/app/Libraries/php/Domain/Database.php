@@ -41,7 +41,7 @@ class Database
     {
 
         $data = DB::select('SELECT em1.emplo_id, em1.name, em1.management_emplo_id,
-        em1.retirement_authority, em1.subord_authority,em1.created_at,em1.updated_at,em1.hire_date,em1.deleted_at,
+        em1.retirement_authority, em1.subord_authority,em1.created_at,em1.updated_at,em1.hire_date,em1.retirement_date,
         /* ここまでで社員ID、社員名、上司社員ID、退職フラグ、部下参照権限、新規登録日、更新日、入社日（退職日）をemployeeテーブルから取得する */
         em2.name AS high_name,
         /* ここまでで上司名をemployeeテーブルから取得する */
@@ -186,23 +186,13 @@ class Database
      * 退職フラグを付与する
      *
      * @param $retirement_authority 退職フラグ
+     * @param $retirement_date 退職日
      * @param $emplo_id 社員ID
      *
      */
-    public static function retirementAssignment($retirement_authority, $emplo_id)
+    public static function retirementAssignment($retirement_authority, $retirement_date, $emplo_id)
     {
-        DB::insert('UPDATE employee SET retirement_authority = ? WHERE emplo_id = ?', [$retirement_authority, $emplo_id]);
-    }
-
-    /**
-     * 退職日を消す
-     *
-     * @param $emplo_id 社員ID
-     *
-     */
-    public static function Delete_at($emplo_id)
-    {
-        DB::insert('UPDATE employee SET deleted_at = NULL WHERE emplo_id = ?', [$emplo_id]);
+        DB::insert('UPDATE employee SET retirement_authority = ? , retirement_date = ? WHERE emplo_id = ?', [$retirement_authority, $retirement_date, $emplo_id]);
     }
 
     /**

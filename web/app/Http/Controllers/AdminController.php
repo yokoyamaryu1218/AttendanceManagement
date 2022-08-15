@@ -319,16 +319,15 @@ class AdminController extends Controller
      *
      * @var string $emplo_id 社員ID
      * @var array $retirement_authority 退職フラグ
+     * @var array $retirement_date 退職日
      * @var App\Libraries\php\Domain\DataBase
      */
     public function reinstatement_action($emplo_id)
     {
-        //退職フラグに0を付与する
+        //退職フラグに0を付与し、退職日を消す
         $retirement_authority = "0";
-        DataBase::retirementAssignment($retirement_authority, $emplo_id);
-
-        // 退職日をNULLにする
-        DataBase::Delete_at($emplo_id);
+        $retirement_date = NULL;
+        DataBase::retirementAssignment($retirement_authority, $retirement_date, $emplo_id);
 
         //リダイレクト
         return redirect()->route('admin.dashboard');
@@ -362,17 +361,16 @@ class AdminController extends Controller
      *
      * @var string $emplo_id 社員ID
      * @var array $retirement_authority 退職フラグ
+     * @var array $retirement_date 退職日
      * @var App\Libraries\php\Domain\DataBase
      */
-    public function destroy($emplo_id)
+    public function destroy(Request $request, $emplo_id)
     {
-        //退職フラグに1を付与する
+        //退職フラグに1を付与し、退職日を記録する
         $retirement_authority = "1";
-        DataBase::retirementAssignment($retirement_authority, $emplo_id);
+        $retirement_date = $request->retirement_date;
 
-        // 退職日に日付を付与する
-        $user = Employee::find($emplo_id);
-        $user->delete();
+        DataBase::retirementAssignment($retirement_authority, $retirement_date, $emplo_id);
 
         //リダイレクト
         return redirect()->route('admin.dashboard');

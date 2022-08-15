@@ -120,11 +120,11 @@
                         <label for="restraint_closing_time" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">更新日時</label>
                         <input type="timestamp" id="updated_at" name="updated_at" value="{{ $emplo->updated_at }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly>
                     </div>
-                    @if(isset($emplo->deleted_at))
+                    @if(isset($emplo->retirement_date))
                     <div>
                         <!-- 退職処理日時 -->
                         <label for="restraint_total_time" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">退職処理日時</label>
-                        <input type="timestamp" id="deleted_at" name="deleted_at" value="{{ $emplo->deleted_at }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly>
+                        <input type="timestamp" id="retirement_date" name="retirement_date" value="{{ $emplo->retirement_date }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly>
                     </div>
                     @else
                     <div>
