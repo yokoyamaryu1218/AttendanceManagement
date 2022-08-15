@@ -24,7 +24,7 @@
                                 @endfor
                         </select>
                         <!-- 名前表示部分 -->
-                        {{ $name }}さん
+                        <BR class="sma">{{ $name }}さん
                         <!-- 名前表示部分ここまで -->
                     </form>
                     <!-- 月度プルダウン部分ここまで -->
@@ -53,5 +53,6 @@
             @include('menu.modal.modal02')
             <!-- モーダルここまで -->
         </section>
+        <link rel="stylesheet" href="{{ asset('css/attendance.css') }}">
     </body>
 </x-app-layout>

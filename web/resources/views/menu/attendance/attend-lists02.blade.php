@@ -1,17 +1,15 @@
 <!-- admin側　勤怠一覧メイン部分のblade -->
-<table class="table-auto w-full text-left whitespace-no-wrap">
-    <thead>
-        <tr>
-            <th class="px-1 py-1 title-font tracking-wider font-medium text-gray-800 text-sm bg-gray-100 rounded-tl rounded-bl">日</th>
-            <th class="px-1 py-1 title-font tracking-wider font-medium text-gray-800 text-sm bg-gray-100">出勤</th>
-            <th class="px-1 py-1 title-font tracking-wider font-medium text-gray-800 text-sm bg-gray-100">退勤</th>
-            <th class="px-1 py-1 title-font tracking-wider font-medium text-gray-800 text-sm bg-gray-100">休憩</th>
-            <th class="px-1 py-1 title-font tracking-wider font-medium text-gray-800 text-sm bg-gray-100">実績</th>
-            <th class="px-1 py-1 title-font tracking-wider font-medium text-gray-800 text-sm bg-gray-100">残業</th>
-            <th class="px-1 py-1 title-font tracking-wider font-medium text-gray-800 text-sm bg-gray-100">日報</th>
-            <th class="px-1 py-1 title-font tracking-wider font-medium text-gray-800 text-sm bg-gray-100 rounded-tr rounded-br"></th>
-        </tr>
-    </thead>
+<table class="tbl-r05 table-auto w-full text-left whitespace-no-wrap">
+    <tr class="thead">
+        <th width="100">日</th>
+        <th width="100">出勤</th>
+        <th width="100">退勤</th>
+        <th width="100">休憩</th>
+        <th width="100">実績</th>
+        <th width="100">残業</th>
+        <th width="550">日報</th>
+        <th width="120"></th>
+    </tr>
     <tbody>
         <!-- 勤怠の情報取得 -->
         <?php for ($i = 1; $i <= $day_count; $i++) : ?>
@@ -52,15 +50,22 @@
 
             <!-- 勤怠の情報表示 -->
             <tr>
-                <th scope="row" class="fix-col">{{ $format->time_format_dw($ym . '-' . $i) }}</th>
-                <td class="fix-col">{{ $start_time }}</td>
-                <td class="fix-col">{{ $closing_time }}</td>
-                <td class="fix-col">{{ $rest_time }}</td>
-                <td class="fix-col">{{ $achievement_time }}</td>
-                <td class="fix-col">{{ $over_time }}</td>
-                <td>
-                    <div data-name="foo">{{ $daily }}</div>
-                </td>
+                <td scope="row"  width="100">{{ $format->time_format_dw($ym . '-' . $i) }}</td>
+                @if($start_time)
+                <td data-label="出勤"  width="100">{{ $start_time }}</td>
+                <td data-label="退勤"  width="100">{{ $closing_time }}</td>
+                <td data-label="休憩"  width="100">{{ $rest_time }}</td>
+                <td data-label="実績"  width="100">{{ $achievement_time }}</td>
+                <td data-label="残業"  width="100">{{ $over_time }}</td>
+                <td data-label="日報"  width="550">{{ $daily }}</td>
+                @else
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                @endif
                 <td>
                     <!-- モーダルここから -->
                     <script src="{{ asset('js/modal/modal2.js') }}" defer></script>

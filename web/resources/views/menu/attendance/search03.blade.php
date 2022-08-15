@@ -8,7 +8,7 @@
             <form method="POST" action="{{ route('admin.monthly_search',[$emplo_id,$name] )}}" name="monthly_change">
                 @endif
                 @csrf
-                <small><b>指定期間内の出勤日数・総勤務時間・残業時間を表示します。</b></small></BR>
+                指定期間内の出勤日数、<br class="sma">総勤務時間、<br class="sma">残業時間を表示します。</BR>
                 <input type="date" id="first_day" name="first_day" value="{{ old('first_day') }}">
                 ～ <input type="date" id="end_day" name="end_day" value="{{ old('end_day') }}">
                 <button class="main_button_style" data-toggle="tooltip" type="submit">

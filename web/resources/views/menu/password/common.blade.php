@@ -3,7 +3,7 @@
     <section class="text-gray-600 body-font relative">
         <div class="container px-5 py-24 mx-auto">
             <div class="flex flex-col text-center w-full mb-12">
-                <h1 class="sm:text-4xl text-3xl font-medium title-font mb-2 text-gray-900">パスワード変更画面</h1>
+            <p class="sm:text-4xl text-2xl font-medium title-font mb-2">パスワード変更画面</p>
                 <!-- フラッシュメッセージの表示 -->
                 @if (session('warning'))
                 <div class="alert alert-warning">
@@ -33,14 +33,14 @@
                 <div class="mt-4">
                     <x-label for="password" :value="__('新パスワード')" />
 
-                    <x-input id="c" class="mt-1 w-4/12 bg-gray-100" type="password" name="password" placeholder="新しいパスワード" required />
+                    <x-input id="password" class="mt-1 w-auto bg-gray-100" type="password" name="password" placeholder="新しいパスワード" required />
                 </div>
 
                 <!-- Confirm Password -->
                 <div class="mt-4">
                     <x-label for="password_confirmation" :value="__('Confirm Password')" />
 
-                    <x-input id="password_confirmation" class="mt-1 w-4/12 bg-gray-100" type="password" name="password_confirmation" placeholder="新パスワードの確認用" required />
+                    <x-input id="password_confirmation" class="mt-1 w-auto bg-gray-100" type="password" name="password_confirmation" placeholder="新パスワードの確認用" required />
                 </div>
 
                 <div class="p-2 w-full">

@@ -44,7 +44,7 @@
 </div>
 <!-- ボタン配置 -->
 <div class="flex justify-center">
-    <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 flex mx-auto focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">実行</button>
-    <input class="btn btn-warning my-0" type="button" value="戻る" onclick="window.history.back()">
+<button type="submit" class="flex mx-auto text-white bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-lg">実行</button>
+                    <input class="flex mx-auto text-white bg-yellow-400 border-0 py-2 px-8 focus:outline-none hover:bg-yellow-300 rounded text-lg" type="button" value="戻る" onclick="window.history.back()">
 </div>
 <!-- ボタンここまで -->

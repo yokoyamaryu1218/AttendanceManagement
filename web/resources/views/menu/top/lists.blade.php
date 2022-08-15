@@ -6,7 +6,14 @@
             @include('menu.emplo_detail.emplo_detail02')
             <!-- 退職者リストにデータがある場合は退職者一覧のリンクを出す -->
             @if(!(empty($retirement_lists)))
-            <div class="text-right">
+            <!-- 通常はこちらのclassが適用される -->
+            <div class="none text-right">
+                <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('admin.retirement') }}">
+                    {{ __('退職者一覧へ') }}
+                </a>
+            </div>
+            <!-- レスポンシブはこちらのclassが適用される -->
+            <div class="sma text-right mt-2">
                 <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('admin.retirement') }}">
                     {{ __('退職者一覧へ') }}
                 </a>
@@ -16,3 +23,4 @@
         </div>
     </div>
 </section>
+<link rel="stylesheet" href="{{ asset('css/attendance.css') }}">

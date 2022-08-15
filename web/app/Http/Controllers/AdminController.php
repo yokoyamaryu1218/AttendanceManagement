@@ -190,16 +190,6 @@ class AdminController extends Controller
     }
 
     /**
-     * 就業規則の表示
-     *
-     */
-    public function advanced_show()
-    {
-        // 就業規則の表示
-        return view('menu.another.advanced');
-    }
-
-    /**
      * 在職の従業員の表示
      *
      * @var App\Libraries\php\Domain\DataBase

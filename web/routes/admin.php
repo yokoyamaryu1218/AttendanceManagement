@@ -137,12 +137,6 @@ Route::group(['middleware' => 'auth:admin'], function () {
         ->name('emplo_password.update');
     // 選択した従業員のパスワード変更に関するルーティングここまで
 
-    // 就業規則に関するルーティング
-    // 就業規則(簡易版)の表示
-    Route::get('/advanced', [AdminController::class, 'advanced_show'])
-        ->name('advanced');
-    // 就業規則に関するルーティングここまで
-
     // 管理者自身のパスワード変更に関するルーティング
     // パスワード変更画面の表示
     Route::get('/change_password', [NewPasswordController::class, 'create'])

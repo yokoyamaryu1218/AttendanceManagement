@@ -1,0 +1,53 @@
+.none {
+    display: block;
+}
+
+.sma {
+    display: none;
+}
+
+.tbl-r05 td:first-child {
+    background: #fbf5f5;
+}
+
+@media screen and (max-width: 640px) {
+    .sma {
+        display: block;
+    }
+
+    .none {
+        display: none;
+    }
+
+    .tbl-r05 {
+        width: 100%;
+    }
+
+    .tbl-r05 .thead {
+        display: none;
+    }
+
+    .tbl-r05 tr {
+        width: 100%;
+    }
+
+    .tbl-r05 td {
+        display: block;
+        text-align: right;
+        width: 100%;
+    }
+
+    .tbl-r05 td:first-child {
+        background: #808080;
+        color: #fff;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .tbl-r05 td:before {
+        content: attr(data-label);
+        float: left;
+        font-weight: bold;
+        margin-right: 10px;
+    }
+}
