@@ -129,7 +129,7 @@ class AttendanceContoroller extends Controller
 
         // 出勤時間が打刻されている場合は新規登録し、未打刻の場合は警告MSGを出す
         if ($start_time) {
-            Time::insertTime($emplo_id, $start_time[0]->start_time, $closing_time, $today);
+            Time::updateTime($emplo_id, $start_time[0]->start_time, $closing_time, $today);
             $message = "退勤時間を登録しました";
             return back()->with('works_status', $message);
         }
