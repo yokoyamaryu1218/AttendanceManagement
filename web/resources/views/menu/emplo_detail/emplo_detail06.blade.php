@@ -28,5 +28,4 @@
             </div>
         </section>
     </body>
-    <link rel="stylesheet" href="{{ asset('css/attendance.css') }}">
 </x-app-layout>

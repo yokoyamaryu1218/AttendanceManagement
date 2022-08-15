@@ -1,4 +1,3 @@
-<!-- https://tailwindcomponents.com/component/input-field -->
 <!-- エラー画面のblade -->
 <x-app-layout>
     <x-slot name="header">

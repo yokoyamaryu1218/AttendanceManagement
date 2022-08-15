@@ -70,14 +70,12 @@
                     <!-- モーダルへ情報を渡す -->
                     <!-- 自分自身の勤怠一覧の場合、日報表示のモーダルを表示 -->
                     @if (Auth::guard('employee')->user()->emplo_id == $emplo_id)
-                    <script src="{{ asset('js/modal/modal.js') }}" defer></script>
                     <button type="button" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-month="{{ date('n', strtotime($ym . '-' . $i)) }}" data-bs-day="{{ $format->time_format_dw($ym . '-' . $i) }}" data-bs-daily="{{ $daily_long }}">
                         <img src="data:image/png;base64,{{Config::get('base64.musi')}}">
                     </button>
                     @else
 
                     <!-- 部下の勤怠一覧の場合、勤怠修正のモーダル表示 -->
-                    <script src="{{ asset('js/modal/modal2.js') }}" defer></script>
                     <button type="button" data-bs-toggle="modal" data-bs-target="#inputModal" data-bs-name="{{ $name }}" data-bs-id="{{ $emplo_id }}" data-bs-month="{{ date('n', strtotime($ym . '-' . $i)) }}/{{ $format->time_format_dw($ym . '-' . $i) }}" data-bs-day="{{ ($ym . '-' . sprintf('%02d', $i)) }}" data-bs-start="{{ $start_time }}" data-bs-closing="{{ $closing_time }}" data-bs-daily="{{ $daily_long }}">
                         <img src="data:image/png;base64,{{Config::get('base64.pen')}}">
                     </button>

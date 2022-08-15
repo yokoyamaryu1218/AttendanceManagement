@@ -7,7 +7,6 @@
         <section class="text-gray-600 body-font">
             <div class="container px-5 py-4 mt-20 mx-auto">
                 <div class="lg:w-2/3 w-full mx-auto overflow-auto">
-                    <!-- レスポンシブはhttps://tailwindcss.jp/docs/marginを参照にする -->
                     <!-- 月度プルダウン部分 -->
                     <!-- プルダウンの月度を変更すれば、下の一覧も変わる -->
                     <form method="POST" action="{{ route('admin.monthly_change',[$emplo_id, $name])}}" name="monthly_change">
@@ -53,6 +52,8 @@
             @include('menu.modal.modal02')
             <!-- モーダルここまで -->
         </section>
-        <link rel="stylesheet" href="{{ asset('css/attendance.css') }}">
     </body>
 </x-app-layout>
+
+<link rel="stylesheet" href="{{ asset('css/accordion.css') }}">
+<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>

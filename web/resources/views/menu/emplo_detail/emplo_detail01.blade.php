@@ -1,7 +1,4 @@
-<!-- https://tailwindcomponents.com/component/input-field -->
 <!-- admin側　従業員詳細画面のblade -->
-<script src="{{ asset('js/admin/search.js') }}" defer></script>
-
 <x-app-layout>
     <x-slot name="header">
     </x-slot>
@@ -146,12 +143,5 @@
             </form>
         </div>
         @endforeach
-        <!-- トグル用のJava -->
-        <script>
-            function clickBtn7() {
-                document.getElementById("subord_authority").value = "1";
-            }
-        </script>
-        <!-- トグル用のJavaここまで -->
     </body>
 </x-app-layout>
