@@ -55,6 +55,9 @@
     </body>
 </x-app-layout>
 
-<!-- 絞り込みメニューのcssとjs、ここに書かないと機能しない -->
+<!-- モーダルのjs -->
+<script src="{{ asset('js/modal/modal2.js') }}" defer></script>
+
+<!-- 絞り込みメニューのcssとjs -->
 <link rel="stylesheet" href="{{ asset('css/accordion.css') }}">
 <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>

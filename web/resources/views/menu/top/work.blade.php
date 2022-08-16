@@ -10,6 +10,7 @@
             <div class="text-right mb-5">{{ $message }}</div>
             <!-- メッセージ表示部分ここまで -->
             <!-- 時間表示部分 -->
+            <script src="{{ asset('js/time/time.js') }}" defer></script>
             <h1 class="font-bold text-center text-2xl mb-5" id="RealtimeClockArea2"></h1>
             <!-- 時間表示ここまで -->
             <!-- フラッシュメッセージの表示 -->

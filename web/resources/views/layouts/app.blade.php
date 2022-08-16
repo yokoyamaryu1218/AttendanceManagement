@@ -23,16 +23,11 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
-    <script src="{{ asset('js/admin/search.js') }}" defer></script>
     <script src="{{ asset('js/admin/toggle.js') }}" defer></script>
     <script src="{{ asset('js/another/accordion.js') }}" defer></script>
-    <script src="{{ asset('js/time/time.js') }}" defer></script>
     <script src="{{ asset('js/time/time2.js') }}" defer></script>
-    <script src="{{ asset('js/modal/modal.js') }}" defer></script>
-    <script src="{{ asset('js/modal/modal2.js') }}" defer></script>
     <script src="https://unpkg.com/@themesberg/flowbite@1.1.0/dist/flowbite.bundle.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
-
 </head>
 
 <body class="font-sans antialiased">

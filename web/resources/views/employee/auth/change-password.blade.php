@@ -30,20 +30,20 @@
                         <!-- Password -->
                         <div class="mt-4">
                             <x-label for="old_password" :value="__('現在のパスワード')" />
-                            <x-input id="old_password" class="mt-1 w-auto bg-gray-100" type="password" name="old_password" placeholder="現在のパスワード" required />
+                            <x-input id="old_password" class="mt-1 w-auto bg-gray-100" type="password" name="old_password" placeholder="現在のパスワード" autocomplete="on" required />
                         </div>
                         <!--  new Password -->
                         <div class="mt-4">
                             <x-label for="password" :value="__('新パスワード')" />
 
-                            <x-input id="password" class="mt-1 w-auto bg-gray-100" type="password" name="password" placeholder="新しいパスワード" required />
+                            <x-input id="password" class="mt-1 w-auto bg-gray-100" type="password" name="password" placeholder="新しいパスワード" autocomplete="on" required />
                         </div>
 
                         <!-- Confirm Password -->
                         <div class="mt-4">
                             <x-label for="password_confirmation" :value="__('Confirm Password')" />
 
-                            <x-input id="password_confirmation" class="mt-1 w-auto bg-gray-100" type="password" name="password_confirmation" placeholder="新パスワードの確認用" required />
+                            <x-input id="password_confirmation" class="mt-1 w-auto bg-gray-100" type="password" name="password_confirmation" placeholder="新パスワードの確認用" autocomplete="on" required />
                         </div>
 
                         <div class="flex justify-center mt-3">

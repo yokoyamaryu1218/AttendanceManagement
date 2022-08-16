@@ -22,7 +22,7 @@
                                 </option>
                                 @endfor
                         </select>
-                        <!-- 名前表示部分 -->]
+                        <!-- 名前表示部分 -->
                         <BR class="sma">{{ $name }}さん
                         <!-- 名前表示部分ここまで -->
                     </form>
@@ -32,6 +32,12 @@
                         @if (Auth::guard('employee')->user()->emplo_id == $emplo_id)
                         <!-- 自分自身の勤怠一覧はdashboardに戻る -->
                         <input class="btn btn-warning" type="button" value="戻る" id="myButton">
+                        <!-- 戻るボタンの遷移先 -->
+                        <script type="text/javascript">
+                            document.getElementById("myButton").onclick = function() {
+                                location.href = "{{ route('employee.dashboard') }}";
+                            };
+                        </script>
                         @else
                         <!-- 部下の勤怠一覧は直前の画面に戻る -->
                         <input class="btn btn-warning" type="button" value="戻る" onclick="window.history.back()">
@@ -67,13 +73,6 @@
     </body>
 </x-app-layout>
 
-<!-- 戻るボタンの遷移先 -->
-<script type="text/javascript">
-    document.getElementById("myButton").onclick = function() {
-        location.href = "{{ route('employee.dashboard') }}";
-    };
-</script>
-
-<!-- 絞り込みメニューのcssとjs、ここに書かないと機能しない -->
+<!-- 絞り込みメニューのcssとjs -->
 <link rel="stylesheet" href="{{ asset('css/accordion.css') }}">
 <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
