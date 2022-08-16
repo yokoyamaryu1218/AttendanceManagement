@@ -42,8 +42,17 @@ class Time
         $over_time = Time::over_time($achievement_time, $restraint_time[0]->restraint_total_time);
 
         // データベースに登録する
-        DataBase::insertStartTime($emplo_id, $target_date, $start_time);
-        DataBase::insertEndTime($closing_time, $rest_time, $achievement_time, $over_time, $emplo_id, $target_date);
+        try {
+            DataBase::insertStartTime($emplo_id, $target_date, $start_time);
+            DataBase::insertEndTime($closing_time, $rest_time, $achievement_time, $over_time, $emplo_id, $target_date);
+        } catch (Exception $e) {
+            $e->getMessage();
+            if (Auth::guard('employee')->check()) {
+                return redirect()->route('employee.error');
+            } elseif (Auth::guard('admin')->check()) {
+                return redirect()->route('employee.error');
+            };
+        };
     }
 
     /**
@@ -78,7 +87,16 @@ class Time
         $over_time = Time::over_time($achievement_time, $restraint_time[0]->restraint_total_time);
 
         // データベースを更新する
-        DataBase::updateTime($start_time, $closing_time, $rest_time, $achievement_time, $over_time, $emplo_id, $target_date);
+        try {
+            DataBase::updateTime($start_time, $closing_time, $rest_time, $achievement_time, $over_time, $emplo_id, $target_date);
+        } catch (Exception $e) {
+            $e->getMessage();
+            if (Auth::guard('employee')->check()) {
+                return redirect()->route('employee.error');
+            } elseif (Auth::guard('admin')->check()) {
+                return redirect()->route('employee.error');
+            };
+        };
     }
 
 
@@ -96,10 +114,28 @@ class Time
     {
         // 日報の登録がされていない場合は新規登録を行い
         if ($daily_data == NULL) {
-            DataBase::insertDaily($emplo_id, $target_date, $daily);
+            try {
+                DataBase::insertDaily($emplo_id, $target_date, $daily);
+            } catch (Exception $e) {
+                $e->getMessage();
+                if (Auth::guard('employee')->check()) {
+                    return redirect()->route('employee.error');
+                } elseif (Auth::guard('admin')->check()) {
+                    return redirect()->route('employee.error');
+                };
+            };
         }
         // 日報が登録されている場合は更新処理を行う
-        DataBase::updateDaily($emplo_id, $target_date, $daily);
+        try {
+            DataBase::updateDaily($emplo_id, $target_date, $daily);
+        } catch (Exception $e) {
+            $e->getMessage();
+            if (Auth::guard('employee')->check()) {
+                return redirect()->route('employee.error');
+            } elseif (Auth::guard('admin')->check()) {
+                return redirect()->route('employee.error');
+            };
+        };
     }
 
     /**

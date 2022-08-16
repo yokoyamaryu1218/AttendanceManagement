@@ -60,7 +60,13 @@ class AttendanceContoroller extends Controller
         $emplo_id = Auth::guard('employee')->user()->emplo_id;
         $cloumns_name = "daily";
         $table_name = "daily";
-        $daily_data = DataBase::getStartTimeOrDaily($cloumns_name, $table_name, $emplo_id, $today);
+
+        try {
+            $daily_data = DataBase::getStartTimeOrDaily($cloumns_name, $table_name, $emplo_id, $today);
+        } catch (Exception $e) {
+            $e->getMessage();
+            return redirect()->route('employee.error');
+        };
 
         return view('employee.dashboard', compact(
             'ym',
@@ -90,7 +96,12 @@ class AttendanceContoroller extends Controller
         $emplo_id = Auth::guard('employee')->user()->emplo_id;
 
         //対象日のデータがあるかどうかチェック
-        $check_date = Database::checkDate($emplo_id, $today);
+        try {
+            $check_date = Database::checkDate($emplo_id, $today);
+        } catch (Exception $e) {
+            $e->getMessage();
+            return redirect()->route('employee.error');
+        };
 
         if ($check_date) {
             // 重複登録の場合
@@ -98,7 +109,13 @@ class AttendanceContoroller extends Controller
             return back()->with('works_warning', $message);
         } else {
             // 勤務開始時間をデータベースに登録する
-            DataBase::insertStartTime($emplo_id, $today, $start_time);
+            try {
+                DataBase::insertStartTime($emplo_id, $today, $start_time);
+            } catch (Exception $e) {
+                $e->getMessage();
+                return redirect()->route('employee.error');
+            };
+
             $message = "出勤時間を登録しました";
             return back()->with('works_status', $message);
         }
@@ -125,11 +142,22 @@ class AttendanceContoroller extends Controller
         // 出勤時間の取得
         $cloumns_name = "start_time";
         $table_name = "works";
-        $start_time = DataBase::getStartTimeOrDaily($cloumns_name, $table_name, $emplo_id, $today);
+        try {
+            $start_time = DataBase::getStartTimeOrDaily($cloumns_name, $table_name, $emplo_id, $today);
+        } catch (Exception $e) {
+            $e->getMessage();
+            return redirect()->route('employee.error');
+        };
 
         // 出勤時間が打刻されている場合は新規登録し、未打刻の場合は警告MSGを出す
         if ($start_time) {
-            Time::updateTime($emplo_id, $start_time[0]->start_time, $closing_time, $today);
+            try {
+                Time::updateTime($emplo_id, $start_time[0]->start_time, $closing_time, $today);
+            } catch (Exception $e) {
+                $e->getMessage();
+                return redirect()->route('employee.error');
+            };
+
             $message = "退勤時間を登録しました";
             return back()->with('works_status', $message);
         }
@@ -160,10 +188,10 @@ class AttendanceContoroller extends Controller
         // 日報の登録
         try {
             DataBase::insertDaily($emplo_id, $today, $daily);
-        } catch (\Exception $e) {
-            //エラー処理
-            return redirect()->route('emplo.error');
-        }
+        } catch (Exception $e) {
+            $e->getMessage();
+            return redirect()->route('employee.error');
+        };
 
         $message = "日報を登録しました";
         return back()->with('status', $message);
@@ -190,7 +218,12 @@ class AttendanceContoroller extends Controller
         $request->session()->regenerateToken();
 
         // 日報の更新
-        DataBase::updateDaily($emplo_id, $today, $daily);
+        try {
+            DataBase::updateDaily($emplo_id, $today, $daily);
+        } catch (Exception $e) {
+            $e->getMessage();
+            return redirect()->route('employee.error');
+        };
 
         $message = "日報を更新しました";
         return back()->with('status', $message);
@@ -211,7 +244,12 @@ class AttendanceContoroller extends Controller
             $emplo_id = Auth::guard('employee')->user()->emplo_id;
             // 在職者だけ出す
             $retirement_authority = "0";
-            $subord_data = collect(DataBase::getSubord($emplo_id, $retirement_authority));
+            try {
+                $subord_data = collect(DataBase::getSubord($emplo_id, $retirement_authority));
+            } catch (Exception $e) {
+                $e->getMessage();
+                return redirect()->route('employee.error');
+            };
 
             // ページネーション
             // 参照：https://qiita.com/wallkickers/items/35d13a62e0d53ce05732

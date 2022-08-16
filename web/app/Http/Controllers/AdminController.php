@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Employee;
 use Illuminate\Http\Request;
 use App\Libraries\php\Domain\Time;
 use App\Libraries\php\Domain\Common;
@@ -36,8 +35,13 @@ class AdminController extends Controller
     public function index(Request $request)
     {
         // 在職者だけを表示するため、退職フラグに0を付与
-        $retirement_authority = "0";
-        $employee_lists =  collect(DataBase::getEmployeeAll($retirement_authority));
+        try {
+            $retirement_authority = "0";
+            $employee_lists =  collect(DataBase::getEmployeeAll($retirement_authority));
+        } catch (Exception $e) {
+            $e->getMessage();
+            return redirect()->route('admin.error');
+        };
 
         // ページネーション
         // 参照：https://qiita.com/wallkickers/items/35d13a62e0d53ce05732
@@ -49,7 +53,12 @@ class AdminController extends Controller
             array('path' => $request->url())
         );
         // 退職者がいる場合、退職者一覧のリンクを表示するため、退職者リストも取得する
-        $retirement_lists = DataBase::getEmployeeAll("1");
+        try {
+            $retirement_lists = DataBase::getEmployeeAll("1");
+        } catch (Exception $e) {
+            $e->getMessage();
+            return redirect()->route('admin.error');
+        }
 
         return view('admin.dashboard', compact(
             'employee_lists',
@@ -68,8 +77,13 @@ class AdminController extends Controller
     public function retirement(Request $request)
     {
         // 退職者だけを表示するため、退職フラグに1を付与
-        $retirement_authority = "1";
-        $employee_lists = collect(DataBase::getEmployeeAll($retirement_authority));
+        try {
+            $retirement_authority = "1";
+            $employee_lists = collect(DataBase::getEmployeeAll($retirement_authority));
+        } catch (Exception $e) {
+            $e->getMessage();
+            return redirect()->route('admin.error');
+        };
 
         // ページネーション
         $employee_lists = new LengthAwarePaginator(
@@ -95,7 +109,12 @@ class AdminController extends Controller
     public function create()
     {
         // 管理者リストの取得
-        $subord_authority_lists = DataBase::getSubordAuthority();
+        try {
+            $subord_authority_lists = DataBase::getSubordAuthority();
+        } catch (Exception $e) {
+            $e->getMessage();
+            return redirect()->route('admin.error');
+        };
 
         return view('menu.emplo_detail.emplo_detail03', compact(
             'subord_authority_lists',
@@ -178,10 +197,20 @@ class AdminController extends Controller
     public function show($emplo_id, $retirement_authority)
     {
         // 詳細画面の情報取得
-        $employee_lists = DataBase::SelectEmployee($emplo_id, $retirement_authority);
+        try {
+            $employee_lists = DataBase::SelectEmployee($emplo_id, $retirement_authority);
+        } catch (Exception $e) {
+            $e->getMessage();
+            return redirect()->route('admin.error');
+        };
 
         // 管理者リストの取得
-        $subord_authority_lists = DataBase::getSubordAuthority();
+        try {
+            $subord_authority_lists = DataBase::getSubordAuthority();
+        } catch (Exception $e) {
+            $e->getMessage();
+            return redirect()->route('admin.error');
+        };
 
         return view('menu.emplo_detail.emplo_detail01', compact(
             'employee_lists',
@@ -204,12 +233,16 @@ class AdminController extends Controller
             $_POST['search'] = $_GET['search'];
         }
 
-        // dd($retirement_authority);
-        if (is_numeric($request->search)) {
-            $employee_lists =  collect(DataBase::getSearchID($retirement_authority, $request->search));
-        } else {
-            $employee_lists =  collect(DataBase::getSearchName($retirement_authority, $request->search));
-        }
+        try {
+            if (is_numeric($request->search)) {
+                $employee_lists =  collect(DataBase::getSearchID($retirement_authority, $request->search));
+            } else {
+                $employee_lists =  collect(DataBase::getSearchName($retirement_authority, $request->search));
+            }
+        } catch (Exception $e) {
+            $e->getMessage();
+            return redirect()->route('admin.error');
+        };
 
         // ページネーション
         // 参照：https://qiita.com/wallkickers/items/35d13a62e0d53ce05732
@@ -222,7 +255,12 @@ class AdminController extends Controller
         );
 
         // 退職者がいる場合、退職者一覧のリンクを表示するため、退職者リストも取得する
-        $retirement_lists = DataBase::getEmployeeAll("1");
+        try {
+            $retirement_lists = DataBase::getEmployeeAll("1");
+        } catch (Exception $e) {
+            $e->getMessage();
+            return redirect()->route('admin.error');
+        };
 
         if ($retirement_authority == "0") {
             return view('admin.dashboard', compact(
@@ -304,7 +342,12 @@ class AdminController extends Controller
     public function reinstatement_check($emplo_id, $retirement_authority)
     {
         // 復職者処理を行う従業員の詳細取得
-        $employee_lists = DataBase::SelectEmployee($emplo_id, $retirement_authority);
+        try {
+            $employee_lists = DataBase::SelectEmployee($emplo_id, $retirement_authority);
+        } catch (Exception $e) {
+            $e->getMessage();
+            return redirect()->route('admin.error');
+        };
 
         //リダイレクト
         return view('menu.emplo_detail.emplo_detail05', compact(
@@ -327,7 +370,13 @@ class AdminController extends Controller
         //退職フラグに0を付与し、退職日を消す
         $retirement_authority = "0";
         $retirement_date = NULL;
-        DataBase::retirementAssignment($retirement_authority, $retirement_date, $emplo_id);
+
+        try {
+            DataBase::retirementAssignment($retirement_authority, $retirement_date, $emplo_id);
+        } catch (Exception $e) {
+            $e->getMessage();
+            return redirect()->route('admin.error');
+        };
 
         //リダイレクト
         return redirect()->route('admin.dashboard');
@@ -346,7 +395,12 @@ class AdminController extends Controller
     public function destroy_check($emplo_id, $retirement_authority)
     {
         // 退職処理を行う従業員の情報取得
-        $employee_lists = DataBase::SelectEmployee($emplo_id, $retirement_authority);
+        try {
+            $employee_lists = DataBase::SelectEmployee($emplo_id, $retirement_authority);
+        } catch (Exception $e) {
+            $e->getMessage();
+            return redirect()->route('admin.error');
+        };
 
         //リダイレクト
         return view('menu.emplo_detail.emplo_detail04', compact(
@@ -370,7 +424,12 @@ class AdminController extends Controller
         $retirement_authority = "1";
         $retirement_date = $request->retirement_date;
 
-        DataBase::retirementAssignment($retirement_authority, $retirement_date, $emplo_id);
+        try {
+            DataBase::retirementAssignment($retirement_authority, $retirement_date, $emplo_id);
+        } catch (Exception $e) {
+            $e->getMessage();
+            return redirect()->route('admin.error');
+        };
 
         //リダイレクト
         return redirect()->route('admin.dashboard');

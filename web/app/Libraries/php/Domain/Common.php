@@ -66,14 +66,23 @@ class Common
      */
     public static function insertEmployee($emplo_id, $name, $password, $management_emplo_id, $subord_authority, $retirement_authority, $hire_date, $restraint_start_time, $restraint_closing_time, $restraint_total_time)
     {
-        // 人員を登録
-        DataBase::insertEmployee($emplo_id, $name, $password, $management_emplo_id, $subord_authority, $retirement_authority, $hire_date);
+        try {
+            // 人員を登録
+            DB::beginTransaction();
+            DataBase::insertEmployee($emplo_id, $name, $password, $management_emplo_id, $subord_authority, $retirement_authority, $hire_date);
 
-        // 就業時間を登録
-        DataBase::insertOverTime($emplo_id, $restraint_start_time, $restraint_closing_time, $restraint_total_time);
+            // 就業時間を登録
+            DataBase::insertOverTime($emplo_id, $restraint_start_time, $restraint_closing_time, $restraint_total_time);
 
-        //階層に登録
-        DataBase::insertHierarchy($emplo_id, $management_emplo_id);
+            //階層に登録
+            DataBase::insertHierarchy($emplo_id, $management_emplo_id);
+
+            DB::commit();
+        } catch (Exception $e) {
+            DB::rollBack();
+            $e->getMessage();
+            return redirect()->route('admin.error');
+        };
     }
 
     /**
@@ -91,14 +100,19 @@ class Common
      */
     public static function updateEmployee($emplo_id, $name, $management_emplo_id, $subord_authority, $restraint_start_time, $restraint_closing_time, $restraint_total_time)
     {
-        // 人員を更新
-        DataBase::updateEmployee($emplo_id, $name, $management_emplo_id, $subord_authority);
+        try {
+            // 人員を更新
+            DataBase::updateEmployee($emplo_id, $name, $management_emplo_id, $subord_authority);
 
-        // 就業時間を更新
-        DataBase::updateOverTime($emplo_id, $restraint_start_time, $restraint_closing_time, $restraint_total_time);
+            // 就業時間を更新
+            DataBase::updateOverTime($emplo_id, $restraint_start_time, $restraint_closing_time, $restraint_total_time);
 
-        //階層に更新
-        DataBase::updateHierarchy($management_emplo_id, $emplo_id);
+            //階層に更新
+            DataBase::updateHierarchy($management_emplo_id, $emplo_id);
+        } catch (Exception $e) {
+            $e->getMessage();
+            return redirect()->route('admin.error');
+        };
     }
 
     /**

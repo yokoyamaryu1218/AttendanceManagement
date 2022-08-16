@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Auth;
 use App\Libraries\php\Domain\DataBase;
 use App\Libraries\php\Domain\Common;
 use App\Libraries\php\Domain\Time;
-use App\Http\Requests\MonthlyRequest;
 
 // 勤怠一覧のコントローラー
 class MonthlyController extends Controller
@@ -34,10 +33,28 @@ class MonthlyController extends Controller
         // 月の日数を取得
         $day_count = date('t', strtotime($ym));
         // 今月の勤怠一覧を取得
-        $monthly_data = DataBase::getMonthly($emplo_id, $ym);
+        try {
+            $monthly_data = DataBase::getMonthly($emplo_id, $ym);
+        } catch (Exception $e) {
+            $e->getMessage();
+            if (Auth::guard('employee')->check()) {
+                return redirect()->route('employee.error');
+            } elseif (Auth::guard('admin')->check()) {
+                return redirect()->route('employee.error');
+            };
+        };
 
         // 期間内の出勤日数、総勤務時間、残業時間を求める
-        $total_data = Common::totalTime($emplo_id, $ym);
+        try {
+            $total_data = Common::totalTime($emplo_id, $ym);
+        } catch (Exception $e) {
+            $e->getMessage();
+            if (Auth::guard('employee')->check()) {
+                return redirect()->route('employee.error');
+            } elseif (Auth::guard('admin')->check()) {
+                return redirect()->route('employee.error');
+            };
+        };
 
         if (Auth::guard('employee')->check()) {
             return view('menu.attendance.attendance01', compact(
@@ -88,10 +105,28 @@ class MonthlyController extends Controller
         }
 
         // 勤怠一覧の取得
-        $monthly_data = DataBase::getMonthly($emplo_id, $ym);
+        try {
+            $monthly_data = DataBase::getMonthly($emplo_id, $ym);
+        } catch (Exception $e) {
+            $e->getMessage();
+            if (Auth::guard('employee')->check()) {
+                return redirect()->route('employee.error');
+            } elseif (Auth::guard('admin')->check()) {
+                return redirect()->route('employee.error');
+            };
+        };
 
         // 期間内の出勤日数、総勤務時間、残業時間を求める
-        $total_data = Common::totalTime($emplo_id, $ym);
+        try {
+            $total_data = Common::totalTime($emplo_id, $ym);
+        } catch (Exception $e) {
+            $e->getMessage();
+            if (Auth::guard('employee')->check()) {
+                return redirect()->route('employee.error');
+            } elseif (Auth::guard('admin')->check()) {
+                return redirect()->route('employee.error');
+            };
+        };
 
         // フォーマットの取得
         $format = new Common();
@@ -151,10 +186,29 @@ class MonthlyController extends Controller
         $request->session()->regenerateToken();
 
         //対象日のデータがあるかどうかチェック
-        $check_date = Database::checkDate($emplo_id, $target_date);
+        try {
+            $check_date = Database::checkDate($emplo_id, $target_date);
+        } catch (Exception $e) {
+            $e->getMessage();
+            if (Auth::guard('employee')->check()) {
+                return redirect()->route('employee.error');
+            } elseif (Auth::guard('admin')->check()) {
+                return redirect()->route('employee.error');
+            };
+        };
+
         $cloumns_name = "daily";
         $table_name = "daily";
-        $daily_data = DataBase::getStartTimeOrDaily($cloumns_name, $table_name, $emplo_id, $target_date);
+        try {
+            $daily_data = DataBase::getStartTimeOrDaily($cloumns_name, $table_name, $emplo_id, $target_date);
+        } catch (Exception $e) {
+            $e->getMessage();
+            if (Auth::guard('employee')->check()) {
+                return redirect()->route('employee.error');
+            } elseif (Auth::guard('admin')->check()) {
+                return redirect()->route('employee.error');
+            };
+        };
 
         // バリデーション
         // 出勤時間の必須／形式チェック
@@ -196,8 +250,18 @@ class MonthlyController extends Controller
 
         if ($check_date) {
             // 対象日にデータがある場合は、更新処理を行う
-            Time::updateTime($emplo_id, $start_time, $closing_time, $target_date);
-            TIme::Daily($emplo_id, $target_date, $daily, $daily_data);
+            try {
+                Time::updateTime($emplo_id, $start_time, $closing_time, $target_date);
+                TIme::Daily($emplo_id, $target_date, $daily, $daily_data);
+            } catch (Exception $e) {
+                $e->getMessage();
+                if (Auth::guard('employee')->check()) {
+                    return redirect()->route('employee.error');
+                } elseif (Auth::guard('admin')->check()) {
+                    return redirect()->route('employee.error');
+                };
+            };
+
             $message = "変更しました";
             if (Auth::guard('employee')->check()) {
                 return redirect()->route('employee.monthly', [$emplo_id, $name])
@@ -208,8 +272,18 @@ class MonthlyController extends Controller
             }
         } else {
             // 対象日にデータがない場合は、新規登録処理を行う
-            Time::insertTime($emplo_id, $start_time, $closing_time, $target_date);
-            Time::Daily($emplo_id, $target_date, $daily, $daily_data);
+            try {
+                Time::insertTime($emplo_id, $start_time, $closing_time, $target_date);
+                Time::Daily($emplo_id, $target_date, $daily, $daily_data);
+            } catch (Exception $e) {
+                $e->getMessage();
+                if (Auth::guard('employee')->check()) {
+                    return redirect()->route('employee.error');
+                } elseif (Auth::guard('admin')->check()) {
+                    return redirect()->route('employee.error');
+                };
+            };
+
             $message = "新規登録しました";
             if (Auth::guard('employee')->check()) {
                 return redirect()->route('employee.monthly', [$emplo_id, $name])
@@ -241,7 +315,16 @@ class MonthlyController extends Controller
         $end_day = $request->end_day;
 
         // 指定した期間内の出勤日数、総勤務時間、残業時間を求める
-        $total_data = Common::SearchtotalTime($emplo_id, $first_day, $end_day);
+        try {
+            $total_data = Common::SearchtotalTime($emplo_id, $first_day, $end_day);
+        } catch (Exception $e) {
+            $e->getMessage();
+            if (Auth::guard('employee')->check()) {
+                return redirect()->route('employee.error');
+            } elseif (Auth::guard('admin')->check()) {
+                return redirect()->route('employee.error');
+            };
+        };
 
         if (Auth::guard('employee')->check()) {
             return view(
@@ -266,14 +349,5 @@ class MonthlyController extends Controller
                 )
             );
         }
-    }
-
-    /**
-     * エラーメッセージページ遷移
-     *
-     */
-    public function errorMsg()
-    {
-        return view('menu.another.error');
     }
 }

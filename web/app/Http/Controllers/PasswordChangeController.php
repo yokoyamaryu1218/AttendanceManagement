@@ -70,7 +70,16 @@ class PasswordChangeController extends Controller
         $this->validator($request->all())->validate();
 
         // パスワードを保存
-        Database::subord_updatepassword($password, $emplo_id);
+        try {
+            Database::subord_updatepassword($password, $emplo_id);
+        } catch (Exception $e) {
+            $e->getMessage();
+            if (Auth::guard('employee')->check()) {
+                return redirect()->route('employee.error');
+            } elseif (Auth::guard('admin')->check()) {
+                return redirect()->route('employee.error');
+            };
+        };
 
         if (Auth::guard('employee')->check()) {
             $message = "パスワードを変更しました";
