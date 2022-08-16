@@ -56,6 +56,10 @@
         <main>
             {{ $slot }}
         </main>
+
+        <footer class="footer text-right">
+            Copyright ©YokoyamaRyu All Rights Reserved.
+        </footer>
     </div>
 </body>
 
