@@ -97,7 +97,7 @@ Route::group(['middleware' => 'auth:employee'], function () {
         ->name('subord_monthly.update');
 
     // 部下のパスワード変更画面の表示
-    Route::get('subord/change_password/{id}/{id2}', [PasswordChangeController::class, 'index'])
+    Route::get('subord/change_password/', [PasswordChangeController::class, 'index'])
         ->name('subord.change_password');
 
     // パスワード変更後に同じ画面へ遷移するための記載

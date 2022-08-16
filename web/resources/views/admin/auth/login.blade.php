@@ -24,8 +24,11 @@
             <div class="mt-4 form-item">
                 <x-label for="password" :value="__('Password')" />
                 <x-input id="password" class="form-style block mt-1 w-full" type="password" name="password" required autocomplete="current-password" />
-                <span class="auth-field-icon"><i id="eye" class="fa-solid fa-eye toggle-password" style="color:#8a8a8a"></i></span>
-            </div>
+            </div></br>
+            <label for="password-check" class="inline-flex items-center">
+                <input id="password-check" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" name="remember">
+                <span class="ml-2 text-sm text-gray-600">{{ __('パスワードを表示する') }}</span>
+            </label>
             <script src="{{ asset('/js/another/auth.js') }}"></script>
 
             <!-- Remember Me -->

@@ -1,14 +1,31 @@
-// パスワードの表示・非表示切替
-$(".toggle-password").click(function () {
-    // iconの切り替え
-    $(this).toggleClass("fa-eye-slash");
+const pwd = document.getElementById('password');
+const pwd2 = document.getElementById('password_confirmation');
+const pwd3 = document.getElementById('old_password');
 
-    // 入力フォームの取得
-    let input = $(this).parent().prev("input");
-    // type切替
-    if (input.attr("type") == "password") {
-        input.attr("type", "text");
+const pwdCheck = document.getElementById('password-check');
+const pwdCheck2 = document.getElementById('password-check2');
+const pwdCheck3 = document.getElementById('password-check3');
+
+pwdCheck.addEventListener('change', function () {
+    if (pwdCheck.checked) {
+        pwd.setAttribute('type', 'text');
     } else {
-        input.attr("type", "password");
+        pwd.setAttribute('type', 'password');
     }
-});
+}, false);
+
+pwdCheck2.addEventListener('change', function () {
+    if (pwdCheck2.checked) {
+        pwd2.setAttribute('type', 'text');
+    } else {
+        pwd2.setAttribute('type', 'password');
+    }
+}, false);
+
+pwdCheck3.addEventListener('change', function () {
+    if (pwdCheck3.checked) {
+        pwd3.setAttribute('type', 'text');
+    } else {
+        pwd3.setAttribute('type', 'password');
+    }
+}, false);
