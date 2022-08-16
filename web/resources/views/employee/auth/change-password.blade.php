@@ -46,12 +46,19 @@
                             <x-input id="password_confirmation" class="mt-1 w-auto bg-gray-100" type="password" name="password_confirmation" placeholder="新パスワードの確認用" required />
                         </div>
 
-                        <div class="p-2 w-full mt-2">
-                            <button class="flex mx-auto text-white bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-lg">変更</button>
+                        <div class="flex justify-center mt-3">
+                            <button class="flex text-white mx-2 bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-lg">変更</button>
+                            <input id="myButton" class="flex text-white mx-2 bg-yellow-500 border-0 py-2 px-8 focus:outline-none hover:bg-yellow-600 rounded text-lg" type="button" value="戻る">
                         </div>
                     </div>
                 </div>
             </section>
         </body>
     </form>
+    <!-- 戻るボタンの遷移先 -->
+    <script type="text/javascript">
+        document.getElementById("myButton").onclick = function() {
+            location.href = "{{ route('employee.dashboard') }}";
+        };
+    </script>
 </x-app-layout>

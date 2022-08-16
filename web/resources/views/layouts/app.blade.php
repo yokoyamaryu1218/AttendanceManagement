@@ -25,7 +25,7 @@
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="{{ asset('js/admin/search.js') }}" defer></script>
     <script src="{{ asset('js/admin/toggle.js') }}" defer></script>
-    <script src="{{ asset('js/accordion.js') }}" defer></script>
+    <script src="{{ asset('js/another/accordion.js') }}" defer></script>
     <script src="{{ asset('js/time/time.js') }}" defer></script>
     <script src="{{ asset('js/time/time2.js') }}" defer></script>
     <script src="{{ asset('js/modal/modal.js') }}" defer></script>
