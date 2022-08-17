@@ -54,7 +54,8 @@ class LoginRequest extends FormRequest
         }
 
         if (!Auth::guard($guard)->attempt($this->only('emplo_id', 'password'), $this->filled('remember'))) {
-            RateLimiter::hit($this->throttleKey());
+            // ここでログイン失敗時のタイムアウトの時間を設定できる
+            RateLimiter::hit($this->throttleKey(),300);
 
             throw ValidationException::withMessages([
                 'emplo_id' => __('auth.failed'),
@@ -73,6 +74,7 @@ class LoginRequest extends FormRequest
      */
     public function ensureIsNotRateLimited()
     {
+        //ここでログインの試行回数を変更できる
         if (!RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
             return;
         }
