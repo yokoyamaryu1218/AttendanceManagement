@@ -11,7 +11,7 @@
                     <!-- プルダウンの月度を変更すれば、下の一覧も変わる -->
                     <form method="POST" class="mb-4" action="{{ route('employee.monthly_change',[$emplo_id, $name])}}" name="monthly_change">
                         @csrf
-                        <select class="rounded-pill mb-1" name="monthly_change" onchange="submit(this.form)">
+                        <select class="rounded-pill mb-1" name="monthly_change" onchange="submit(this.form)" title="当月から過去1年分の勤怠一覧をプルダウンから選択できます。">
                             <option value="{{ date('Y-m') }}">
                                 {{ date('Y年m月') }}
                             </option>
@@ -31,7 +31,7 @@
                     <div class="text-right mb-1">
                         @if (Auth::guard('employee')->user()->emplo_id == $emplo_id)
                         <!-- 自分自身の勤怠一覧はdashboardに戻る -->
-                        <input class="btn btn-warning" type="button" value="戻る" id="myButton">
+                        <input class="btn btn-warning" type="button" value="戻る" id="myButton" title="HOME画面に戻ります。">
                         <!-- 戻るボタンの遷移先 -->
                         <script type="text/javascript">
                             document.getElementById("myButton").onclick = function() {
@@ -40,7 +40,7 @@
                         </script>
                         @else
                         <!-- 部下の勤怠一覧は直前の画面に戻る -->
-                        <input class="btn btn-warning" type="button" value="戻る" onclick="window.history.back()">
+                        <input class="btn btn-warning" type="button" value="戻る" onclick="window.history.back()" title="1つ前の画面に戻ります。">
                         @endif
                     </div>
                     <!-- 戻るボタンここまで -->

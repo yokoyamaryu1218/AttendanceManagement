@@ -42,7 +42,7 @@ class Database
 
         $data = DB::select('SELECT em1.emplo_id, em1.name, em1.management_emplo_id,
         em1.retirement_authority, em1.subord_authority,em1.created_at,em1.updated_at,em1.hire_date,em1.retirement_date,
-        /* ここまでで社員ID、社員名、上司社員ID、退職フラグ、部下参照権限、新規登録日、更新日、入社日（退職日）をemployeeテーブルから取得する */
+        /* ここまでで社員ID、社員名、上司社員ID、退職フラグ、部下配属権限、新規登録日、更新日、入社日（退職日）をemployeeテーブルから取得する */
         em2.name AS high_name,
         /* ここまでで上司名をemployeeテーブルから取得する */
         ot1.restraint_start_time, ot1.restraint_closing_time, ot1.restraint_total_time FROM employee AS em1
@@ -94,7 +94,7 @@ class Database
     }
 
     /**
-     * 部下参照権限がある社員リストの取得
+     * 部下配属権限がある社員リストの取得
      *
      * @var   $list 取得データ
      *
@@ -131,7 +131,7 @@ class Database
      * @param $name　社員名
      * @param $password　パスワード
      * @param $management_emplo_id　上司社員ID
-     * @param $subord_authority　部下参照権限
+     * @param $subord_authority　部下配属権限
      * @param $retirement_authority　退職フラグ
      * @param $$hire_date　入社日
      *
@@ -147,7 +147,7 @@ class Database
      * @param $emplo_id 社員ID
      * @param $name　社員名
      * @param $management_emplo_id　上司社員ID
-     * @param $subord_authority　部下参照権限
+     * @param $subord_authority　部下配属権限
      *
      */
     public static function updateEmployee($emplo_id, $name, $management_emplo_id, $subord_authority)

@@ -17,7 +17,7 @@
             <div>
                 <x-label for="id" :value="__('社員ID')" />
 
-                <x-input id="emplo_id" class="form-style block mt-1 w-full" type="text" name="emplo_id" :value="old('emplo_id')" required autocomplete="on" autofocus />
+                <x-input id="emplo_id" class="form-style block mt-1 w-full" type="text" name="emplo_id" :value="old('emplo_id')" required autocomplete="off" autofocus />
             </div>
 
             <!-- Password -->

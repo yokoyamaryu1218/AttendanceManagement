@@ -23,13 +23,13 @@
                             @endif
                             <!-- フラッシュメッセージここまで -->
                             <!-- 日報表示部分 -->
-                            <textarea id="daily" name="daily" cols="40" rows="10" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="日報の入力は任意です">@if($daily_data == NULL)@else{{ $daily_data[0]->daily }}@endif</textarea>
+                            <textarea id="daily" name="daily" cols="40" rows="10" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" title="日報を入力できます。（1,024文字まで）" placeholder="日報の入力は任意です">@if($daily_data == NULL)@else{{ $daily_data[0]->daily }}@endif</textarea>
                             <!-- 日報表示ここまで -->
                         </div>
                     </div>
                     <div class="p-2 w-full">
                         <!-- 登録ボタン -->
-                        <button class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">登録</button>
+                        <button class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg" title="ボタンをクリックすることで、登録されます。">登録</button>
                         <!-- 登録ボタンここまで -->
                     </div>
                 </form>

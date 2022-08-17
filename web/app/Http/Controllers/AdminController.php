@@ -135,7 +135,7 @@ class AdminController extends Controller
      * @var App\Libraries\php\Domain\Time
      * @var string $restraint_total_time 就業時間
      * @var string $retirement_authority 退職フラグ
-     * @var array $subord_authority 部下参照権限
+     * @var array $subord_authority 部下配属権限
      * @var App\Libraries\php\Domain\DataBase
      * @var string $emplo_id 社員ID
      * @var App\Libraries\php\Domain\Common
@@ -287,7 +287,7 @@ class AdminController extends Controller
      * @var string $restraint_start_time 始業時間
      * @var string $restraint_closing_time 終業時間
      * @var string $restraint_total_time 就業時間
-     * @var array $subord_authority 部下参照権限
+     * @var array $subord_authority 部下配属権限
      * @var App\Libraries\php\Domain\Common
      *
      * @return \Illuminate\Http\Response

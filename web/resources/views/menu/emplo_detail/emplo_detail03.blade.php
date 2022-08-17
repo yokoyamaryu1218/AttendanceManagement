@@ -24,17 +24,17 @@
                 <div class="grid gap-6 mb-6 lg:grid-cols-3">
                     <div>
                         <!-- 社員名 -->
-                        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">社員名</label>
-                        <input type="text" id="name" name="name" value="{{ old('name') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" autocomplete="on" placeholder="ここに名前を入力">
+                        <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" title="社員名を入力します。">社員名</label>
+                        <input type="text" id="name" name="name" value="{{ old('name') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" autocomplete="off" placeholder="ここに名前を入力">
                     </div>
                     <div>
                         <!-- パスワード -->
-                        <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">パスワード</label>
+                        <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" title="勤怠システム用のパスワードを英数混合8文字以上で設定します。">パスワード</label>
                         <input type="password" id="password" name="password" value="{{ old('password') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="●●●●●●●●" required autocomplete="current-password">
                     </div>
                     <div>
-                        <!-- 部下参照権限 -->
-                        <label for="subord_authority" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">部下参照権限</label>
+                        <!-- 部下配属権限 -->
+                        <label for="subord_authority" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" title="トグルをONにすると、選択した社員に部下を配属することができます。">部下配属権限</label>
                         <label for="subord_authority" class="flex items-center cursor-pointer relative mb-4">
                             <input type="checkbox" onclick="clickBtn7()" id="subord_authority" name="subord_authority" class="sr-only">
                             <div class="toggle-bg bg-gray-200 border-2 border-gray-200 h-6 w-11 rounded-full"></div>
@@ -49,13 +49,13 @@
                 <div class="grid gap-6 mb-6 lg:grid-cols-2">
                     <div>
                         <!-- 管理者番号 -->
-                        <label for="management_emplo_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">管理者番号</label>
+                        <label for="management_emplo_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" title="管理者（上司）の社員番号です。">管理者番号</label>
                         <input type="text" id="management_emplo_id" name="management_emplo_id" maxlength="4" value="{{ old('managment_emplo_id') }}" data-toggle="tooltip" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="管理者検索をすることで反映します" readonly>
                     </div>
                     <div>
                         <!-- 管理者検索 -->
-                        <label for="search" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">管理者検索</label>
-                        <input type="search" id="search-list" list="keywords" autocomplete="on" maxlength="4" data-toggle="tooltip" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="管理者名を選択">
+                        <label for="search" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" title="新規登録する社員の管理者（上司）を検索します。">管理者検索</label>
+                        <input type="search" id="search-list" list="keywords" autocomplete="off" maxlength="4" data-toggle="tooltip" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="管理者名を選択">
                         <datalist id="keywords">
                             @foreach($subord_authority_lists as $subord_authority_list)
                             <option value="{{$subord_authority_list->name}}" label="{{$subord_authority_list->emplo_id}}"></option>
@@ -77,24 +77,24 @@
                 <div class="grid gap-6 mb-12 lg:grid-cols-3">
                     <div>
                         <!-- 入社日 -->
-                        <label for="hire_date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">入社日</label>
+                        <label for="hire_date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" title="入社日を選択します。">入社日</label>
                         <input type="date" id="hire_date" name="hire_date" value="{{ old('hire_date') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     </div>
                     <div>
                         <!-- 始業時間 -->
-                        <label for="restraint_start_time" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">始業時間</label>
+                        <label for="restraint_start_time" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" title="始業時間を選択します。">始業時間</label>
                         <input type="time" id="restraint_start_time" name="restraint_start_time" value="{{ old('restraint_start_time') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     </div>
                     <div>
                         <!-- 終業時間 -->
-                        <label for="restraint_closing_time" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">終業時間</label>
+                        <label for="restraint_closing_time" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" title="終業時間を選択します。">終業時間</label>
                         <input type="time" id="restraint_closing_time" name="restraint_closing_time" value="{{ old('restraint_closing_time') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     </div>
                 </div>
                 <!-- ボタン配置 -->
                 <div class="flex justify-center">
-                    <button type="submit" class="flex mx-auto text-white bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-lg">登録</button>
-                    <input class="flex mx-auto text-white bg-yellow-400 border-0 py-2 px-8 focus:outline-none hover:bg-yellow-300 rounded text-lg" type="button" value="戻る" onclick="window.history.back()">
+                    <button type="submit" class="flex mx-auto text-white bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-lg" title="ボタンをクリックすることで、登録されます。">登録</button>
+                    <input class="flex mx-auto text-white bg-yellow-400 border-0 py-2 px-8 focus:outline-none hover:bg-yellow-300 rounded text-lg" type="button" value="戻る" onclick="window.history.back()" title="1つ前の画面に戻ります。">
                 </div>
                 <!-- ボタンここまで -->
             </form>

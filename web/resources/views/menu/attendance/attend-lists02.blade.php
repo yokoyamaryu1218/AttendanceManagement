@@ -73,7 +73,7 @@
                     @endif
                     <td class="bg-gray-100 dark:bg-gray-800">
                         <!-- モーダルここから -->
-                        <button type="button" data-bs-toggle="modal" data-bs-target="#inputModal" data-bs-name="{{ $name }}" data-bs-id="{{ $emplo_id }}" data-bs-day="{{ ($ym . '-' . sprintf('%02d', $i)) }}" data-bs-month="{{ date('n', strtotime($ym . '-' . $i)) }}/{{ $format->time_format_dw($ym . '-' . $i) }}" data-bs-start="{{ $start_time }}" data-bs-closing="{{ $closing_time }}" data-bs-daily="{{ $daily_long }}">
+                        <button type="button" data-bs-toggle="modal" data-bs-target="#inputModal" data-bs-name="{{ $name }}" data-bs-id="{{ $emplo_id }}" data-bs-day="{{ ($ym . '-' . sprintf('%02d', $i)) }}" data-bs-month="{{ date('n', strtotime($ym . '-' . $i)) }}/{{ $format->time_format_dw($ym . '-' . $i) }}" data-bs-start="{{ $start_time }}" data-bs-closing="{{ $closing_time }}" data-bs-daily="{{ $daily_long }}" title="ボタンをクリックすることで、選択月日の勤怠修正画面を開きます。">
                             <img src="data:image/png;base64,{{Config::get('base64.pen')}}">
                         </button>
                         <!-- モーダルここまで -->

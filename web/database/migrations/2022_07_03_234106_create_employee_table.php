@@ -25,7 +25,7 @@ class CreateEmployeeTable extends Migration
             $table->string('management_emplo_id', '10')
                 ->comment('上司社員ID');
             $table->char('subord_authority', '1')
-                ->comment('部下参照権限');
+                ->comment('部下配属権限');
             $table->char('retirement_authority', '1')
                 ->comment('退職フラグ');
             $table->timestamp('created_at')->useCurrent()

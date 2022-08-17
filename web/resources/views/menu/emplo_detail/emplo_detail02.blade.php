@@ -2,7 +2,7 @@
 @if($employee_lists->all())
 <!-- 検索機能 -->
 <div class="text-right">
-    <form action="{{ route('admin.search', [$retirement_authority])}}" method="post">
+    <form action="{{ route('admin.search', [$retirement_authority])}}" method="post" title="社員番号、もしくは社員名を入力することで、社員検索ができます。">
         @csrf
         @method('post')
         @if(!empty($_POST['search']))
@@ -35,21 +35,21 @@
             <td data-label="詳細"  width="100" class="align-middle button">
                 <form method="POST" action="{{ route('admin.emplo_details', [$emplo->emplo_id, $emplo->retirement_authority]) }}">
                     @csrf
-                    <button class="input-group-text flex mx-auto text-white btn btn-success border-0 py-2 px-8 focus:outline-none rounded text-lg">開く</button>
+                    <button class="input-group-text flex mx-auto text-white btn btn-success border-0 py-2 px-8 focus:outline-none rounded text-lg" title="ボタンをクリックすることで、選択した社員の詳細画面へ移動します。">開く</button>
                 </form>
             </td>
             <!-- 勤怠一覧 -->
             <td data-label="勤怠一覧"  width="100" class="align-middle button">
                 <form method="POST" action="{{ route('admin.monthly',[$emplo->emplo_id, $emplo->name]) }}">
                     @csrf
-                    <button class="input-group-text flex mx-auto text-white btn btn-success border-0 py-2 px-8 focus:outline-none rounded text-lg">開く</button>
+                    <button class="input-group-text flex mx-auto text-white btn btn-success border-0 py-2 px-8 focus:outline-none rounded text-lg" title="ボタンをクリックすることで、選択した社員の勤怠一覧へ移動します。">開く</button>
                 </form>
             </td>
             <!-- パスワード変更 -->
             <td data-label="パスワード"  width="100" class="align-middle button">
                 <form method="POST" action="{{ route('admin.emplo_change_password', [ 'emplo_id'=> $emplo->emplo_id , 'name'=> $emplo->name ] )}}">
                     @csrf
-                    <button class="input-group-text flex mx-auto text-white btn btn-success border-0 py-2 px-8 focus:outline-none rounded text-lg">開く</button>
+                    <button class="input-group-text flex mx-auto text-white btn btn-success border-0 py-2 px-8 focus:outline-none rounded text-lg" title="ボタンをクリックすることで、選択した社員のパスワード変更画面へ移動します。">開く</button>
                 </form>
             </td>
         </tr>

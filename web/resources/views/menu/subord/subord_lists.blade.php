@@ -29,14 +29,14 @@
                                 <td data-label="勤怠一覧" width="100" class="align-middle button">
                                     <form method="POST" action="{{ route('employee.subord_monthly',[$subord->subord_id, $subord->subord_name]) }}">
                                         @csrf
-                                        <button class="input-group-text flex mx-auto text-white btn btn-success border-0 py-2 px-8 focus:outline-none rounded text-lg">開く</button>
+                                        <button class="input-group-text flex mx-auto text-white btn btn-success border-0 py-2 px-8 focus:outline-none rounded text-lg" title="ボタンをクリックすることで、選択した社員の勤怠一覧へ移動します。">開く</button>
                                     </form>
                                 </td>
                                 <!-- パスワード変更 -->
                                 <td data-label="パスワード" width="100" class="align-middle button">
                                     <form method="POST" action="{{ route('employee.subord.change_password', [ 'emplo_id'=> $subord->subord_id , 'name'=> $subord->subord_name ] )}}">
                                         @csrf
-                                        <button class="input-group-text flex mx-auto text-white btn btn-success border-0 py-2 px-8 focus:outline-none rounded text-lg">開く</button>
+                                        <button class="input-group-text flex mx-auto text-white btn btn-success border-0 py-2 px-8 focus:outline-none rounded text-lg"  title="ボタンをクリックすることで、選択した社員のパスワード変更画面へ移動します。">開く</button>
                                     </form>
                                 </td>
                             </tr>

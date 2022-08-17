@@ -1,6 +1,6 @@
 <!-- admin側 期間絞り込み検索のblade -->
 <div class="text-right mb-1">
-    <button class="title btn btn-secondary">絞り込み</button>
+    <button class="title btn btn-secondary" title="ボタンをクリックすることで、指定期間内の出勤日数・総勤務時間・残業時間の検索画面が表示されます。">絞り込み</button>
     <div class="box">
         @if (Auth::guard('employee')->check())
         <form method="POST" action="{{ route('employee.monthly_search',[$emplo_id,$name] )}}" name="monthly_change">

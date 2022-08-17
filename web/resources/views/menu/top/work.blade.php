@@ -29,14 +29,14 @@
                 <form method="POST" class="flex mx-auto" action="{{ route('employee.start_time_store')}}" name="start_time_store">
                     @csrf
                     <input type="hidden" class="form-control" id="modal_start_time" name="modal_start_time">
-                    <button id="start_btn" class="text-white bg-green-500 border-0 py-2 px-8 focus:outline-none hover:bg-green-600 rounded text-lg">出勤</button>
+                    <button id="start_btn" class="text-white bg-green-500 border-0 py-2 px-8 focus:outline-none hover:bg-green-600 rounded text-lg" title="ボタンをクリックすると出勤時間が登録されます。" >出勤</button>
                 </form>
                 <!-- 出勤ボタンここまで -->
                 <!-- 退勤ボタンここから -->
                 <form method="POST" class="flex mx-auto" action="{{ route('employee.closing_time_store')}}" name="end_time_store">
                     @csrf
                     <input type="hidden" class="form-control" id="modal_end_time" name="modal_end_time">
-                    <button id="end_btn" class="text-white bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-lg">退勤</button>
+                    <button id="end_btn" class="text-white bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-lg" title="ボタンをクリックすると退勤時間が登録されます。" >退勤</button>
                 </form>
             </div>
             <!-- 退勤ボタンここまで -->

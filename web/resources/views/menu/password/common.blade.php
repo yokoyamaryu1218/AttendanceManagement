@@ -33,21 +33,21 @@
                 <!--  new Password -->
                 <div class="mt-4">
                     <x-label for="password" :value="__('新パスワード')" />
-                    <x-input id="password" class="mt-1 w-auto bg-gray-100" type="password" name="password" placeholder="新しいパスワード" autocomplete="off" required /></br>
-                    <input type="checkbox" id="password-check">パスワードを表示する 
+                    <x-input id="password" class="mt-1 w-auto bg-gray-100" type="password" name="password" placeholder="新しいパスワード" autocomplete="off" title="新しいパスワードを英数混合8文字以上で設定します。" required /></br>
+                    <input type="checkbox" id="password-check">パスワードを表示する
                 </div>
 
                 <!-- Confirm Password -->
                 <div class="mt-4">
                     <x-label for="password_confirmation" :value="__('Confirm Password')" />
-                    <x-input id="password_confirmation" class="mt-1 w-auto bg-gray-100" type="password" name="password_confirmation" placeholder="新パスワードの確認用" autocomplete="off" required /></br>
+                    <x-input id="password_confirmation" class="mt-1 w-auto bg-gray-100" type="password" name="password_confirmation" placeholder="新パスワードの確認用" autocomplete="off" title="新しいパスワードをもう一度入力します。" required /></br>
                     <input type="checkbox" id="password-check2">パスワードを表示する
                 </div>
                 <script src="{{ asset('/js/another/auth.js') }}"></script>
 
                 <div class="flex justify-center mt-4">
-                    <button class="flex text-white mx-2 bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-lg">変更</button>
-                    <input class="flex text-white mx-2 bg-yellow-500 border-0 py-2 px-8 focus:outline-none hover:bg-yellow-600 rounded text-lg" type="button" value="戻る" onclick="window.history.back()">
+                    <button class="flex text-white mx-2 bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-lg" title="ボタンをクリックすることで、変更が確定します。">変更</button>
+                    <input class="flex text-white mx-2 bg-yellow-500 border-0 py-2 px-8 focus:outline-none hover:bg-yellow-600 rounded text-lg" type="button" value="戻る" onclick="window.history.back()" title="1つ前の画面に戻ります。">
                 </div>
             </div>
         </div>

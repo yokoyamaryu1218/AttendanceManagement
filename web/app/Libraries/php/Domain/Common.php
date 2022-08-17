@@ -56,7 +56,7 @@ class Common
      * @param  int  $name 社員名
      * @param  int  $password パスワード
      * @param  int  $managment_emplo_id 上司社員ID
-     * @param  int  $subord_authority 部下参照権限
+     * @param  int  $subord_authority 部下配属権限
      * @param  int  $retirement_authority 退職フラグ
      * @param  int  $hire_date 入社日
      * @param  int  $restraint_start_time 始業時間
@@ -91,7 +91,7 @@ class Common
      * @param  int  $emplo_id 社員ID
      * @param  int  $name 社員名
      * @param  int  $managment_emplo_id 上司社員ID
-     * @param  int  $subord_authority 部下参照権限
+     * @param  int  $subord_authority 部下配属権限
      * @param  int  $retirement_authority 退職フラグ
      * @param  int  $restraint_start_time 始業時間
      * @param  int  $restraint_closing_time 終業時間

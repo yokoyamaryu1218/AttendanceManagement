@@ -11,7 +11,7 @@
                     <!-- プルダウンの月度を変更すれば、下の一覧も変わる -->
                     <form method="POST" action="{{ route('admin.monthly_change',[$emplo_id, $name])}}" name="monthly_change">
                         @csrf
-                        <select class="rounded-pill mb-1" name="monthly_change" onchange="submit(this.form)">
+                        <select class="rounded-pill mb-1" name="monthly_change" onchange="submit(this.form)"  title="当月から過去1年分の勤怠一覧をプルダウンから選択できます。">
                             <option value="{{ date('Y-m') }}">
                                 {{ date('Y年m月') }}
                             </option>
@@ -29,7 +29,7 @@
                     <!-- 月度プルダウン部分ここまで -->
                     <!-- 戻るボタン配置 -->
                     <div class="text-right mb-1">
-                        <input class="btn btn-warning" type="button" value="戻る" onclick="window.history.back()">
+                        <input class="btn btn-warning" type="button" value="戻る" onclick="window.history.back()" title="1つ前の画面に戻ります。">
                     </div>
                     <!-- 戻るボタンここまで -->
                     <!-- 絞り込み部分 -->
