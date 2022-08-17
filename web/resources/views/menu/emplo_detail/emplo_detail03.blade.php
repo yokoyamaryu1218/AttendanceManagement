@@ -31,7 +31,9 @@
                         <!-- パスワード -->
                         <label for="password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" title="勤怠システム用のパスワードを英数混合8文字以上で設定します。">パスワード</label>
                         <input type="password" id="password" name="password" value="{{ old('password') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="●●●●●●●●" required autocomplete="current-password">
+                        <input type="checkbox" id="password-check">パスワードを表示する
                     </div>
+                    <script src="{{ asset('/js/another/auth.js') }}"></script>
                     <div>
                         <!-- 部下配属権限 -->
                         <label for="subord_authority" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" title="トグルをONにすると、選択した社員に部下を配属することができます。">部下配属権限</label>
@@ -76,11 +78,6 @@
                 @endif
                 <div class="grid gap-6 mb-12 lg:grid-cols-3">
                     <div>
-                        <!-- 入社日 -->
-                        <label for="hire_date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" title="入社日を選択します。">入社日</label>
-                        <input type="date" id="hire_date" name="hire_date" value="{{ old('hire_date') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                    </div>
-                    <div>
                         <!-- 始業時間 -->
                         <label for="restraint_start_time" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" title="始業時間を選択します。">始業時間</label>
                         <input type="time" id="restraint_start_time" name="restraint_start_time" value="{{ old('restraint_start_time') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
@@ -90,10 +87,15 @@
                         <label for="restraint_closing_time" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" title="終業時間を選択します。">終業時間</label>
                         <input type="time" id="restraint_closing_time" name="restraint_closing_time" value="{{ old('restraint_closing_time') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     </div>
+                    <div>
+                        <!-- 入社日 -->
+                        <label for="hire_date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" title="入社日を選択します。">入社日</label>
+                        <input type="date" id="hire_date" name="hire_date" value="{{ old('hire_date') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    </div>
                 </div>
                 <!-- ボタン配置 -->
                 <div class="flex justify-center">
-                    <button type="submit" class="flex mx-auto text-white bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-lg" title="ボタンをクリックすることで、登録されます。">登録</button>
+                    <button type="submit" class="flex mx-auto text-white bg-green-500 border-0 py-2 px-8 focus:outline-none hover:bg-green-600 rounded text-lg" title="ボタンをクリックすることで、登録されます。">登録</button>
                     <input class="flex mx-auto text-white bg-yellow-400 border-0 py-2 px-8 focus:outline-none hover:bg-yellow-300 rounded text-lg" type="button" value="戻る" onclick="window.history.back()" title="1つ前の画面に戻ります。">
                 </div>
                 <!-- ボタンここまで -->

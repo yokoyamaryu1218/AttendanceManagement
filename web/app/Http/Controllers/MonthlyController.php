@@ -350,4 +350,13 @@ class MonthlyController extends Controller
             );
         }
     }
+
+    /**
+     * エラーメッセージの表示
+     *
+     */
+    public function errorMsg()
+    {
+        return view('menu.another.error',);
+    }
 }

@@ -1,6 +1,6 @@
 <!-- admin側　勤怠一覧メイン部分のblade -->
 <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
-    <table class=" tbl-r05 w-full text-sm text-left text-gray-500 dark:text-gray-400">
+    <table class=" tbl-r06 w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase text-center dark:text-gray-400">
             <tr class="thead">
                 <th class="bg-gray-100 dark:bg-gray-800" width="100">日</th>
@@ -62,7 +62,7 @@
                     <td data-label="休憩" width="100">{{ $rest_time }}</th>
                     <td class="bg-gray-100 dark:bg-gray-800" data-label="実績" width="100">{{ $achievement_time }}</td>
                     <td data-label="残業" width="100">{{ $over_time }}</th>
-                    <td class="bg-gray-100 dark:bg-gray-800" data-label="日報" width="550">{{ $daily }}</td>
+                    <td class="daily bg-gray-100 dark:bg-gray-800" data-label="日報" width="550">{{ $daily }}</td>
                     @else
                     <td></td>
                     <td class="bg-gray-100 dark:bg-gray-800"></td>

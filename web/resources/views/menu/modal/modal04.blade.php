@@ -27,7 +27,7 @@
 
     <div class="flex justify-center modal-footer">
         <!-- ボタン配置 -->
-        <button class="focus:outline-none flex mx-auto text-white bg-green-500 border-0 py-2 px-8 focus:outline-none hover:bg-green-600 rounded text-lg" title="ボタンをクリックすることで、更新されます。">>更新</button>
+        <button class="focus:outline-none flex mx-auto text-white bg-green-500 border-0 py-2 px-8 focus:outline-none hover:bg-green-600 rounded text-lg" title="ボタンをクリックすることで、更新されます。">更新</button>
         <button type="button" class="focus:outline-none flex mx-auto modal-close text-white bg-red-500 border-0 py-2 px-8 focus:outline-none hover:bg-red-600 rounded text-lg" data-bs-dismiss="modal" title="この画面を閉じます。">閉じる</button>
         <!-- ボタンここまで -->
     </div>

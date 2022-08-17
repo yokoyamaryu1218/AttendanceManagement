@@ -14,13 +14,13 @@
                 @if(($emplo->retirement_authority) == "0")
                 <form method="get" action="{{ route('admin.destroy_check',[$emplo->emplo_id,$emplo->retirement_authority])}}">
                     @csrf
-                    <button class="input-group-text flex mx-auto text-white btn btn btn-danger border-0 py-2 px-8 focus:outline-none rounded text-lg" title="ボタンをクリックすることで、退職処理を行います。">退職</button>
+                    <button class="text-white bg-red-500 border-0 py-1 px-2 focus:outline-none hover:bg-red-600 rounded text-lg" title="ボタンをクリックすることで、退職処理を行います。">退職</button>
                 </form>
                 @else
                 <!-- 退職フラグが1の場合は、復職ボタンを出す -->
                 <form method="get" action="{{ route('admin.reinstatement_check',[$emplo->emplo_id,$emplo->retirement_authority])}}">
                     @csrf
-                    <button class="input-group-text flex mx-auto text-white btn btn btn-primary border-0 py-2 px-8 focus:outline-none rounded text-lg" title="ボタンをクリックすることで、復職処理を行います。">復職</button>
+                    <button class="text-white bg-green-500 border-0 py-1 px-2 focus:outline-none hover:bg-green-600 rounded text-lg" title="ボタンをクリックすることで、復職処理を行います。">復職</button>
                 </form>
                 @endif
                 <!-- ボタンここまで -->
@@ -43,7 +43,7 @@
                 <div class="grid gap-6 mb-6 lg:grid-cols-3">
                     <div>
                         <!-- 社員番号 -->
-                        <label for="emplo_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"  title="選択した社員の社員番号です。">社員番号</label>
+                        <label for="emplo_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" title="選択した社員の社員番号です。">社員番号</label>
                         <input type="emplo_id" id="emplo_id" name="emplo_id" value="{{ $emplo->emplo_id }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly>
                     </div>
                     <div>
@@ -73,7 +73,7 @@
                     </div>
                     <div>
                         <!-- 管理者検索 -->
-                        <label for="search" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"  title="管理者（上司）を検索します。">管理者検索</label>
+                        <label for="search" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" title="管理者（上司）を検索します。">管理者検索</label>
                         <input type="search" id="search-list" list="keywords" autocomplete="off" maxlength="4" data-toggle="tooltip" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="管理者名を選択">
                         <datalist id="keywords">
                             @foreach($subord_authority_lists as $subord_authority_list)
@@ -137,7 +137,7 @@
                 </div>
                 <!-- ボタン配置 -->
                 <div class="flex justify-center">
-                    <button type="submit" class="flex mx-auto text-white bg-blue-500 border-0 py-2 px-8 focus:outline-none hover:bg-blue-600 rounded text-lg" title="ボタンをクリックすることで、更新が行われます。">更新</button>
+                    <button type="submit" class="flex mx-auto text-white bg-green-500 border-0 py-2 px-8 focus:outline-none hover:bg-green-600 rounded text-lg" title="ボタンをクリックすることで、更新が行われます。">更新</button>
                     <input class="flex mx-auto text-white bg-yellow-400 border-0 py-2 px-8 focus:outline-none hover:bg-yellow-300 rounded text-lg" type="button" value="戻る" onclick="window.history.back()" title="1つ前の画面に戻ります。">
                 </div>
                 <!-- ボタンここまで -->

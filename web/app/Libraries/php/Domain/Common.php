@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Libraries\php\Domain;
+use Illuminate\Support\Facades\DB;
 
 /**
  * 記載が重複するものをまとめたクラス

@@ -1,6 +1,6 @@
 <!-- employee側　勤怠一覧メイン部分のblade -->
 <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
-    <table class=" tbl-r05 w-full text-sm text-left text-gray-500 dark:text-gray-400">
+    <table class=" tbl-r06 w-full text-sm text-left text-gray-500 dark:text-gray-400">
         <thead class="text-xs text-gray-700 uppercase text-center dark:text-gray-400">
             <tr class="thead">
                 <th class="bg-gray-100 dark:bg-gray-800" width="100">日</th>

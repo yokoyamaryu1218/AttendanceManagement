@@ -180,7 +180,9 @@ class AdminController extends Controller
             $restraint_total_time
         );
 
-        return redirect()->route('admin.emplo_details', [$emplo_id, $retirement_authority]);;
+        $message = "登録しました";
+        return redirect()->route('admin.emplo_details', [$emplo_id, $retirement_authority])
+            ->with('status', $message);
     }
 
     /**
@@ -326,7 +328,7 @@ class AdminController extends Controller
         );
 
         $message = "更新しました";
-        return back()->with('status', $message);;
+        return back()->with('status', $message);
     }
 
     /**

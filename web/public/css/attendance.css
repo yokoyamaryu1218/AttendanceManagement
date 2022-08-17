@@ -19,6 +19,7 @@
         display: none;
     }
 
+    /* tbl-05は人員一覧用 */
     .tbl-r05 {
         width: 100%;
     }
@@ -31,11 +32,13 @@
         width: 100%;
     }
 
+
     .tbl-r05 td {
         display: block;
-        text-align: right;
+        text-align: center;
         width: 100%;
     }
+
 
     .tbl-r05 td:first-child {
         background: #808080;
@@ -45,6 +48,40 @@
     }
 
     .tbl-r05 td:before {
+        content: attr(data-label);
+        float: left;
+        font-weight: bold;
+        margin-right: 10px;
+    }
+
+    /* tbl-06は勤怠一覧用 */
+    .tbl-r06 {
+        width: 100%;
+    }
+
+    .tbl-r06 .thead {
+        display: none;
+    }
+
+    .tbl-r06 tr {
+        width: 100%;
+    }
+    
+    .tbl-r06 td {
+        display: block;
+        text-align: right;
+        width: 100%;
+    }
+
+
+    .tbl-r06 td:first-child {
+        background: #808080;
+        color: #fff;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .tbl-r06 td:before {
         content: attr(data-label);
         float: left;
         font-weight: bold;
