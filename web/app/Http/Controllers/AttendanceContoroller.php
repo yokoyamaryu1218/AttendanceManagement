@@ -31,7 +31,7 @@ class AttendanceContoroller extends Controller
      * @var string $ym 今月の年月
      * @var array $time 今の時間
      * @var array $message 出勤画面に出すメッセージ
-     * @var string $emplo_id 社員ID
+     * @var string $emplo_id 社員番号
      * @var App\Libraries\php\Domain\DataBase
      * @var array $cloumns_name カラム名
      * @var array $table_name テーブル名
@@ -84,7 +84,7 @@ class AttendanceContoroller extends Controller
      * @var string $today 今日の日付
      * @var string $start_time 出勤時間
      * @var array $message 出勤画面に出すメッセージ
-     * @var string $emplo_id 社員ID
+     * @var string $emplo_id 社員番号
      * @var App\Libraries\php\Domain\DataBase
      * @var string $check_data 対象日にデータがある場合に取得する
      */
@@ -126,7 +126,7 @@ class AttendanceContoroller extends Controller
      *
      * @var string $today 今日の日付
      * @var string $closing_time 退勤時間
-     * @var string $emplo_id 社員ID
+     * @var string $emplo_id 社員番号
      * @var App\Libraries\php\Domain\DataBase
      * @var array $cloumns_name カラム名
      * @var array $table_name テーブル名
@@ -170,7 +170,7 @@ class AttendanceContoroller extends Controller
      *
      * @param \Illuminate\Http\Request\DailyRequest $request
      *
-     * @var string $emplo_id 社員ID
+     * @var string $emplo_id 社員番号
      * @var string $daily 日報
      * @var string $today 今日の日付
      * @var App\Libraries\php\Domain\DataBase
@@ -202,7 +202,7 @@ class AttendanceContoroller extends Controller
      *
      * @param \Illuminate\Http\Request\DailyRequest $request
      *
-     * @var string $emplo_id 社員ID
+     * @var string $emplo_id 社員番号
      * @var string $daily 日報
      * @var string $today 今日の日付
      * @var App\Libraries\php\Domain\DataBase
@@ -232,7 +232,7 @@ class AttendanceContoroller extends Controller
     /**
      * 部下一覧の表示
      *
-     * @var string $emplo_id 社員ID
+     * @var string $emplo_id 社員番号
      * @var App\Libraries\php\Domain\DataBase
      * @var array $subord_data 部下情報
      * @var array $retirement_authority 退職フラグ

@@ -77,7 +77,7 @@
 
                     <div class="ml-3">
                         <div class="font-medium text-base text-gray-800">名前：{{ Auth::guard('employee')->user()->name }}</div>
-                        <div class="font-medium text-sm text-gray-500">社員ID:{{ Auth::guard('employee')->user()->emplo_id }}</div>
+                        <div class="font-medium text-sm text-gray-500">社員番号:{{ Auth::guard('employee')->user()->emplo_id }}</div>
                     </div>
                 </div>
 

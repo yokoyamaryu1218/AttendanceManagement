@@ -128,7 +128,7 @@ class AdminController extends Controller
      *
      * @var string $name　従業員名
      * @var string $password パスワード
-     * @var string $management_emplo_id 上司社員ID
+     * @var string $management_emplo_id 上司社員番号
      * @var string $hire_date 入社日
      * @var string $restraint_start_time 始業時間
      * @var string $restraint_closing_time 終業時間
@@ -137,7 +137,7 @@ class AdminController extends Controller
      * @var string $retirement_authority 退職フラグ
      * @var array $subord_authority 部下配属権限
      * @var App\Libraries\php\Domain\DataBase
-     * @var string $emplo_id 社員ID
+     * @var string $emplo_id 社員番号
      * @var App\Libraries\php\Domain\Common
      */
     public function store(NewPostRequest $request)
@@ -190,7 +190,7 @@ class AdminController extends Controller
      *
      * @param \Illuminate\Http\Request\Request $request
      *
-     * @var string $emplo_id 社員ID
+     * @var string $emplo_id 社員番号
      * @var string $retirement_authority 退職フラグ
      * @var App\Libraries\php\Domain\DataBase
      * @var array $employee_lists 選択した従業員の詳細データ
@@ -283,9 +283,9 @@ class AdminController extends Controller
      *
      * @param \Illuminate\Http\Request\UpdateRequest $request
      *
-     * @var string $emplo_id 社員ID
+     * @var string $emplo_id 社員番号
      * @var string $name　従業員名
-     * @var string $management_emplo_id 上司社員ID
+     * @var string $management_emplo_id 上司社員番号
      * @var string $restraint_start_time 始業時間
      * @var string $restraint_closing_time 終業時間
      * @var string $restraint_total_time 就業時間
@@ -336,7 +336,7 @@ class AdminController extends Controller
      *
      * @param \Illuminate\Http\Request\Request $request
      *
-     * @var string $emplo_id 社員ID
+     * @var string $emplo_id 社員番号
      * @var string $retirement_authority 退職フラグ
      * @var App\Libraries\php\Domain\DataBase
      * @var array $employee_lists 選択した従業員の詳細データ
@@ -362,7 +362,7 @@ class AdminController extends Controller
      *
      * @param \Illuminate\Http\Request\Request $request
      *
-     * @var string $emplo_id 社員ID
+     * @var string $emplo_id 社員番号
      * @var array $retirement_authority 退職フラグ
      * @var array $retirement_date 退職日
      * @var App\Libraries\php\Domain\DataBase
@@ -389,7 +389,7 @@ class AdminController extends Controller
      *
      * @param \Illuminate\Http\Request\Request $request
      *
-     * @var string $emplo_id 社員ID
+     * @var string $emplo_id 社員番号
      * @var string $retirement_authority 退職フラグ
      * @var App\Libraries\php\Domain\DataBase
      * @var array $employee_lists 選択した従業員の詳細データ
@@ -415,7 +415,7 @@ class AdminController extends Controller
      *
      * @param \Illuminate\Http\Request\Request $request
      *
-     * @var string $emplo_id 社員ID
+     * @var string $emplo_id 社員番号
      * @var array $retirement_authority 退職フラグ
      * @var array $retirement_date 退職日
      * @var App\Libraries\php\Domain\DataBase

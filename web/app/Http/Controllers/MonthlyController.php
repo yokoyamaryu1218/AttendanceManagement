@@ -16,7 +16,7 @@ class MonthlyController extends Controller
      *
      * @param \Illuminate\Http\Request\Request $request
      *
-     * @var string $emplo_id 社員ID
+     * @var string $emplo_id 社員番号
      * @var string $name 社員名
      * @var App\Libraries\php\Domain\Common $format
      * @var string $ym 今月の年月
@@ -84,7 +84,7 @@ class MonthlyController extends Controller
      *
      * @param \Illuminate\Http\Request\Request $request
      *
-     * @var string $emplo_id 社員ID
+     * @var string $emplo_id 社員番号
      * @var string $name 社員名
      * @var string $ym 選択した年月
      * @var string $day_count 月の日数
@@ -160,7 +160,7 @@ class MonthlyController extends Controller
      * @param \Illuminate\Http\Request\Request $request
      *
      * @var string $nama　従業員名
-     * @var string $emplo_id 社員ID
+     * @var string $emplo_id 社員番号
      * @var string $target_date 選択した日付
      * @var string $start_time 出勤時間
      * @var string $closing_time 退勤時間
@@ -300,7 +300,7 @@ class MonthlyController extends Controller
      *
      * @param \Illuminate\Http\Request\Request $request
      *
-     * @var string $emplo_id 社員ID
+     * @var string $emplo_id 社員番号
      * @var string $name 社員名
      * @var string $ym 選択した年月
      * @var string $day_count 月の日数

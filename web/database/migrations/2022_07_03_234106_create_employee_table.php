@@ -17,13 +17,13 @@ class CreateEmployeeTable extends Migration
         Schema::create('employee', function (Blueprint $table) {
             $table->primary(['emplo_id']);
             $table->string('emplo_id', '10')
-                ->comment('社員ID');
+                ->comment('社員番号');
             $table->string('name', '32')
                 ->comment('社員名');
             $table->string('password', '256')
                 ->comment('パスワード');
             $table->string('management_emplo_id', '10')
-                ->comment('上司社員ID');
+                ->comment('上司社員番号');
             $table->char('subord_authority', '1')
                 ->comment('部下配属権限');
             $table->char('retirement_authority', '1')

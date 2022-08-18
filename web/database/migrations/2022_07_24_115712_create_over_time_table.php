@@ -18,7 +18,7 @@ class CreateOverTimeTable extends Migration
             $table->bigIncrements('id', '10')
                 ->comment('ID');
             $table->string('emplo_id', '10')
-                ->comment('社員ID');
+                ->comment('社員番号');
             $table->Time('restraint_start_time')
                 ->comment('始業時間');
             $table->Time('restraint_closing_time')

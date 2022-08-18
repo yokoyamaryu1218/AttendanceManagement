@@ -14,7 +14,7 @@ class Time
     /**
      * 勤怠を新規登録するクラス
      *
-     * @param  int  $emplo_id 社員ID
+     * @param  int  $emplo_id 社員番号
      * @param  int  $start_time 出勤時間
      * @param  int  $closing_time 退勤時間
      * @param  int  $target_date 選択した日付
@@ -59,7 +59,7 @@ class Time
     /**
      * 勤怠を更新するクラス
      *
-     * @param  int  $emplo_id 社員ID
+     * @param  int  $emplo_id 社員番号
      * @param  int  $start_time 出勤時間
      * @param  int  $closing_time 退勤時間
      * @param  int  $target_date 選択した日付
@@ -104,7 +104,7 @@ class Time
     /**
      * 日報の登録（更新）を行うクラス
      *
-     * @param  int  $emplo_id 社員ID
+     * @param  int  $emplo_id 社員番号
      * @param  int  $target_date 選択した日付
      * @param  int  $daily 日報
      * @param  int  $daily_data 日報データ

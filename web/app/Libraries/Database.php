@@ -30,7 +30,7 @@ class Database
     /**
      * 選択した従業員詳細の取得
      *
-     * @param $emplo_id 社員ID
+     * @param $emplo_id 社員番号
      * @param $retirement_authority 退職フラグ
      *
      * @var   $data 取得データ
@@ -42,17 +42,17 @@ class Database
 
         $data = DB::select('SELECT em1.emplo_id, em1.name, em1.management_emplo_id,
         em1.retirement_authority, em1.subord_authority,em1.created_at,em1.updated_at,em1.hire_date,em1.retirement_date,
-        /* ここまでで社員ID、社員名、上司社員ID、退職フラグ、部下配属権限、新規登録日、更新日、入社日（退職日）をemployeeテーブルから取得する */
+        /* ここまでで社員番号、社員名、上司社員番号、退職フラグ、部下配属権限、新規登録日、更新日、入社日（退職日）をemployeeテーブルから取得する */
         em2.name AS high_name,
         /* ここまでで上司名をemployeeテーブルから取得する */
         ot1.restraint_start_time, ot1.restraint_closing_time, ot1.restraint_total_time FROM employee AS em1
         /* 始業時間、終業時間、就業時間をovet_timeテーブルから取得する */
         LEFT JOIN employee AS em2 ON em1.management_emplo_id = em2.emplo_id
-        /* emplpyeeテーブルの上司社員IDと別途employeeテーブルの社員IDを結合して取得する */
+        /* emplpyeeテーブルの上司社員番号と別途employeeテーブルの社員番号を結合して取得する */
         LEFT JOIN over_time AS ot1 ON em1.emplo_id = ot1.emplo_id
-        /* emplpyeeテーブルの社員IDとover_timeテーブルの社員IDを結合して取得する */
+        /* emplpyeeテーブルの社員番号とover_timeテーブルの社員番号を結合して取得する */
         WHERE em1.emplo_id = ? AND em1.retirement_authority = ? ORDER BY em1.emplo_id', [$emplo_id, $retirement_authority]);
-        /* 社員IDと退職フラグを検索条件にして情報を取得し、社員IDを基準に並び替える。 */
+        /* 社員番号と退職フラグを検索条件にして情報を取得し、社員番号を基準に並び替える。 */
 
         return $data;
     }
@@ -110,7 +110,7 @@ class Database
 
 
     /**
-     * 最新の社員IDを取得
+     * 最新の社員番号を取得
      *
      * @var   $id ID
      *
@@ -127,10 +127,10 @@ class Database
     /**
      * 社員情報登録
      *
-     * @param $emplo_id 社員ID
+     * @param $emplo_id 社員番号
      * @param $name　社員名
      * @param $password　パスワード
-     * @param $management_emplo_id　上司社員ID
+     * @param $management_emplo_id　上司社員番号
      * @param $subord_authority　部下配属権限
      * @param $retirement_authority　退職フラグ
      * @param $$hire_date　入社日
@@ -144,9 +144,9 @@ class Database
     /**
      * 社員情報更新
      *
-     * @param $emplo_id 社員ID
+     * @param $emplo_id 社員番号
      * @param $name　社員名
-     * @param $management_emplo_id　上司社員ID
+     * @param $management_emplo_id　上司社員番号
      * @param $subord_authority　部下配属権限
      *
      */
@@ -187,7 +187,7 @@ class Database
      *
      * @param $retirement_authority 退職フラグ
      * @param $retirement_date 退職日
-     * @param $emplo_id 社員ID
+     * @param $emplo_id 社員番号
      *
      */
     public static function retirementAssignment($retirement_authority, $retirement_date, $emplo_id)
@@ -215,7 +215,7 @@ class Database
     /**
      * 選択した社員の勤怠一覧を取得する
      *
-     * @param $emplo_id 社員ID
+     * @param $emplo_id 社員番号
      * @param $ym 年月
      *
      * @var   $data 取得データ
@@ -228,12 +228,12 @@ class Database
 
         $sql = "SELECT wk1.date, wk1.emplo_id, wk1.start_time, wk1.closing_time,
         wk1.rest_time, wk1.achievement_time, wk1.over_time,dl1.daily FROM works AS wk1
-        /* ここまでで勤怠日、社員ID、出勤時間、退勤時間、休憩時間、実績時間、残業時間をworksテーブルから取得し、
+        /* ここまでで勤怠日、社員番号、出勤時間、退勤時間、休憩時間、実績時間、残業時間をworksテーブルから取得し、
         対象日の日報をdailyテーブルから取得する */
         LEFT JOIN daily AS dl1 ON wk1.date = dl1.date AND wk1.emplo_id = dl1.emplo_id
-        /* dailyテーブルの日付、社員IDと別途worksテーブルの日付、社員IDを結合して取得する */
+        /* dailyテーブルの日付、社員番号と別途worksテーブルの日付、社員番号を結合して取得する */
         WHERE wk1.emplo_id = :emplo_id
-        /* 社員IDを検索条件にして情報を取得し、 */
+        /* 社員番号を検索条件にして情報を取得し、 */
         AND DATE_FORMAT(wk1.date, '%Y-%m') = :date
         /* 日付を選択した年月のものだけ抽出し、 */
         ORDER BY date";
@@ -253,7 +253,7 @@ class Database
     /**
      * 選択した社員の出勤日数を取得する
      *
-     * @param $emplo_id 社員ID
+     * @param $emplo_id 社員番号
      * @param $ym 年月
      *
      * @var   $data 取得データ
@@ -272,7 +272,7 @@ class Database
     /**
      * 期間を絞り込んで選択した社員の出勤日数を取得する
      *
-     * @param $emplo_id 社員ID
+     * @param $emplo_id 社員番号
      * @param $ym 年月
      *
      * @var   $data 取得データ
@@ -293,7 +293,7 @@ class Database
      *
      * @param $cloumns_name カラム名
      * @param $total_name 合計した時の名称
-     * @param $emplo_id 社員ID
+     * @param $emplo_id 社員番号
      * @param $ym 年月
      *
      * @var   $data 取得データ
@@ -314,7 +314,7 @@ class Database
      *
      * @param $cloumns_name カラム名
      * @param $total_name 合計した時の名称
-     * @param $emplo_id 社員ID
+     * @param $emplo_id 社員番号
      * @param $ym 年月
      *
      * @var   $data 取得データ
@@ -333,7 +333,7 @@ class Database
     /**
      * 対象日のデータがあるかどうかチェック
      *
-     * @param $emplo_id 社員ID
+     * @param $emplo_id 社員番号
      * @param $today 今日の日付
      *
      * @var   $data 取得データ
@@ -361,7 +361,7 @@ class Database
      *
      * @param $cloumns_name カラム名
      * @param $table_name テーブル名
-     * @param $emplo_id 社員ID
+     * @param $emplo_id 社員番号
      * @param $today 今日の日付
      *
      * @var   $data 取得データ
@@ -380,7 +380,7 @@ class Database
      * 始業時間と就業時間を取得する
      *
      * @param $cloumns_name カラム名
-     * @param $emplo_id 社員ID
+     * @param $emplo_id 社員番号
      *
      * @var   $data 取得データ
      *
@@ -396,7 +396,7 @@ class Database
     /**
      * 就業時間の登録
      *
-     * @param $emplo_id 社員ID
+     * @param $emplo_id 社員番号
      * @param $restraint_start_time 始業時間
      * @param $restraint_closing_time　終業時間
      * @param $restraint_total_time 就業時間
@@ -410,7 +410,7 @@ class Database
     /**
      * 就業時間の更新
      *
-     * @param $emplo_id 社員ID
+     * @param $emplo_id 社員番号
      * @param $restraint_start_time 始業時間
      * @param $restraint_closing_time　終業時間
      * @param $restraint_total_time 就業時間
@@ -427,7 +427,7 @@ class Database
     /**
      * 出勤時間の打刻
      *
-     * @param $emplo_id 社員ID
+     * @param $emplo_id 社員番号
      * @param $today 今日の日付
      * @param $start_time 出勤時間
      *
@@ -449,7 +449,7 @@ class Database
      * @param $rest_time　休憩時間
      * @param $achievement_time　実績時間
      * @param $over_time　残業時間
-     * @param $emplo_id　社員ID
+     * @param $emplo_id　社員番号
      * @param $target_date　対象日
      *
      * @var   $data 取得データ
@@ -467,7 +467,7 @@ class Database
     /**
      * 打刻時間の新規登録
      *
-     * @param $emplo_id　社員ID
+     * @param $emplo_id　社員番号
      * @param $target_date　対象日
      * @param $start_time 出勤時間
      * @param $closing_time 退勤時間
@@ -494,7 +494,7 @@ class Database
      * @param $rest_time　休憩時間
      * @param $achievement_time　実績時間
      * @param $over_time　残業時間
-     * @param $emplo_id　社員ID
+     * @param $emplo_id　社員番号
      * @param $target_date　対象日
      *
      * @var   $data 取得データ
@@ -511,7 +511,7 @@ class Database
     /**
      * 日報の登録
      *
-     * @param $emplo_id　社員ID
+     * @param $emplo_id　社員番号
      * @param $today 今日の日付
      * @param $daily 日報
      *
@@ -530,7 +530,7 @@ class Database
     /**
      * 日報を更新する
      *
-     * @param $emplo_id 社員ID
+     * @param $emplo_id 社員番号
      * @param $today 今日の日付
      * @param $daily 日報
      *
@@ -549,7 +549,7 @@ class Database
     /**
      * 部下の取得
      *
-     * @param $emplo_id　社員ID
+     * @param $emplo_id　社員番号
      * @param $retirement_authority 退職フラグ
      *
      * @var   $data 取得データ
@@ -561,13 +561,13 @@ class Database
 
         $data = DB::select('SELECT em1.emplo_id, em2.emplo_id AS subord_id,
         em2.name AS subord_name, em2.retirement_authority FROM employee AS em1
-        /* ここまでで勤怠日、ログインしている社員ID、部下の社員IDと部下の名前をemployeeテーブルから取得する */
+        /* ここまでで勤怠日、ログインしている社員番号、部下の社員番号と部下の名前をemployeeテーブルから取得する */
         LEFT JOIN hierarchy on em1.emplo_id = hierarchy.high_id
-        /* hierarchyテーブルの上位IDと、employeeテーブルの社員IDを結合して取得する */
+        /* hierarchyテーブルの上位IDと、employeeテーブルの社員番号を結合して取得する */
         LEFT JOIN employee AS em2 ON hierarchy.lower_id = em2.emplo_id
-        /* 別途hierarchyテーブルの下位IDと、employeeテーブルの社員IDを結合して取得する */
+        /* 別途hierarchyテーブルの下位IDと、employeeテーブルの社員番号を結合して取得する */
         WHERE em1.emplo_id = ? AND em2.retirement_authority = ? ORDER BY subord_id', [$emplo_id, $retirement_authority]);
-        /* 社員IDを検索条件にして情報を取得し、部下の社員IDを基準に並び替える。 */
+        /* 社員番号を検索条件にして情報を取得し、部下の社員番号を基準に並び替える。 */
 
         return $data;
     }
@@ -576,7 +576,7 @@ class Database
      * 従業員（部下）のパスワードの更新
      *
      * @param $password パスワード
-     * @param $emplo_id　社員ID
+     * @param $emplo_id　社員番号
      *
      * @var   $data 取得データ
      *

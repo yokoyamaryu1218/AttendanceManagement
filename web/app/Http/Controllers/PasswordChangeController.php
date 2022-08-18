@@ -17,7 +17,7 @@ class PasswordChangeController extends Controller
      *
      * @param \Illuminate\Http\Request\Request $request
      *
-     * @var string $emplo_id 社員ID
+     * @var string $emplo_id 社員番号
      * @var string $name 社員名
      */
     public function index(Request $request)
@@ -52,7 +52,7 @@ class PasswordChangeController extends Controller
      *
      * @param \Illuminate\Http\Request\Request $request
      *
-     * @var string $emplo_id 社員ID
+     * @var string $emplo_id 社員番号
      * @var string $name 社員名
      * @var string $password パスワード
      * @var string $password_cofirmation パスワード確認用

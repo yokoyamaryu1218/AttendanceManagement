@@ -18,7 +18,7 @@ class CreateDailyTable extends Migration
             $table->bigIncrements('id', '10')
                 ->comment('ID');
             $table->string('emplo_id', '10')
-                ->comment('社員ID');
+                ->comment('社員番号');
             $table->date('date')
                 ->comment('日付');
             $table->string('daily', '1024')->nullable()

@@ -13,9 +13,9 @@
         <form method="POST" action="{{ route('admin.login') }}">
             @csrf
 
-            <!-- 社員ID -->
+            <!-- 社員番号 -->
             <div>
-                <x-label for="id" :value="__('社員ID')" />
+                <x-label for="id" :value="__('社員番号')" />
 
                 <x-input id="emplo_id" class="form-style block mt-1 w-full" type="text" name="emplo_id" :value="old('emplo_id')" required autocomplete="off" autofocus />
             </div>

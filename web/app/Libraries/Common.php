@@ -54,10 +54,10 @@ class Common
     /**
      * 従業員情報を登録するクラス
      *
-     * @param  int  $emplo_id 社員ID
+     * @param  int  $emplo_id 社員番号
      * @param  int  $name 社員名
      * @param  int  $password パスワード
-     * @param  int  $managment_emplo_id 上司社員ID
+     * @param  int  $managment_emplo_id 上司社員番号
      * @param  int  $subord_authority 部下配属権限
      * @param  int  $retirement_authority 退職フラグ
      * @param  int  $hire_date 入社日
@@ -90,9 +90,9 @@ class Common
     /**
      * 従業員情報を更新するクラス
      *
-     * @param  int  $emplo_id 社員ID
+     * @param  int  $emplo_id 社員番号
      * @param  int  $name 社員名
-     * @param  int  $managment_emplo_id 上司社員ID
+     * @param  int  $managment_emplo_id 上司社員番号
      * @param  int  $subord_authority 部下配属権限
      * @param  int  $retirement_authority 退職フラグ
      * @param  int  $restraint_start_time 始業時間
@@ -120,7 +120,7 @@ class Common
     /**
      * 出勤日数・総勤務時間・残業時間を合計するクラス
      *
-     * @param  int  $emplo_id 社員ID
+     * @param  int  $emplo_id 社員番号
      * @param  int  $ym 年月
      * @var App\Libraries\php\Domain\DataBase
      * @var array $total_days 出勤日数
@@ -160,7 +160,7 @@ class Common
     /**
      * 指定期間内の出勤日数・総勤務時間・残業時間を合計するクラス
      *
-     * @param  int  $emplo_id 社員ID
+     * @param  int  $emplo_id 社員番号
      * @param  int  $first_day 指定開始日
      * @param  int  $end_day 指定終了日
      * @var App\Libraries\php\Domain\DataBase
