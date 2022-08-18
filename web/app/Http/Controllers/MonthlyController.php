@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Libraries\php\Domain\DataBase;
-use App\Libraries\php\Domain\Common;
-use App\Libraries\php\Domain\Time;
+use App\Libraries\DataBase;
+use App\Libraries\Common;
+use App\Libraries\Time;
 
 // 勤怠一覧のコントローラー
 class MonthlyController extends Controller

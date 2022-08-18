@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Libraries\php\Domain\Time;
-use App\Libraries\php\Domain\Common;
-use App\Libraries\php\Domain\DataBase;
+use App\Libraries\Time;
+use App\Libraries\Common;
+use App\Libraries\DataBase;
 use App\Http\Requests\NewPostRequest;
 use App\Http\Requests\UpdateRequest;
 use Illuminate\Support\Facades\Hash;

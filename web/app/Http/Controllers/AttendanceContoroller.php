@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\DailyRequest;
 use Illuminate\Support\Facades\Auth;
-use App\Libraries\php\Domain\Common;
-use App\Libraries\php\Domain\DataBase;
-use App\Libraries\php\Domain\Time;
+use App\Libraries\Time;
+use App\Libraries\Common;
+use App\Libraries\DataBase;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 // 従業員側 ホーム画面のコントローラー

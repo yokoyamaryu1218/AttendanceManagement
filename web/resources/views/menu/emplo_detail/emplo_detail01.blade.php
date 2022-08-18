@@ -80,7 +80,7 @@
                             <option value="{{$subord_authority_list->name}}" label="{{$subord_authority_list->emplo_id}}"></option>
                             @endforeach
                         </datalist>
-                        <script src="{{ asset('js/admin/search.js') }}" defer></script>
+                        <script src="{{ asset('js/another/search.js') }}" defer></script>
                     </div>
                 </div>
                 @if ($errors->has('restraint_start_time'))

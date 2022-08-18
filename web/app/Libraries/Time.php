@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Libraries\php\Domain;
+namespace App\Libraries;
 
-use App\Libraries\php\Domain\DataBase;
+use App\Libraries\DataBase;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * 勤務時間動作クラス

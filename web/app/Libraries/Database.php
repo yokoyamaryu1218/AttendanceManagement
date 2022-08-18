@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Libraries\php\Domain;
+namespace App\Libraries;
 
 use PDO;
 use Illuminate\Support\Facades\DB;
