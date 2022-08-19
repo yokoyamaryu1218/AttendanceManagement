@@ -34,7 +34,7 @@ return [
     'date'           => ':attributeは、正しい日付ではありません。',
     'date_equals'    => ':attributeは:dateに等しい日付でなければなりません。',
     'date_format'    => ":attributeの形式は、':format'と合いません。",
-    'different'      => ':attributeと:otherは、異なるものを指定してください。',
+    'different'      => '新しい:attributeと:otherは、異なるものを指定してください。',
     'digits'         => ':attributeは、:digits桁にしてください。',
     'digits_between' => ':attributeは、:min桁から:max桁にしてください。',
     'dimensions'     => ':attributeの画像サイズが無効です',

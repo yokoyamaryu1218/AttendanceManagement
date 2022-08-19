@@ -96,10 +96,16 @@
                 <!-- ボタン配置 -->
                 <div class="flex justify-center">
                     <button type="submit" class="flex mx-auto text-white bg-green-500 border-0 py-2 px-8 focus:outline-none hover:bg-green-600 rounded text-lg" title="ボタンをクリックすることで、登録されます。">登録</button>
-                    <input class="flex mx-auto text-white bg-yellow-400 border-0 py-2 px-8 focus:outline-none hover:bg-yellow-300 rounded text-lg" type="button" value="戻る" onclick="window.history.back()" title="1つ前の画面に戻ります。">
+                    <input id="myButton" class="flex mx-auto text-white bg-yellow-400 border-0 py-2 px-8 focus:outline-none hover:bg-yellow-300 rounded text-lg" type="button" value="戻る" title="HOME画面に戻ります。">
                 </div>
                 <!-- ボタンここまで -->
             </form>
         </div>
     </body>
+    <!-- 戻るボタンの遷移先 -->
+    <script type="text/javascript">
+        document.getElementById("myButton").onclick = function() {
+            location.href = "{{ route('admin.dashboard') }}";
+        };
+    </script>
 </x-app-layout>

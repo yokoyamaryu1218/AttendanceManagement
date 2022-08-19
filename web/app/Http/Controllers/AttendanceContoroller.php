@@ -263,7 +263,7 @@ class AttendanceContoroller extends Controller
 
             return view('menu.subord.subord_lists', compact('subord_data'));
         }
-        // 部下がいない状態で部下一覧の画面に遷移しようとした場合、TOPに遷移する
-        return redirect('/');
+        // 部下がいない状態で部下一覧の画面に遷移しようとした場合、以下に遷移する
+        return redirect()->route('employee.error');
     }
 }
