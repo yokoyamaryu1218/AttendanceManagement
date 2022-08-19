@@ -20,8 +20,8 @@
     総勤務時間：{{ $total_data['total_achievement_time'] }}</br>
     残業時間　：{{ $total_data['total_over_time'] }}
     @else
-    出勤日数　：0日
-    総勤務時間：00:00:00
-    残業時間　：00:00:00
+    出勤日数　：0日</br>
+    総勤務時間：00:00:00</br>
+    残業時間　：00:00:00</br>
     @endif
 </div>

@@ -42,7 +42,7 @@ class NewPostRequest extends FormRequest
             'name.max' => '社員名は32文字以内で入力してください',
             'password.required' => 'パスワードを入力してください',
             'password.min' => 'パスワードは8文字以上で入力してください',
-            'management_emplo_id.required' => '管理者検索をしてください',
+            'management_emplo_id.required' => '上司検索をしてください',
             'restraint_start_time.required' => '始業時間を指定してください',
             'restraint_start_time.required' => '終業時間を指定してください',
         ];

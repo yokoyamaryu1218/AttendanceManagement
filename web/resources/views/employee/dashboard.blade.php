@@ -1,19 +1,3 @@
-<style>
-    @media (min-width: 600px) {
-        #parent {
-            display: flex;
-        }
-
-        #child1 {
-            flex-grow: 1;
-        }
-
-        #child2 {
-            flex-grow: 1;
-        }
-    }
-</style>
-
 <x-app-layout>
     <x-slot name="header">
     </x-slot>

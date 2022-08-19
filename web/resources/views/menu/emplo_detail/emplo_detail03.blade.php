@@ -50,14 +50,14 @@
                 @endif
                 <div class="grid gap-6 mb-6 lg:grid-cols-2">
                     <div>
-                        <!-- 管理者番号 -->
-                        <label for="management_emplo_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" title="管理者（上司）の社員番号です。">管理者番号</label>
-                        <input type="text" id="management_emplo_id" name="management_emplo_id" maxlength="4" value="{{ old('managment_emplo_id') }}" data-toggle="tooltip" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="管理者検索をすることで反映します" readonly>
+                        <!-- 上司社員番号 -->
+                        <label for="management_emplo_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" title="上司の社員番号です。">上司社員番号</label>
+                        <input type="text" id="management_emplo_id" name="management_emplo_id" maxlength="4" value="{{ old('managment_emplo_id') }}" data-toggle="tooltip" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="上司検索をすることで反映します" readonly>
                     </div>
                     <div>
-                        <!-- 管理者検索 -->
-                        <label for="search" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" title="新規登録する社員の管理者（上司）を検索します。">管理者検索</label>
-                        <input type="search" id="search-list" list="keywords" autocomplete="off" maxlength="4" data-toggle="tooltip" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="管理者名を選択">
+                        <!-- 上司検索 -->
+                        <label for="search" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" title="新規登録する社員の上司を検索します。">上司検索</label>
+                        <input type="search" id="search-list" list="keywords" autocomplete="off" maxlength="4" data-toggle="tooltip" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="上司の名前を選択">
                         <datalist id="keywords">
                             @foreach($subord_authority_lists as $subord_authority_list)
                             <option value="{{$subord_authority_list->name}}" label="{{$subord_authority_list->emplo_id}}"></option>

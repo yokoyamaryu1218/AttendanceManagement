@@ -39,7 +39,7 @@ class UpdateRequest extends FormRequest
             'daily.max' => '日報は1,024文字以内で入力してください',
             'name.required' => '社員名を入力してください',
             'name.max' => '社員名は32文字以内で入力してください',
-            'management_emplo_id.required' => '管理者検索をしてください',
+            'management_emplo_id.required' => '上司検索をしてください',
             'restraint_start_time.required' => '始業時間を指定してください',
             'restraint_start_time.required' => '終業時間を指定してください',
         ];

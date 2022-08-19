@@ -1,5 +1,4 @@
 <!-- admin側 従業員の一覧を表示する共通用blade -->
-@if($employee_lists->all())
 <!-- 検索機能 -->
 <div class="text-right">
     <form action="{{ route('admin.search', [$retirement_authority])}}" method="post" title="社員番号、もしくは社員名を入力することで、社員検索ができます。">
@@ -16,6 +15,7 @@
     </form>
 </div>
 <!-- 検索機能ここまで -->
+@if($employee_lists->all())
 <table class="tbl-r05 table table-striped text-center table-hover table-sm my-2">
     <tr class="thead">
         <th width="100">社員番号</th>

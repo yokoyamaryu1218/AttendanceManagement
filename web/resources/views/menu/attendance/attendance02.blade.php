@@ -40,6 +40,7 @@
                     <!-- フラッシュメッセージここまで -->
 
                     <!-- 勤怠一覧の合計表示部分 -->
+                    <link rel="stylesheet" href="{{ asset('css/another.css') }}">
                     @include('menu.attendance.search02')
                     <!-- 合計表示部分ここまで -->
                     <!-- ここから月別勤怠一覧部分 -->
@@ -54,9 +55,6 @@
         </section>
     </body>
 </x-app-layout>
-
-<!-- モーダルのjs -->
-<script src="{{ asset('js/modal/modal2.js') }}" defer></script>
 
 <!-- 絞り込みメニューのcssとjs -->
 <link rel="stylesheet" href="{{ asset('css/accordion.css') }}">

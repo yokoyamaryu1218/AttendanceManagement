@@ -10,6 +10,20 @@
     background: #fbf5f5;
 }
 
+@media (min-width: 600px) {
+    #parent {
+        display: flex;
+    }
+
+    #child1 {
+        flex-grow: 1;
+    }
+
+    #child2 {
+        flex-grow: 1;
+    }
+}
+
 @media screen and (max-width: 640px) {
     .sma {
         display: block;
@@ -66,7 +80,7 @@
     .tbl-r06 tr {
         width: 100%;
     }
-    
+
     .tbl-r06 td {
         display: block;
         text-align: right;

@@ -7,23 +7,14 @@
         </div>
         <section class="text-gray-600 text-center body-font relative">
             <!-- フラッシュメッセージの表示 -->
-            @if (session('warning'))
-            <div class="alert alert-warning">
-                {{ session('warning') }}
-            </div>
-            @endif
-            @if (session('status'))
-            <div class="alert alert-info">
-                {{ session('status') }}
-            </div>
-            @endif
+            @include('menu.attendance.validation')
 
             @if ($errors->has('password'))
             <div class="alert text-center alert-warning">
                 {{ $errors->first('password') }}
             </div>
             @endif
-
+            <!-- フラッシュメッセージここまで -->
             <!-- パスワードを変更する社員の名前 -->
             <div class="mt-4">
                 社員名：{{ $name }}さん

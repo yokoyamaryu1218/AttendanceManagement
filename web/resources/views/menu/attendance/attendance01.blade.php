@@ -52,6 +52,7 @@
                     <!-- フラッシュメッセージここまで -->
 
                     <!-- 勤怠一覧の合計表示部分 -->
+                    <link rel="stylesheet" href="{{ asset('css/another.css') }}">
                     @include('menu.attendance.search02')
                     <!-- 合計表示部分ここまで -->
 
