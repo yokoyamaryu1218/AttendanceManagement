@@ -67,8 +67,8 @@
                         <input type="text" id="management_emplo_id" name="management_emplo_id" maxlength="4" value="{{ $emplo->management_emplo_id }}" data-toggle="tooltip" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="1000" readonly>
                     </div>
                     <div>
-                        <!-- 上司の名前 -->
-                        <label for="high_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" title="選択した社員の上司の名前です。">上司の名前</label>
+                        <!-- 上司の名前（現在） -->
+                        <label for="high_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300" title="選択した社員の上司の名前（現在）です。">上司の名前（現在）</label>
                         <input type="high_name" id="high_name" value="{{ $emplo->high_name }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" readonly>
                     </div>
                     <div>

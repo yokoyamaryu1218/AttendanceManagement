@@ -113,7 +113,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::post('monthly/update', [MonthlyController::class, 'update'])
         ->name('monthly.update');
 
-    // 勤怠絞り込み
+    // 勤怠勤怠合計
     Route::post('/monthly/search/{id}/{id2}', [MonthlyController::class, 'search'])
         ->name('monthly_search');
 

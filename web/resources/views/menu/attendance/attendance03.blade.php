@@ -1,4 +1,4 @@
-<!-- 絞り込み結果を表示するblade -->
+<!-- 勤怠合計結果を表示するblade -->
 <x-app-layout>
     <x-slot name="header">
     </x-slot>
@@ -10,16 +10,16 @@
                     <!-- 名前表示部分 -->
                     {{ $name }}さん
                     <!-- 名前表示部分ここまで -->
-                    <!-- 絞り込み部分 -->
+                    <!-- 勤怠合計部分 -->
                     @include('menu.attendance.search03')
-                    <!-- 絞り込み部分ここまで -->
+                    <!-- 勤怠合計部分ここまで -->
                     <!-- フラッシュメッセージの表示 -->
                     @include('menu.attendance.validation')
                     <!-- フラッシュメッセージここまで -->
                     <div>検索期間　：{{$first_day}}～{{$end_day}}</div>
-                    <!-- 勤怠一覧の合計表示部分 -->
+                    <!-- 勤怠一覧の勤怠合計部分 -->
                     @include('menu.attendance.search02')
-                    <!-- 合計表示部分ここまで -->
+                    <!-- 勤怠合計部分ここまで -->
                     <div class="text-center">
                         <input class="text-white bg-yellow-400 border-0 py-2 px-8 focus:outline-none hover:bg-yellow-300 rounded text-lg" type="button" value="戻る" onclick="window.history.back()" title="1つ前の画面に戻ります。">
                     </div>
@@ -29,6 +29,6 @@
     </body>
 </x-app-layout>
 
-<!-- 絞り込みメニューのcssとjs、ここに書かないと機能しない -->
+<!-- 勤怠合計メニューのcssとjs、ここに書かないと機能しない -->
 <link rel="stylesheet" href="{{ asset('css/accordion.css') }}">
 <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>

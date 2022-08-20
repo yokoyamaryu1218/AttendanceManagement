@@ -28,9 +28,16 @@
                         </div>
                     </div>
                     <div class="p-2 w-full">
+                        <!-- 日報の新規登録の場合は「登録ボタン」を出し、更新の場合は「更新」ボタンを出す -->
+                        @if($daily_data[0]->daily == NULL)
                         <!-- 登録ボタン -->
                         <button class="flex mx-auto text-white bg-green-500 border-0 py-2 px-8 focus:outline-none hover:bg-green-600 rounded text-lg" title="ボタンをクリックすることで、登録されます。">登録</button>
                         <!-- 登録ボタンここまで -->
+                        @else
+                        <!-- 更新ボタン -->
+                        <button class="flex mx-auto text-white bg-green-500 border-0 py-2 px-8 focus:outline-none hover:bg-green-600 rounded text-lg" title="ボタンをクリックすることで、更新されます。">更新</button>
+                        <!-- 更新ボタンここまで -->
+                        @endif
                     </div>
                 </form>
             </div>
