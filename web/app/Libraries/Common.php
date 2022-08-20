@@ -63,10 +63,11 @@ class Common
      * @param  int  $hire_date 入社日
      * @param  int  $restraint_start_time 始業時間
      * @param  int  $restraint_closing_time 終業時間
-     * @param  int $restraint_total_time 就業時間
+     * @param  int  $restraint_total_time 就業時間
+     * @param  int  $short_working 時短フラグ
      * @var App\Libraries\php\Domain\DataBase
      */
-    public static function insertEmployee($emplo_id, $name, $password, $management_emplo_id, $subord_authority, $retirement_authority, $hire_date, $restraint_start_time, $restraint_closing_time, $restraint_total_time)
+    public static function insertEmployee($emplo_id, $name, $password, $management_emplo_id, $subord_authority, $retirement_authority, $hire_date, $restraint_start_time, $restraint_closing_time, $restraint_total_time, $short_working)
     {
         try {
             // 人員を登録
@@ -74,7 +75,7 @@ class Common
             DataBase::insertEmployee($emplo_id, $name, $password, $management_emplo_id, $subord_authority, $retirement_authority, $hire_date);
 
             // 就業時間を登録
-            DataBase::insertOverTime($emplo_id, $restraint_start_time, $restraint_closing_time, $restraint_total_time);
+            DataBase::insertOverTime($emplo_id, $restraint_start_time, $restraint_closing_time, $restraint_total_time, $short_working);
 
             //階層に登録
             DataBase::insertHierarchy($emplo_id, $management_emplo_id);
@@ -98,16 +99,17 @@ class Common
      * @param  int  $restraint_start_time 始業時間
      * @param  int  $restraint_closing_time 終業時間
      * @param  int $restraint_total_time 就業時間
+     * @param  int  $short_working 時短フラグ
      * @var App\Libraries\php\Domain\DataBase
      */
-    public static function updateEmployee($emplo_id, $name, $management_emplo_id, $subord_authority, $restraint_start_time, $restraint_closing_time, $restraint_total_time)
+    public static function updateEmployee($emplo_id, $name, $management_emplo_id, $subord_authority, $restraint_start_time, $restraint_closing_time, $restraint_total_time, $short_working)
     {
         try {
             // 人員を更新
             DataBase::updateEmployee($emplo_id, $name, $management_emplo_id, $subord_authority);
 
             // 就業時間を更新
-            DataBase::updateOverTime($emplo_id, $restraint_start_time, $restraint_closing_time, $restraint_total_time);
+            DataBase::updateOverTime($emplo_id, $restraint_start_time, $restraint_closing_time, $restraint_total_time, $short_working);
 
             //階層に更新
             DataBase::updateHierarchy($management_emplo_id, $emplo_id);
@@ -196,5 +198,32 @@ class Common
         );
 
         return $total_data;
+    }
+
+    /**
+     * 時短フラグを付与するクラス
+     *
+     * @var App\Libraries\php\Domain\DataBase
+     * @param  array $working_hours 会社全体の就業時間
+     * @param  int  $restraint_start_time 始業時間
+     * @param  int  $restraint_closing_time 終業時間
+     *
+     * @return  array $short_working
+     */
+    public static function working_hours($restraint_start_time, $restraint_closing_time)
+    {
+        $working_hours = DataBase::Workinghours();
+
+        // 会社と個人の始業時間と終業時間が合致する場合は、時短フラグは0を付与する
+        if (
+            strtotime($working_hours[0]->restraint_start_time) == strtotime($restraint_start_time)
+            && strtotime($working_hours[0]->restraint_closing_time) == strtotime($restraint_closing_time)
+        ) {
+            $short_working = "0";
+        } else {
+            $short_working = "1";
+        };
+
+        return $short_working;
     }
 }

@@ -30,13 +30,13 @@
                 @method('post')
                 <!-- フラッシュメッセージの表示 -->
                 @if (session('status'))
-                <div class="alert alert-info">
+                <div class="alert alert-info mt-2">
                     {{ session('status') }}
                 </div>
                 @endif
 
                 @if ($errors->has('name'))
-                <div class="alert text-center alert-warning">
+                <div class="alert text-center alert-warning mt-2">
                     {{ $errors->first('name') }}
                 </div>
                 @endif

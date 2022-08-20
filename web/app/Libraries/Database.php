@@ -400,29 +400,113 @@ class Database
      * @param $restraint_start_time 始業時間
      * @param $restraint_closing_time　終業時間
      * @param $restraint_total_time 就業時間
+     * @param $short_working 時短フラグ
      *
      */
-    public static function insertOverTime($emplo_id, $restraint_start_time, $restraint_closing_time, $restraint_total_time)
+    public static function insertOverTime($emplo_id, $restraint_start_time, $restraint_closing_time, $restraint_total_time, $short_working)
     {
-        DB::select('INSERT INTO over_time (emplo_id,restraint_start_time, restraint_closing_time, restraint_total_time) VALUE (?,?,?,?)', [$emplo_id, $restraint_start_time, $restraint_closing_time, $restraint_total_time]);
+        DB::select('INSERT INTO over_time (emplo_id,restraint_start_time, restraint_closing_time, restraint_total_time,short_working) VALUE (?,?,?,?,?)', [$emplo_id, $restraint_start_time, $restraint_closing_time, $restraint_total_time, $short_working]);
     }
 
     /**
-     * 就業時間の更新
+     * 社員個人の就業時間の更新
      *
      * @param $emplo_id 社員番号
      * @param $restraint_start_time 始業時間
      * @param $restraint_closing_time　終業時間
      * @param $restraint_total_time 就業時間
+     * @param $short_working 時短フラグ
      *
      */
-    public static function updateOverTime($emplo_id, $restraint_start_time, $restraint_closing_time, $restraint_total_time)
+    public static function updateOverTime($emplo_id, $restraint_start_time, $restraint_closing_time, $restraint_total_time, $short_working)
     {
         DB::select(
-            'UPDATE over_time SET restraint_start_time = ? ,restraint_closing_time = ?,restraint_total_time = ? WHERE emplo_id = ?',
-            [$restraint_start_time, $restraint_closing_time, $restraint_total_time, $emplo_id]
+            'UPDATE over_time SET restraint_start_time = ? ,restraint_closing_time = ?,restraint_total_time = ?, short_working = ? WHERE emplo_id = ?',
+            [$restraint_start_time, $restraint_closing_time, $restraint_total_time, $short_working, $emplo_id]
         );
     }
+
+    /**
+     * 時短社員の一覧の取得
+     *
+     * @param $retirement_authority 退職フラグ
+     * @param $short_working 時短フラグ
+     *
+     * @var   $data 取得データ
+     *
+     * @return  array $data
+     */
+    public static function getshortWorker($retirement_authority, $short_working)
+    {
+        $data =  DB::select(
+            'SELECT em1.emplo_id,em1.name,em1.retirement_authority,
+            ot1.short_working FROM employee AS em1 
+            LEFT JOIN over_time AS ot1 ON em1.emplo_id = ot1.emplo_id 
+            WHERE em1.retirement_authority = ? AND ot1.short_working = ? ORDER BY em1.emplo_id',
+            [$retirement_authority, $short_working]
+        );
+
+        return $data;
+    }
+
+
+    /**
+     * 会社全体の就業時間の取得
+     *
+     * @var   $data 取得データ
+     *
+     * @return  array $data
+     */
+    public static function Workinghours()
+    {
+        $data =  DB::select(
+            'SELECT restraint_start_time, restraint_closing_time FROM working_hours'
+        );
+
+        return $data;
+    }
+
+    /**
+     * 会社全体の就業時間の更新
+     *
+     * @param $restraint_start_time 始業時間
+     * @param $restraint_closing_time　終業時間
+     * 
+     * @var   $data 取得データ
+     *
+     * @return  array $data
+     */
+    public static function UpdateWorkinghours($restraint_start_time, $restraint_closing_time)
+    {
+        $data =  DB::select(
+            'UPDATE working_hours SET restraint_start_time = ?, restraint_closing_time = ? WHERE 1',
+            [$restraint_start_time, $restraint_closing_time]
+        );
+
+        return $data;
+    }
+
+    /**
+     * 時短社員を除く全社員の一括更新
+     *
+     * @param $restraint_start_time 始業時間
+     * @param $restraint_closing_time　終業時間
+     * @param $restraint_total_time 就業時間
+     * 
+     * @var   $data 取得データ
+     *
+     * @return  array $data
+     */
+    public static function UpdateEmploAll($restraint_start_time, $restraint_closing_time, $restraint_total_time)
+    {
+        $data =  DB::select(
+            'UPDATE over_time SET restraint_start_time = ?, restraint_closing_time = ?,restraint_total_time = ? WHERE short_working = 0',
+            [$restraint_start_time, $restraint_closing_time, $restraint_total_time]
+        );
+
+        return $data;
+    }
+
 
     /**
      * 出勤時間の打刻

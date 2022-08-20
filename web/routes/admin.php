@@ -147,6 +147,21 @@ Route::group(['middleware' => 'auth:admin'], function () {
         ->name('password.update');
     // 管理者自身のパスワード変更に関するルーティングここまで
 
+    // 管理画面に関するルーティング
+    // 管理画面の表示
+    Route::get('/management', [AdminController::class, 'management'])
+        ->name('management');
+
+    // 始業時間・終業時間一括変更
+    Route::post('/management/update', [AdminController::class, 'update_workinghours'])
+        ->name('update_management');
+    // 管理画面に関するルーティングここまで
+
+    // 時短社員表示に関するルーティング
+    Route::get('/short_worker', [AdminController::class, 'short_worker'])
+        ->name('short_worker');
+    // 時短社員表示に関するルーティングここまで
+    
     // エラーページの表示
     Route::get('/error', [MonthlyController::class, 'errorMsg'])
         ->name('error');

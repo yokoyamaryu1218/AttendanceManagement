@@ -8,8 +8,10 @@ use App\Libraries\Common;
 use App\Libraries\DataBase;
 use App\Http\Requests\NewPostRequest;
 use App\Http\Requests\UpdateRequest;
+use App\Http\Requests\ManagementRequest;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Pagination\LengthAwarePaginator;
+
 
 // 管理者画面用のコントローラー
 class AdminController extends Controller
@@ -135,6 +137,7 @@ class AdminController extends Controller
      * @var App\Libraries\php\Domain\Time
      * @var string $restraint_total_time 就業時間
      * @var string $retirement_authority 退職フラグ
+     * @var string $short_working 時短フラグ
      * @var array $subord_authority 部下配属権限
      * @var App\Libraries\php\Domain\DataBase
      * @var string $emplo_id 社員番号
@@ -151,6 +154,9 @@ class AdminController extends Controller
         $restraint_closing_time = $request->restraint_closing_time;
         $restraint_total_time = Time::restraint_total_time($restraint_start_time, $restraint_closing_time);
         $retirement_authority = "0";
+
+        // 時短フラグ
+        $short_working = Common::working_hours($restraint_start_time, $restraint_closing_time);
 
         // トグルがONになっている場合は1、OFFの場合は0
         if (is_null($request->subord_authority)) {
@@ -177,7 +183,8 @@ class AdminController extends Controller
             $hire_date,
             $restraint_start_time,
             $restraint_closing_time,
-            $restraint_total_time
+            $restraint_total_time,
+            $short_working
         );
 
         $message = "登録しました";
@@ -291,6 +298,7 @@ class AdminController extends Controller
      * @var string $restraint_total_time 就業時間
      * @var array $subord_authority 部下配属権限
      * @var App\Libraries\php\Domain\Common
+     * @var array $short_working 時短フラグ
      *
      * @return \Illuminate\Http\Response
      */
@@ -302,7 +310,10 @@ class AdminController extends Controller
         $management_emplo_id = $request->management_emplo_id;
         $restraint_start_time = $request->restraint_start_time;
         $restraint_closing_time = $request->restraint_closing_time;
-        $restraint_total_time = $request->restraint_total_time;
+        $restraint_total_time = Time::restraint_total_time($restraint_start_time, $restraint_closing_time);
+
+        // 時短フラグ
+        $short_working = Common::working_hours($restraint_start_time, $restraint_closing_time);
 
         // トグルがONになっている場合は1、OFFの場合は0
         if (is_null($request->subord_authority)) {
@@ -324,7 +335,8 @@ class AdminController extends Controller
             $subord_authority,
             $restraint_start_time,
             $restraint_closing_time,
-            $restraint_total_time
+            $restraint_total_time,
+            $short_working
         );
 
         $message = "更新しました";
@@ -435,5 +447,46 @@ class AdminController extends Controller
 
         //リダイレクト
         return redirect()->route('admin.dashboard');
+    }
+
+    /**
+     * 管理画面の表示
+     *
+     * @var array $working_hours 退職フラグ
+     */
+    public function management()
+    {
+        // 会社全体の就業時間の取得
+        $working_hours = DataBase::Workinghours();
+
+        //リダイレクト
+        return view('menu.management.management01', compact(
+            'working_hours',
+        ));
+    }
+
+    /**
+     * 就業時間の更新
+     *
+     * @param \Illuminate\Http\Request\ManagementRequest $request
+     *
+     * @var string $restraint_start_time  始業時間
+     * @var string $restraint_closing_time 終業時間 
+     * @var App\Libraries\php\Domain\Time
+     * @var array $restraint_total_time 就業時間
+     */
+    public function update_workinghours(ManagementRequest $request)
+    {
+        //リクエストの取得
+        $restraint_start_time = $request->restraint_start_time;
+        $restraint_closing_time = $request->restraint_closing_time;
+        $restraint_total_time = Time::restraint_total_time($restraint_start_time, $restraint_closing_time);
+
+        DataBase::UpdateWorkinghours($restraint_start_time, $restraint_closing_time);
+        DataBase::UpdateEmploAll($restraint_start_time, $restraint_closing_time, $restraint_total_time);
+
+        //リダイレクト
+        $message = "変更しました";
+        return back()->with('status', $message);
     }
 }

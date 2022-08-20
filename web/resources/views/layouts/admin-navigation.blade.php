@@ -28,6 +28,13 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('admin.management')">
+                        {{ __('管理画面') }}
+                    </x-nav-link>
+                </div>
+
+                <!-- Navigation Links -->
+                <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('admin.change_password')">
                         {{ __('パスワード変更') }}
                     </x-nav-link>
@@ -74,13 +81,19 @@
                 <div class="mt-3 space-y-1">
                     <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('dashboard')">
 
-                    {{ __('HOME') }}
+                        {{ __('HOME') }}
                     </x-responsive-nav-link>
                 </div>
 
                 <div class="mt-3 space-y-1">
                     <x-responsive-nav-link :href="route('admin.emplo_create')">
                         {{ __('新規登録') }}
+                    </x-responsive-nav-link>
+                </div>
+
+                <div class="mt-3 space-y-1">
+                    <x-responsive-nav-link :href="route('admin.management')">
+                        {{ __('管理画面') }}
                     </x-responsive-nav-link>
                 </div>
 

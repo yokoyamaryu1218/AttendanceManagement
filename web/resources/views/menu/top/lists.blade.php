@@ -8,15 +8,24 @@
             @if(!(empty($retirement_lists)))
             <!-- 通常はこちらのclassが適用される -->
             <div class="none text-right">
+                <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('admin.short_worker') }}">
+                    {{ __('時短社員を表示') }}
+                </a>
+                　
                 <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('admin.retirement') }}">
                     {{ __('退職者一覧へ') }}
                 </a>
             </div>
             <!-- レスポンシブはこちらのclassが適用される -->
             <div class="sma text-right mt-2">
-                <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('admin.retirement') }}">
-                    {{ __('退職者一覧へ') }}
+                <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('admin.short_worker') }}"> {{ __('時短社員を表示') }}
                 </a>
+                <BR class="sma">
+                <div class="mt-2">
+                    <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('admin.retirement') }}">
+                        {{ __('退職者一覧へ') }}
+                    </a>
+                </div>
             </div>
             @endif
             <!-- 退職者一覧のリンクここまで -->

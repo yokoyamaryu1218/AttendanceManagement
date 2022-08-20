@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             HierarchySeeder::class,
             OverTimeSeeder::class,
             AdminsSeeder::class,
+            WorkingHoursSeeder::class,
         ]);
     }
 }
