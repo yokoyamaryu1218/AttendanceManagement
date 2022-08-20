@@ -68,13 +68,35 @@ class AttendanceContoroller extends Controller
             return redirect()->route('employee.error');
         };
 
+        // dd(empty($daily_data));
+
+        //対象日のデータがあるかどうかチェック
+        try {
+            $check_date = Database::checkDate($emplo_id, $today);
+        } catch (Exception $e) {
+            $e->getMessage();
+            return redirect()->route('employee.error');
+        };
+
+        // 出勤時間の取得
+        $cloumns_name = "start_time";
+        $table_name = "works";
+        try {
+            $start_time = DataBase::getStartTimeOrDaily($cloumns_name, $table_name, $emplo_id, $today);
+        } catch (Exception $e) {
+            $e->getMessage();
+            return redirect()->route('employee.error');
+        };
+
         return view('employee.dashboard', compact(
             'ym',
             'today',
             'time',
             'format',
             'message',
-            'daily_data'
+            'check_date',
+            'daily_data',
+            'start_time'
         ));
     }
 
