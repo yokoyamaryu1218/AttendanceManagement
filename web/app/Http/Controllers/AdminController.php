@@ -78,7 +78,6 @@ class AdminController extends Controller
      */
     public function retirement(Request $request)
     {
-        // 退職者だけを表示するため、退職フラグに1を付与
         try {
             $retirement_authority = "1";
             $employee_lists = collect(DataBase::getEmployeeAll($retirement_authority));
@@ -99,6 +98,40 @@ class AdminController extends Controller
         return view('menu.emplo_detail.emplo_detail06', compact(
             'employee_lists',
             'retirement_authority',
+        ));
+    }
+
+    /**
+     * 時短社員の表示
+     *
+     * @var App\Libraries\php\Domain\DataBase
+     * @var array $retirement_authority 退職フラグ
+     * @var array $short_working 時短フラグ
+     * @var array $short_worker_lists 時短社員リスト
+     */
+    public function short_worker(Request $request)
+    {
+        // 退職者だけを表示するため、退職フラグに1を付与
+        try {
+            $retirement_authority = "0";
+            $short_working = "1";
+            $short_worker_lists = collect(DataBase::getshortWorker($retirement_authority, $short_working));
+        } catch (Exception $e) {
+            $e->getMessage();
+            return redirect()->route('admin.error');
+        };
+
+        // ページネーション
+        $short_worker_lists = new LengthAwarePaginator(
+            $short_worker_lists->forPage($request->page, 10),
+            count($short_worker_lists),
+            10,
+            $request->page,
+            array('path' => $request->url())
+        );
+
+        return view('menu.emplo_detail.emplo_detail08', compact(
+            'short_worker_lists',
         ));
     }
 
@@ -355,7 +388,6 @@ class AdminController extends Controller
      */
     public function reinstatement_check($emplo_id, $retirement_authority)
     {
-        // 復職者処理を行う従業員の詳細取得
         try {
             $employee_lists = DataBase::SelectEmployee($emplo_id, $retirement_authority);
         } catch (Exception $e) {

@@ -40,7 +40,7 @@
                         </script>
                         @else
                         <!-- 部下の勤怠一覧は直前の画面に戻る -->
-                        <input class="text-white bg-yellow-400 border-0 py-2 px-8 focus:outline-none hover:bg-yellow-300 rounded text-lg" type="button" value="戻る" onclick="window.history.back()" title="1つ前の画面に戻ります。">
+                        <input class="text-white bg-yellow-400 border-0 py-2 px-9 focus:outline-none hover:bg-yellow-300 rounded text-lg" type="button" value="戻る" onclick="window.history.back()" title="1つ前の画面に戻ります。">
                         @endif
                     </div>
                     <!-- 戻るボタンここまで -->
