@@ -27,11 +27,13 @@
                 </div>
 
                 <!-- Navigation Links -->
+                @if (Auth::guard('admin')->user()->admin_authority == "1")
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('admin.management')">
                         {{ __('管理画面') }}
                     </x-nav-link>
                 </div>
+                @endif
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
@@ -91,11 +93,13 @@
                     </x-responsive-nav-link>
                 </div>
 
+                @if (Auth::guard('admin')->user()->admin_authority == "1")\
                 <div class="mt-3 space-y-1">
                     <x-responsive-nav-link :href="route('admin.management')">
                         {{ __('管理画面') }}
                     </x-responsive-nav-link>
                 </div>
+                @endif
 
                 <div class="mt-3 space-y-1">
                     <x-responsive-nav-link :href="route('admin.change_password')">
