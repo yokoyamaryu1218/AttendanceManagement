@@ -31,7 +31,7 @@
                     <div class="text-right mb-1">
                         @if (Auth::guard('employee')->user()->emplo_id == $emplo_id)
                         <!-- 自分自身の勤怠一覧はdashboardに戻る -->
-                        <input id="myButton" class="text-white bg-yellow-400 border-0 py-2 px-8 focus:outline-none hover:bg-yellow-300 rounded text-lg" type="button" value="戻る" title="HOME画面に戻ります。">
+                        <input id="myButton" class="text-white bg-yellow-400 border-0 py-2 px-9 focus:outline-none hover:bg-yellow-300 rounded text-lg" type="button" value="戻る" title="HOME画面に戻ります。">
                         <!-- 戻るボタンの遷移先 -->
                         <script type="text/javascript">
                             document.getElementById("myButton").onclick = function() {
