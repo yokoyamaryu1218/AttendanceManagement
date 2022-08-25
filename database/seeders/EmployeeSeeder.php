@@ -39,7 +39,7 @@ class EmployeeSeeder extends Seeder
             ['1016', 'SonMasanobu', '$2y$10$Tk7u9UGA7Jzi8t8B7uUcIeEggY3Qr2d3ct7ba3eMmDt1gluYhZ6la',  '1003', 0, 0, NULL, NULL, '2018/04/01', NULL], //パスワード：password123
             ['1017', 'KeinKosugi', '$2y$10$Tk7u9UGA7Jzi8t8B7uUcIeEggY3Qr2d3ct7ba3eMmDt1gluYhZ6la',  '1004', 0, 0, NULL, NULL, '2018/04/01', NULL], //パスワード：password123
             ['1018', 'MituyaYuji', '$2y$10$Tk7u9UGA7Jzi8t8B7uUcIeEggY3Qr2d3ct7ba3eMmDt1gluYhZ6la',  '1004', 0, 0, NULL, NULL, '2018/04/01', NULL], //パスワード：password123
-            ['1019', '横山隆', '$2y$10$Tk7u9UGA7Jzi8t8B7uUcIeEggY3Qr2d3ct7ba3eMmDt1gluYhZ6la',  '1004', 0, 1, NULL, NULL, '2018/08/01', '2022/08/01'], //パスワード：password123
+            ['1019', '増山隆', '$2y$10$Tk7u9UGA7Jzi8t8B7uUcIeEggY3Qr2d3ct7ba3eMmDt1gluYhZ6la',  '1004', 0, 1, NULL, NULL, '2018/08/01', '2022/08/01'], //パスワード：password123
             ['1020', '斉藤隆', '$2y$10$Tk7u9UGA7Jzi8t8B7uUcIeEggY3Qr2d3ct7ba3eMmDt1gluYhZ6la',  '1004', 0, 0, NULL, NULL, '2018/08/01', NULL], //パスワード：password123
         ];
 
