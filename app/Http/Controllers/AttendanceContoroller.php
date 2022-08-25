@@ -68,8 +68,6 @@ class AttendanceContoroller extends Controller
             return redirect()->route('employee.error');
         };
 
-        // dd(empty($daily_data));
-
         //対象日のデータがあるかどうかチェック
         try {
             $check_date = Database::checkDate($emplo_id, $today);
@@ -209,11 +207,14 @@ class AttendanceContoroller extends Controller
 
         // 日報の登録
         try {
-            Database::insertDaily($emplo_id, $today, $daily);
+            if (!(is_null($daily))) {
+                Database::insertDaily($emplo_id, $today, $daily);
+            };
         } catch (Exception $e) {
             $e->getMessage();
             return redirect()->route('employee.error');
         };
+
 
         $message = "日報を登録しました";
         return back()->with('status', $message);
@@ -239,6 +240,17 @@ class AttendanceContoroller extends Controller
         // 重複クリック対策
         $request->session()->regenerateToken();
 
+        // DBに登録済みの日報の取得
+        $cloumns_name = "daily";
+        $table_name = "daily";
+
+        try {
+            $old_daily_data = Database::getStartTimeOrDaily($cloumns_name, $table_name, $emplo_id, $today);
+        } catch (Exception $e) {
+            $e->getMessage();
+            return redirect()->route('employee.error');
+        };
+
         // 日報の更新
         try {
             Database::updateDaily($emplo_id, $today, $daily);
@@ -247,7 +259,16 @@ class AttendanceContoroller extends Controller
             return redirect()->route('employee.error');
         };
 
-        $message = "日報を更新しました";
+        if ($daily == $old_daily_data[0]->daily) {
+            if ((is_null($daily)) == true) {
+                $message = "日報を登録しました";
+            } else {
+                $message = "日報を更新しました";
+            }
+        } else {
+            $message = "日報を更新しました";
+        };
+
         return back()->with('status', $message);
     }
 
