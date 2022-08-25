@@ -35,6 +35,12 @@
                 </div>
                 @endif
 
+                @if (session('warning'))
+                <div class="alert alert-warning mt-2">
+                    <small>{{ session('warning') }}</small>
+                </div>
+                @endif
+
                 @if ($errors->has('name'))
                 <div class="alert text-center alert-warning mt-2">
                     {{ $errors->first('name') }}

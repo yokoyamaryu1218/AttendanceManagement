@@ -357,6 +357,13 @@ class AdminController extends Controller
             $subord_authority = $request->subord_authority;
         };
 
+        // 社員番号と上司社員番号が同一ではないかチェック
+        if ($management_emplo_id == $emplo_id) {
+            $message = '自分自身を上司にすることはできません。';
+
+            return back()->with('warning', $message);
+        }
+
         // 重複クリック対策
         $request->session()->regenerateToken();
 
