@@ -2,7 +2,7 @@
 
 namespace App\Libraries;
 
-use App\Libraries\DataBase;
+use App\Libraries\Database;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -19,7 +19,7 @@ class Time
      * @param  int  $closing_time 退勤時間
      * @param  int  $target_date 選択した日付
      *
-     * @var App\Libraries\php\Domain\DataBase
+     * @var App\Libraries\php\Domain\Database
      * @var App\Libraries\php\Domain\Time
      * @var array $restraint_time 就業時間
      * @var array $total_time 総勤務時間
@@ -44,8 +44,8 @@ class Time
 
         // データベースに登録する
         try {
-            DataBase::insertStartTime($emplo_id, $target_date, $start_time);
-            DataBase::insertEndTime($closing_time, $rest_time, $achievement_time, $over_time, $emplo_id, $target_date);
+            Database::insertStartTime($emplo_id, $target_date, $start_time);
+            Database::insertEndTime($closing_time, $rest_time, $achievement_time, $over_time, $emplo_id, $target_date);
         } catch (Exception $e) {
             $e->getMessage();
             if (Auth::guard('employee')->check()) {
@@ -64,7 +64,7 @@ class Time
      * @param  int  $closing_time 退勤時間
      * @param  int  $target_date 選択した日付
      *
-     * @var App\Libraries\php\Domain\DataBase
+     * @var App\Libraries\php\Domain\Database
      * @var App\Libraries\php\Domain\Time
      * @var array $restraint_time 就業時間
      * @var array $total_time 総勤務時間
@@ -89,7 +89,7 @@ class Time
 
         // データベースを更新する
         try {
-            DataBase::updateTime($start_time, $closing_time, $rest_time, $achievement_time, $over_time, $emplo_id, $target_date);
+            Database::updateTime($start_time, $closing_time, $rest_time, $achievement_time, $over_time, $emplo_id, $target_date);
         } catch (Exception $e) {
             $e->getMessage();
             if (Auth::guard('employee')->check()) {
@@ -109,14 +109,14 @@ class Time
      * @param  int  $daily 日報
      * @param  int  $daily_data 日報データ
      *
-     * @var App\Libraries\php\Domain\DataBase
+     * @var App\Libraries\php\Domain\Database
      */
     public static function Daily($emplo_id, $target_date, $daily, $daily_data)
     {
         // 日報の登録がされていない場合は新規登録を行い
         if ($daily_data == NULL) {
             try {
-                DataBase::insertDaily($emplo_id, $target_date, $daily);
+                Database::insertDaily($emplo_id, $target_date, $daily);
             } catch (Exception $e) {
                 $e->getMessage();
                 if (Auth::guard('employee')->check()) {
@@ -128,7 +128,7 @@ class Time
         }
         // 日報が登録されている場合は更新処理を行う
         try {
-            DataBase::updateDaily($emplo_id, $target_date, $daily);
+            Database::updateDaily($emplo_id, $target_date, $daily);
         } catch (Exception $e) {
             $e->getMessage();
             if (Auth::guard('employee')->check()) {

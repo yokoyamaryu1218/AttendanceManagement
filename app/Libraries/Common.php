@@ -65,20 +65,20 @@ class Common
      * @param  int  $restraint_closing_time 終業時間
      * @param  int  $restraint_total_time 就業時間
      * @param  int  $short_working 時短フラグ
-     * @var App\Libraries\php\Domain\DataBase
+     * @var App\Libraries\php\Domain\Database
      */
     public static function insertEmployee($emplo_id, $name, $password, $management_emplo_id, $subord_authority, $retirement_authority, $hire_date, $restraint_start_time, $restraint_closing_time, $restraint_total_time, $short_working)
     {
         try {
             // 人員を登録
             DB::beginTransaction();
-            DataBase::insertEmployee($emplo_id, $name, $password, $management_emplo_id, $subord_authority, $retirement_authority, $hire_date);
+            Database::insertEmployee($emplo_id, $name, $password, $management_emplo_id, $subord_authority, $retirement_authority, $hire_date);
 
             // 就業時間を登録
-            DataBase::insertOverTime($emplo_id, $restraint_start_time, $restraint_closing_time, $restraint_total_time, $short_working);
+            Database::insertOverTime($emplo_id, $restraint_start_time, $restraint_closing_time, $restraint_total_time, $short_working);
 
             //階層に登録
-            DataBase::insertHierarchy($emplo_id, $management_emplo_id);
+            Database::insertHierarchy($emplo_id, $management_emplo_id);
 
             DB::commit();
         } catch (Exception $e) {
@@ -100,7 +100,7 @@ class Common
      * @param  int  $restraint_closing_time 終業時間
      * @param  int $restraint_total_time 就業時間
      * @param  int  $short_working 時短フラグ
-     * @var App\Libraries\php\Domain\DataBase
+     * @var App\Libraries\php\Domain\Database
      */
     public static function updateEmployee($emplo_id, $name, $management_emplo_id, $subord_authority, $restraint_start_time, $restraint_closing_time, $restraint_total_time, $short_working)
     {
@@ -109,10 +109,10 @@ class Common
             DataBase::updateEmployee($emplo_id, $name, $management_emplo_id, $subord_authority);
 
             // 就業時間を更新
-            DataBase::updateOverTime($emplo_id, $restraint_start_time, $restraint_closing_time, $restraint_total_time, $short_working);
+            Database::updateOverTime($emplo_id, $restraint_start_time, $restraint_closing_time, $restraint_total_time, $short_working);
 
             //階層に更新
-            DataBase::updateHierarchy($management_emplo_id, $emplo_id);
+            Database::updateHierarchy($management_emplo_id, $emplo_id);
         } catch (Exception $e) {
             $e->getMessage();
             return redirect()->route('admin.error');
@@ -124,7 +124,7 @@ class Common
      *
      * @param  int  $emplo_id 社員番号
      * @param  int  $ym 年月
-     * @var App\Libraries\php\Domain\DataBase
+     * @var App\Libraries\php\Domain\Database
      * @var array $total_days 出勤日数
      * @var array $cloumns_name カラム名
      * @var array $total_name 合計値の命名
@@ -137,17 +137,17 @@ class Common
     public static function totalTime($emplo_id, $ym)
     {
         // 出勤日数を求める
-        $total_days = DataBase::getTotalDays($emplo_id, $ym);
+        $total_days = Database::getTotalDays($emplo_id, $ym);
 
         // 総勤務時間を求める
         $cloumns_name = "achievement_time";
         $total_name = "total_achievement_time";
-        $total_achievement_time = DataBase::getTotalWorking($cloumns_name, $total_name, $emplo_id, $ym);
+        $total_achievement_time = Database::getTotalWorking($cloumns_name, $total_name, $emplo_id, $ym);
 
         // 残業時間を求める
         $cloumns_name = "over_time";
         $total_name = "total_over_time";
-        $total_over_time = DataBase::getTotalWorking($cloumns_name, $total_name, $emplo_id, $ym);
+        $total_over_time = Database::getTotalWorking($cloumns_name, $total_name, $emplo_id, $ym);
 
         // それぞれの結果を配列に格納する
         $total_data = array(
@@ -165,7 +165,7 @@ class Common
      * @param  int  $emplo_id 社員番号
      * @param  int  $first_day 指定開始日
      * @param  int  $end_day 指定終了日
-     * @var App\Libraries\php\Domain\DataBase
+     * @var App\Libraries\php\Domain\Database
      * @var array $total_days 出勤日数
      * @var array $cloumns_name カラム名
      * @var array $total_name 合計値の命名
@@ -178,17 +178,17 @@ class Common
     public static function SearchtotalTime($emplo_id, $first_day, $end_day)
     {
         // 出勤日数を求める
-        $total_days = DataBase::SearchTotalDays($emplo_id, $first_day, $end_day);
+        $total_days = Database::SearchTotalDays($emplo_id, $first_day, $end_day);
 
         // 総勤務時間を求める
         $cloumns_name = "achievement_time";
         $total_name = "total_achievement_time";
-        $total_achievement_time = DataBase::SearchTotalWorking($cloumns_name, $total_name, $emplo_id, $first_day, $end_day);
+        $total_achievement_time = Database::SearchTotalWorking($cloumns_name, $total_name, $emplo_id, $first_day, $end_day);
 
         // 残業時間を求める
         $cloumns_name = "over_time";
         $total_name = "total_over_time";
-        $total_over_time = DataBase::SearchTotalWorking($cloumns_name, $total_name, $emplo_id, $first_day, $end_day);
+        $total_over_time = Database::SearchTotalWorking($cloumns_name, $total_name, $emplo_id, $first_day, $end_day);
 
         // それぞれの結果を配列に格納する
         $total_data = array(
@@ -203,7 +203,7 @@ class Common
     /**
      * 時短フラグを付与するクラス
      *
-     * @var App\Libraries\php\Domain\DataBase
+     * @var App\Libraries\php\Domain\Database
      * @param  array $working_hours 会社全体の就業時間
      * @param  int  $restraint_start_time 始業時間
      * @param  int  $restraint_closing_time 終業時間
@@ -212,7 +212,7 @@ class Common
      */
     public static function working_hours($restraint_start_time, $restraint_closing_time)
     {
-        $working_hours = DataBase::Workinghours();
+        $working_hours = Database::Workinghours();
 
         // 会社と個人の始業時間と終業時間が合致する場合は、時短フラグは0を付与する
         if (

@@ -22,7 +22,7 @@ class Database
     public static function getEmployeeAll($retirement_authority)
     {
 
-        $data = DB::select('SELECT emplo_id,name,retirement_authority FROM `employee` WHERE retirement_authority = ?;', [$retirement_authority]);
+        $data = DB::select('SELECT emplo_id,name,retirement_authority FROM employee WHERE retirement_authority = ?', [$retirement_authority]);
 
         return $data;
     }
@@ -69,7 +69,7 @@ class Database
     public static function getSearchName($retirement_authority, $search)
     {
 
-        $data = DB::select('SELECT emplo_id,name,retirement_authority FROM `employee` WHERE retirement_authority = ?
+        $data = DB::select('SELECT emplo_id,name,retirement_authority FROM employee WHERE retirement_authority = ?
         and name like ?', [$retirement_authority, '%' . $search . '%']);
 
         return $data;
@@ -87,7 +87,7 @@ class Database
     public static function getSearchID($retirement_authority, $search)
     {
 
-        $data = DB::select('SELECT emplo_id,name,retirement_authority FROM `employee` WHERE retirement_authority = ?
+        $data = DB::select('SELECT emplo_id,name,retirement_authority FROM employee WHERE retirement_authority = ?
         and emplo_id like ?', [$retirement_authority, '%' . $search . '%']);
 
         return $data;
@@ -138,7 +138,7 @@ class Database
      */
     public static function insertEmployee($emplo_id, $name, $password, $management_emplo_id, $subord_authority, $retirement_authority, $hire_date)
     {
-        DB::select('INSERT INTO employee (emplo_id,name,password,management_emplo_id,subord_authority,retirement_authority,hire_date) VALUE (?,?,?,?,?,?,?)', [$emplo_id, $name, $password, $management_emplo_id, $subord_authority, $retirement_authority, $hire_date]);
+        DB::select('INSERT INTO employee (emplo_id,name,password,management_emplo_id,subord_authority,retirement_authority,hire_date) VALUES (?,?,?,?,?,?,?)', [$emplo_id, $name, $password, $management_emplo_id, $subord_authority, $retirement_authority, $hire_date]);
     }
 
     /**
@@ -167,7 +167,7 @@ class Database
      */
     public static function insertHierarchy($lower_id, $high_id)
     {
-        DB::insert('INSERT INTO hierarchy (lower_id,high_id) VALUE (?,?)', [$lower_id, $high_id]);
+        DB::insert('INSERT INTO hierarchy (lower_id,high_id) VALUES (?,?)', [$lower_id, $high_id]);
     }
 
     /**
@@ -204,9 +204,16 @@ class Database
      */
     public static function connect_db()
     {
+        // SQL用
         $dsn = 'mysql:dbname=attendance_management;host=localhost;charset=utf8';
         $user = 'root';
         $password = '';
+
+        // heroku接続用
+        // $dsn = 'pgsql:dbname=dds62840soucsj host=ec2-44-207-126-176.compute-1.amazonaws.com port=5432';
+        // $user = 'uhzxyedbpplwnd';
+        // $password = '3f7151b935a1adc8cace96eb763ef24613e0485759182a5f53bc03ec472e75b7';
+
         $pdo = new PDO($dsn, $user, $password);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         return $pdo;
@@ -405,7 +412,7 @@ class Database
      */
     public static function insertOverTime($emplo_id, $restraint_start_time, $restraint_closing_time, $restraint_total_time, $short_working)
     {
-        DB::select('INSERT INTO over_time (emplo_id,restraint_start_time, restraint_closing_time, restraint_total_time,short_working) VALUE (?,?,?,?,?)', [$emplo_id, $restraint_start_time, $restraint_closing_time, $restraint_total_time, $short_working]);
+        DB::select('INSERT INTO over_time (emplo_id,restraint_start_time, restraint_closing_time, restraint_total_time,short_working) VALUES (?,?,?,?,?)', [$emplo_id, $restraint_start_time, $restraint_closing_time, $restraint_total_time, $short_working]);
     }
 
     /**
@@ -440,9 +447,14 @@ class Database
     {
         $data =  DB::select(
             'SELECT em1.emplo_id,em1.name,em1.retirement_authority,
-            ot1.short_working FROM employee AS em1 
-            LEFT JOIN over_time AS ot1 ON em1.emplo_id = ot1.emplo_id 
-            WHERE em1.retirement_authority = ? AND ot1.short_working = ? ORDER BY em1.emplo_id',
+            ot1.short_working FROM employee AS em1
+            /* ここまでで社員番号、社員名、退職フラグ、時短フラグをworksテーブルから取得する */
+            LEFT JOIN over_time AS ot1 ON em1.emplo_id = ot1.emplo_id
+            /* over_timeの社員番号と別途worksｍの社員番号を結合して取得する */
+            WHERE em1.retirement_authority = ? AND ot1.short_working = ?
+            /* 退職フラグと退職フラグを検索条件にして情報を取得して、 */
+            ORDER BY em1.emplo_id',
+            /* 社員番号順に並び替える */
             [$retirement_authority, $short_working]
         );
 
@@ -471,7 +483,7 @@ class Database
      *
      * @param $restraint_start_time 始業時間
      * @param $restraint_closing_time　終業時間
-     * 
+     *
      * @var   $data 取得データ
      *
      * @return  array $data
@@ -492,7 +504,7 @@ class Database
      * @param $restraint_start_time 始業時間
      * @param $restraint_closing_time　終業時間
      * @param $restraint_total_time 就業時間
-     * 
+     *
      * @var   $data 取得データ
      *
      * @return  array $data
@@ -521,7 +533,7 @@ class Database
      */
     public static function insertStartTime($emplo_id, $today, $start_time)
     {
-        $data =  DB::select('INSERT INTO works (emplo_id,date,start_time) VALUE (?,?,?)', [$emplo_id, $today, $start_time]);
+        $data =  DB::select('INSERT INTO works (emplo_id,date,start_time) VALUES (?,?,?)', [$emplo_id, $today, $start_time]);
 
         return $data;
     }
@@ -565,7 +577,7 @@ class Database
      */
     public static function insertTime($emplo_id, $target_date, $start_time, $closing_time, $rest_time, $achievement_time, $over_time)
     {
-        $data =  DB::select('INSERT INTO works (emplo_id,date,start_time,closing_time,rest_time,achievement_time,over_time) VALUE (?,?,?,?,?,?,?)', [$emplo_id, $target_date, $start_time, $closing_time, $rest_time, $achievement_time, $over_time]);
+        $data =  DB::select('INSERT INTO works (emplo_id,date,start_time,closing_time,rest_time,achievement_time,over_time) VALUES (?,?,?,?,?,?,?)', [$emplo_id, $target_date, $start_time, $closing_time, $rest_time, $achievement_time, $over_time]);
 
         return $data;
     }
@@ -606,7 +618,7 @@ class Database
     public static function insertDaily($emplo_id, $today, $daily)
     {
 
-        $data = DB::select('INSERT INTO daily (emplo_id,date,daily) VALUE (?,?,?)', [$emplo_id, $today, $daily]);
+        $data = DB::select('INSERT INTO daily (emplo_id,date,daily) VALUES (?,?,?)', [$emplo_id, $today, $daily]);
 
         return $data;
     }

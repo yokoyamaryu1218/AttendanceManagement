@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Libraries\DataBase;
+use App\Libraries\Database;
 use App\Libraries\Common;
 use App\Libraries\Time;
 
@@ -21,7 +21,7 @@ class MonthlyController extends Controller
      * @var App\Libraries\php\Domain\Common $format
      * @var string $ym 今月の年月
      * @var string $day_count 月の日数
-     * @var App\Libraries\php\Domain\DataBase
+     * @var App\Libraries\php\Domain\Database
      * @var array $monthly_data 勤怠データ
      * @var array $total_data 期間内の出勤日数、総勤務時間、残業時間の配列
      */
@@ -34,7 +34,7 @@ class MonthlyController extends Controller
         $day_count = date('t', strtotime($ym));
         // 今月の勤怠一覧を取得
         try {
-            $monthly_data = DataBase::getMonthly($emplo_id, $ym);
+            $monthly_data = Database::getMonthly($emplo_id, $ym);
         } catch (Exception $e) {
             $e->getMessage();
             if (Auth::guard('employee')->check()) {
@@ -89,7 +89,7 @@ class MonthlyController extends Controller
      * @var string $ym 選択した年月
      * @var string $day_count 月の日数
      * @var App\Libraries\php\Domain\Common $format
-     * @var App\Libraries\php\Domain\DataBase
+     * @var App\Libraries\php\Domain\Database
      * @var array $monthly_data 勤怠データ
      * @var array $total_data 期間内の出勤日数、総勤務時間、残業時間の配列
      */
@@ -106,7 +106,7 @@ class MonthlyController extends Controller
 
         // 勤怠一覧の取得
         try {
-            $monthly_data = DataBase::getMonthly($emplo_id, $ym);
+            $monthly_data = Database::getMonthly($emplo_id, $ym);
         } catch (Exception $e) {
             $e->getMessage();
             if (Auth::guard('employee')->check()) {
@@ -165,7 +165,7 @@ class MonthlyController extends Controller
      * @var string $start_time 出勤時間
      * @var string $closing_time 退勤時間
      * @var string $daily 日報
-     * @var App\Libraries\php\Domain\DataBase
+     * @var App\Libraries\php\Domain\Database
      * @var array $check_date 勤怠データ
      * @var array $cloumns_name カラム名
      * @var array $table_name テーブル名
@@ -200,7 +200,7 @@ class MonthlyController extends Controller
         $cloumns_name = "daily";
         $table_name = "daily";
         try {
-            $daily_data = DataBase::getStartTimeOrDaily($cloumns_name, $table_name, $emplo_id, $target_date);
+            $daily_data = Database::getStartTimeOrDaily($cloumns_name, $table_name, $emplo_id, $target_date);
         } catch (Exception $e) {
             $e->getMessage();
             if (Auth::guard('employee')->check()) {
@@ -305,7 +305,7 @@ class MonthlyController extends Controller
      * @var string $ym 選択した年月
      * @var string $day_count 月の日数
      * @var App\Libraries\php\Domain\Common $format
-     * @var App\Libraries\php\Domain\DataBase
+     * @var App\Libraries\php\Domain\Database
      * @var array $monthly_data 勤怠データ
      * @var array $total_data 期間内の出勤日数、総勤務時間、残業時間の配列
      */

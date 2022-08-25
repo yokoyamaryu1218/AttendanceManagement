@@ -26,7 +26,7 @@ class CreateOverTimeTable extends Migration
             $table->Time('restraint_total_time')
                 ->comment('就業時間');
             $table->char('short_working', '1')
-                ->comment('時短');
+                ->comment('時短フラグ');
             $table->timestamp('created_at')->useCurrent()
                 ->comment('新規登録日');
             $table->timestamp('updated_at')->default(DB::raw('CURRENT_TIMESTAMP on update CURRENT_TIMESTAMP'))

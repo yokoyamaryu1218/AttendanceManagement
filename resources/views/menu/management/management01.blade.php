@@ -24,8 +24,10 @@
                 @endif
                 <!-- フラッシュメッセージここまで -->
                 <dt class="mb-2">・始業時間・終業時間一括変更</dt>
-                <dd class="mb-2">時短勤務以外の全社員の始業時間・終業時間を<BR class="sma">一括で変更を行います。</dd>
-
+                <div class="sm:text-base text-sm">
+                    <dd class="mb-2">時短勤務以外の全社員の始業時間・<BR class="sma">終業時間を一括で変更を行います。</dd>
+                </div>
+                
                 <form method="POST" action="{{ route('admin.update_management') }}">
                     @csrf
                     <div class="grid gap-6 mb-12 lg:grid-cols-3">

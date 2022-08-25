@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Libraries\DataBase;
+use App\Libraries\Database;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use App\Rules\PasswordRule;
@@ -56,7 +56,7 @@ class PasswordChangeController extends Controller
      * @var string $name 社員名
      * @var string $password パスワード
      * @var string $password_cofirmation パスワード確認用
-     * @var App\Libraries\php\Domain\DataBase
+     * @var App\Libraries\php\Domain\Database
      */
     public function store(Request $request)
     {

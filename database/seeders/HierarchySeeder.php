@@ -14,37 +14,37 @@ class HierarchySeeder extends Seeder
      */
     public function run()
     {
-        //@var string employeeのカラム列
-        $hierarchy_cloumns = 'lower_id, high_id ,created_at,updated_at';
+        //@var string hierarchyのカラム列
+        $hierarchy_cloumns = 'lower_id, high_id';
         //@var string カラム列のホルダー
-        $hierarchy_holder = '?,?,?,?';
-        // @var array employeeの挿入データ
+        $hierarchy_holder = '?,?';
+        // @var array hierarchyの挿入データ
         $hierarchy_insert_data_list = [
-            ['1000', '0000', NULL, NULL],
-            ['1001', '1000', NULL, NULL],
-            ['1002', '1001', NULL, NULL],
-            ['1003', '1001', NULL, NULL],
-            ['1004', '1001', NULL, NULL],
-            ['1005', '1001', NULL, NULL],
-            ['1006', '1001', NULL, NULL],
-            ['1007', '1002', NULL, NULL],
-            ['1008', '1002', NULL, NULL],
-            ['1009', '1002', NULL, NULL],
-            ['1010', '1002', NULL, NULL],
-            ['1011', '1002', NULL, NULL],
-            ['1012', '1003', NULL, NULL],
-            ['1013', '1003', NULL, NULL],
-            ['1014', '1003', NULL, NULL],
-            ['1015', '1003', NULL, NULL],
-            ['1016', '1003', NULL, NULL],
-            ['1017', '1004', NULL, NULL],
-            ['1018', '1004', NULL, NULL],
-            ['1019', '1004', NULL, NULL],
-            ['1020', '1004', NULL, NULL],
+            ['1000', '0000'],
+            ['1001', '1000'],
+            ['1002', '1001'],
+            ['1003', '1001'],
+            ['1004', '1001'],
+            ['1005', '1001'],
+            ['1006', '1001'],
+            ['1007', '1002'],
+            ['1008', '1002'],
+            ['1009', '1002'],
+            ['1010', '1002'],
+            ['1011', '1002'],
+            ['1012', '1003'],
+            ['1013', '1003'],
+            ['1014', '1003'],
+            ['1015', '1003'],
+            ['1016', '1003'],
+            ['1017', '1004'],
+            ['1018', '1004'],
+            ['1019', '1004'],
+            ['1020', '1004'],
         ];
 
         foreach ($hierarchy_insert_data_list as $insert_data) {
-            DB::insert('insert into hierarchy (' . $hierarchy_cloumns . ') VALUE (' . $hierarchy_holder . ')', $insert_data);
+            DB::insert('insert into hierarchy (' . $hierarchy_cloumns . ') VALUES (' . $hierarchy_holder . ')', $insert_data);
         }
     }
 }

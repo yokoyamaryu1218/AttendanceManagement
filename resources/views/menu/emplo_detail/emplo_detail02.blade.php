@@ -28,9 +28,9 @@
         @foreach($employee_lists as $emplo)
         <tr>
             <!-- 社員番号 -->
-            <td class="text-right" data-label="社員番号"  width="100">{{$emplo->emplo_id}}</td>
+            <td class="text-right" data-label="社員番号　"  width="100">{{$emplo->emplo_id}}</td>
             <!-- 従業員名 -->
-            <td class="text-left" data-label="名　　前"  width="100">{{$emplo->name}}</td>
+            <td class="text-left" data-label="名　　前　"  width="100">{{$emplo->name}}</td>
             <!-- 詳細画面 -->
             <td data-label="詳　　細"  width="100" class="align-middle button">
                 <form method="POST" action="{{ route('admin.emplo_details', [$emplo->emplo_id, $emplo->retirement_authority]) }}">
@@ -39,7 +39,7 @@
                 </form>
             </td>
             <!-- 勤怠一覧 -->
-            <td data-label="勤怠一覧"  width="100" class="align-middle button">
+            <td data-label="勤怠一覧　"  width="100" class="align-middle button">
                 <form method="POST" action="{{ route('admin.monthly',[$emplo->emplo_id, $emplo->name]) }}">
                     @csrf
                     <button class="flex mx-auto text-white bg-green-500 border-0 py-2 px-8 focus:outline-none hover:bg-green-600 rounded text-lg" title="ボタンをクリックすることで、選択した社員の勤怠一覧へ移動します。">開く</button>

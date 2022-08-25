@@ -6,7 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>勤怠管理システム</title>
+    @if(strstr($_SERVER['REQUEST_URI'], 'admin')):
+    <title>勤怠管理システム/管理画面</title>
+    @else
+    <title>勤怠管理システム/出退勤画面</title>
+    @endif @if(strstr($_SERVER['REQUEST_URI'], 'admin')):
+    <title>勤怠管理システム/管理画面</title>
+    @else
+    <title>勤怠管理システム/出退勤画面</title>
+    @endif
 
     <!-- Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">

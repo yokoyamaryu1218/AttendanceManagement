@@ -42,7 +42,7 @@
             <div class="flex items-center justify-end mt-4">
                 @if (Route::has('admin.login'))
                 <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('admin.login') }}">
-                    {{ __('管理者用画面へ') }}
+                    {{ __('管理用画面へ') }}
                 </a>
                 @endif
                 <x-button class="ml-3">
