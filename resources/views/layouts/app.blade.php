@@ -6,11 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    @if(strstr($_SERVER['REQUEST_URI'], 'admin')):
-    <title>勤怠管理システム/管理画面</title>
-    @else
-    <title>勤怠管理システム/出退勤画面</title>
-    @endif @if(strstr($_SERVER['REQUEST_URI'], 'admin')):
+    @if(strstr($_SERVER['REQUEST_URI'], 'admin'))
     <title>勤怠管理システム/管理画面</title>
     @else
     <title>勤怠管理システム/出退勤画面</title>
