@@ -2,8 +2,8 @@
 
 namespace App\Libraries;
 
-use PDO;
 use Illuminate\Support\Facades\DB;
+use PDO;
 
 /**
  * データベース動作クラス
@@ -108,7 +108,6 @@ class Database
         return $list;
     }
 
-
     /**
      * 最新の社員番号を取得
      *
@@ -187,12 +186,13 @@ class Database
      *
      * @param $retirement_authority 退職フラグ
      * @param $retirement_date 退職日
+     * @param $deleted_at 退職処理日
      * @param $emplo_id 社員番号
      *
      */
-    public static function retirementAssignment($retirement_authority, $retirement_date, $emplo_id)
+    public static function retirementAssignment($retirement_authority, $retirement_date, $deleted_at, $emplo_id)
     {
-        DB::insert('UPDATE employee SET retirement_authority = ? , retirement_date = ? WHERE emplo_id = ?', [$retirement_authority, $retirement_date, $emplo_id]);
+        DB::insert('UPDATE employee SET retirement_authority = ? , retirement_date = ?, deleted_at = ? WHERE emplo_id = ?', [$retirement_authority, $retirement_date, $deleted_at, $emplo_id]);
     }
 
     /**
@@ -355,7 +355,7 @@ class Database
         // ここでもフェッチモードでチェックする
         $sql = "SELECT id FROM works WHERE emplo_id = :emplo_id AND date = :date LIMIT 1";
         $stmt = $pdo->prepare($sql);
-        $stmt->bindValue(':emplo_id', (int)$emplo_id, PDO::PARAM_INT);
+        $stmt->bindValue(':emplo_id', (int) $emplo_id, PDO::PARAM_INT);
         $stmt->bindValue(':date', $today, PDO::PARAM_STR);
         $stmt->execute();
         $data = $stmt->fetch();
@@ -445,7 +445,7 @@ class Database
      */
     public static function getshortWorker($retirement_authority, $short_working)
     {
-        $data =  DB::select(
+        $data = DB::select(
             'SELECT em1.emplo_id,em1.name,em1.retirement_authority,
             ot1.short_working FROM employee AS em1
             /* ここまでで社員番号、社員名、退職フラグ、時短フラグをworksテーブルから取得する */
@@ -461,7 +461,6 @@ class Database
         return $data;
     }
 
-
     /**
      * 会社全体の就業時間の取得
      *
@@ -471,7 +470,7 @@ class Database
      */
     public static function Workinghours()
     {
-        $data =  DB::select(
+        $data = DB::select(
             'SELECT restraint_start_time, restraint_closing_time FROM working_hours'
         );
 
@@ -490,7 +489,7 @@ class Database
      */
     public static function UpdateWorkinghours($restraint_start_time, $restraint_closing_time)
     {
-        $data =  DB::select(
+        $data = DB::select(
             'UPDATE working_hours SET restraint_start_time = ?, restraint_closing_time = ? WHERE 1',
             [$restraint_start_time, $restraint_closing_time]
         );
@@ -511,14 +510,13 @@ class Database
      */
     public static function UpdateEmploAll($restraint_start_time, $restraint_closing_time, $restraint_total_time)
     {
-        $data =  DB::select(
+        $data = DB::select(
             'UPDATE over_time SET restraint_start_time = ?, restraint_closing_time = ?,restraint_total_time = ? WHERE short_working = 0',
             [$restraint_start_time, $restraint_closing_time, $restraint_total_time]
         );
 
         return $data;
     }
-
 
     /**
      * 出勤時間の打刻
@@ -533,7 +531,7 @@ class Database
      */
     public static function insertStartTime($emplo_id, $today, $start_time)
     {
-        $data =  DB::select('INSERT INTO works (emplo_id,date,start_time) VALUES (?,?,?)', [$emplo_id, $today, $start_time]);
+        $data = DB::select('INSERT INTO works (emplo_id,date,start_time) VALUES (?,?,?)', [$emplo_id, $today, $start_time]);
 
         return $data;
     }
@@ -554,7 +552,7 @@ class Database
      */
     public static function insertEndTime($closing_time, $rest_time, $achievement_time, $over_time, $emplo_id, $target_date)
     {
-        $data =  DB::select('UPDATE works SET closing_time = ?, rest_time = ?, achievement_time = ?, over_time = ?
+        $data = DB::select('UPDATE works SET closing_time = ?, rest_time = ?, achievement_time = ?, over_time = ?
          WHERE emplo_id = ? AND date = ?', [$closing_time, $rest_time, $achievement_time, $over_time, $emplo_id, $target_date]);
 
         return $data;
@@ -577,7 +575,7 @@ class Database
      */
     public static function insertTime($emplo_id, $target_date, $start_time, $closing_time, $rest_time, $achievement_time, $over_time)
     {
-        $data =  DB::select('INSERT INTO works (emplo_id,date,start_time,closing_time,rest_time,achievement_time,over_time) VALUES (?,?,?,?,?,?,?)', [$emplo_id, $target_date, $start_time, $closing_time, $rest_time, $achievement_time, $over_time]);
+        $data = DB::select('INSERT INTO works (emplo_id,date,start_time,closing_time,rest_time,achievement_time,over_time) VALUES (?,?,?,?,?,?,?)', [$emplo_id, $target_date, $start_time, $closing_time, $rest_time, $achievement_time, $over_time]);
 
         return $data;
     }
@@ -599,7 +597,7 @@ class Database
      */
     public static function updateTime($start_time, $closing_time, $rest_time, $achievement_time, $over_time, $emplo_id, $target_date)
     {
-        $data =  DB::select('UPDATE works SET start_time = ?,closing_time = ?, rest_time = ?, achievement_time = ?, over_time = ? WHERE emplo_id = ? AND date = ?', [$start_time, $closing_time, $rest_time, $achievement_time, $over_time, $emplo_id, $target_date]);
+        $data = DB::select('UPDATE works SET start_time = ?,closing_time = ?, rest_time = ?, achievement_time = ?, over_time = ? WHERE emplo_id = ? AND date = ?', [$start_time, $closing_time, $rest_time, $achievement_time, $over_time, $emplo_id, $target_date]);
 
         return $data;
     }

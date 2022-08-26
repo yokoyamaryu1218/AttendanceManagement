@@ -10,7 +10,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Employee extends Authenticatable
 {
     use HasFactory;
-    
+    use SoftDeletes;
+
     protected $table = 'employee';
     protected $primaryKey = 'emplo_id';
         /**

@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Libraries\Time;
-use App\Libraries\Common;
-use App\Libraries\Database;
+use App\Http\Requests\ManagementRequest;
 use App\Http\Requests\NewPostRequest;
 use App\Http\Requests\UpdateRequest;
-use App\Http\Requests\ManagementRequest;
-use Illuminate\Support\Facades\Hash;
+use App\Libraries\Common;
+use App\Libraries\Database;
+use App\Libraries\Time;
+use App\Models\Employee;
+use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
-
+use Illuminate\Support\Facades\Hash;
 
 // 管理者画面用のコントローラー
 class AdminController extends Controller
@@ -39,7 +39,7 @@ class AdminController extends Controller
         // 在職者だけを表示するため、退職フラグに0を付与
         try {
             $retirement_authority = "0";
-            $employee_lists =  collect(Database::getEmployeeAll($retirement_authority));
+            $employee_lists = collect(Database::getEmployeeAll($retirement_authority));
         } catch (Exception $e) {
             $e->getMessage();
             return redirect()->route('admin.error');
@@ -200,7 +200,7 @@ class AdminController extends Controller
 
         //登録する番号を作成
         $id = Database::getID();
-        $emplo_id = $id[0]->emplo_id + "1";
+        $emplo_id = $id[0]->emplo_id+"1";
 
         // 重複クリック対策
         $request->session()->regenerateToken();
@@ -277,9 +277,9 @@ class AdminController extends Controller
 
         try {
             if (is_numeric($request->search)) {
-                $employee_lists =  collect(Database::getSearchID($retirement_authority, $request->search));
+                $employee_lists = collect(Database::getSearchID($retirement_authority, $request->search));
             } else {
-                $employee_lists =  collect(Database::getSearchName($retirement_authority, $request->search));
+                $employee_lists = collect(Database::getSearchName($retirement_authority, $request->search));
             }
         } catch (Exception $e) {
             $e->getMessage();
@@ -416,16 +416,18 @@ class AdminController extends Controller
      * @var string $emplo_id 社員番号
      * @var array $retirement_authority 退職フラグ
      * @var array $retirement_date 退職日
+     * @var array $deleted_at 退職処理日
      * @var App\Libraries\php\Domain\Database
      */
     public function reinstatement_action($emplo_id)
     {
         //退職フラグに0を付与し、退職日を消す
         $retirement_authority = "0";
-        $retirement_date = NULL;
+        $retirement_date = null;
+        $deleted_at = null;
 
         try {
-            Database::retirementAssignment($retirement_authority, $retirement_date, $emplo_id);
+            Database::retirementAssignment($retirement_authority, $retirement_date, $deleted_at, $emplo_id);
         } catch (Exception $e) {
             $e->getMessage();
             return redirect()->route('admin.error');
@@ -476,9 +478,14 @@ class AdminController extends Controller
         //退職フラグに1を付与し、退職日を記録する
         $retirement_authority = "1";
         $retirement_date = $request->retirement_date;
+        $deleted_at = null;
 
         try {
-            Database::retirementAssignment($retirement_authority, $retirement_date, $emplo_id);
+            Database::retirementAssignment($retirement_authority, $retirement_date, $deleted_at, $emplo_id);
+
+            // 退職日に日付を付与する
+            $user = Employee::find($emplo_id);
+            $user->delete();
         } catch (Exception $e) {
             $e->getMessage();
             return redirect()->route('admin.error');
