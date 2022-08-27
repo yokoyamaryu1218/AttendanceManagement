@@ -12,6 +12,7 @@ use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 
 // 管理者画面用のコントローラー
 class AdminController extends Controller
@@ -139,13 +140,14 @@ class AdminController extends Controller
      * 従業員の新規登録画面の表示
      *
      * @var App\Libraries\php\Domain\Database
-     * @var array $subord_authority_lists 管理者リスト
+     * @var array $subord_authority_lists 部下配属権限がある社員リスト
      */
     public function create()
     {
-        // 管理者リストの取得
+        // 部下配属権限がある社員リストの取得
         try {
-            $subord_authority_lists = Database::getSubordAuthority();
+            $subord_authority = "1";
+            $subord_authority_lists = Database::getSubordAuthority($subord_authority);
         } catch (Exception $e) {
             $e->getMessage();
             return redirect()->route('admin.error');
@@ -200,7 +202,7 @@ class AdminController extends Controller
 
         //登録する番号を作成
         $id = Database::getID();
-        $emplo_id = $id[0]->emplo_id+"1";
+        $emplo_id = $id[0]->emplo_id + "1";
 
         // 重複クリック対策
         $request->session()->regenerateToken();
@@ -234,7 +236,8 @@ class AdminController extends Controller
      * @var string $retirement_authority 退職フラグ
      * @var App\Libraries\php\Domain\Database
      * @var array $employee_lists 選択した従業員の詳細データ
-     * @var array $subord_authority_lists 管理者リスト
+     * @var array $subord_authority 部下配属権限
+     * @var array $subord_authority_lists 部下配属権限がある社員リスト
      */
     public function show($emplo_id, $retirement_authority)
     {
@@ -246,9 +249,10 @@ class AdminController extends Controller
             return redirect()->route('admin.error');
         };
 
-        // 管理者リストの取得
+        // 部下配属権限がある社員リストの取得
         try {
-            $subord_authority_lists = Database::getSubordAuthority();
+            $subord_authority = "1";
+            $subord_authority_lists = Database::getSubordAuthority($subord_authority);
         } catch (Exception $e) {
             $e->getMessage();
             return redirect()->route('admin.error');
@@ -503,13 +507,18 @@ class AdminController extends Controller
      */
     public function management()
     {
-        // 会社全体の就業時間の取得
-        $working_hours = Database::Workinghours();
+        // 管理権限の有無を確認する
+        if (Auth::guard('admin')->user()->admin_authority == "1") {
+            // 会社全体の就業時間の取得
+            $working_hours = Database::Workinghours();
 
-        //リダイレクト
-        return view('menu.management.management01', compact(
-            'working_hours',
-        ));
+            //リダイレクト
+            return view('menu.management.management01', compact(
+                'working_hours',
+            ));
+        }
+        // 権限がない状態で管理画面に遷移しようとした場合、以下に遷移する
+        return redirect()->route('admin.error');
     }
 
     /**
@@ -530,7 +539,8 @@ class AdminController extends Controller
         $restraint_total_time = Time::restraint_total_time($restraint_start_time, $restraint_closing_time);
 
         Database::UpdateWorkinghours($restraint_start_time, $restraint_closing_time);
-        Database::UpdateEmploAll($restraint_start_time, $restraint_closing_time, $restraint_total_time);
+        $short_working = "0";
+        Database::UpdateEmploAll($restraint_start_time, $restraint_closing_time, $restraint_total_time, $short_working);
 
         //リダイレクト
         $message = "変更しました";

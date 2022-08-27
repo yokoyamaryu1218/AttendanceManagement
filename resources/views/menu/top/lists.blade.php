@@ -4,14 +4,14 @@
         <div class="lg:w-2/3 w-full mx-auto overflow-auto">
             <!-- 従業員の一覧を表示する共通用bladeへ -->
             @include('menu.emplo_detail.emplo_detail02')
-            <!-- 退職者リストにデータがある場合は退職者一覧のリンクを出す -->
-            @if(!(empty($retirement_lists)))
             <!-- 通常はこちらのclassが適用される -->
             <div class="none text-right">
                 <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('admin.short_worker') }}">
                     {{ __('時短社員を表示') }}
                 </a>
                 　
+                <!-- 退職者リストにデータがある場合は退職者一覧のリンクを出す -->
+                @if(!(empty($retirement_lists)))
                 <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('admin.retirement') }}">
                     {{ __('退職者一覧へ') }}
                 </a>

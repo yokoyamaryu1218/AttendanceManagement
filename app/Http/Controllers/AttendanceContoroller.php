@@ -228,7 +228,8 @@ class AttendanceContoroller extends Controller
      * @var string $emplo_id 社員番号
      * @var string $daily 日報
      * @var string $today 今日の日付
-     * @var App\Libraries\php\Domain\Database
+     * @var App\Libraries\php\Domain\DataBase
+     * @var array $old_daily_data 古い日報
      */
     public function daily_update(DailyRequest $request)
     {

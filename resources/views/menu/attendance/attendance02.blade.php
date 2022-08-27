@@ -29,7 +29,12 @@
                     <!-- 月度プルダウン部分ここまで -->
                     <!-- 戻るボタン配置 -->
                     <div class="text-right mb-1">
-                        <input class="text-white bg-yellow-400 border-0 py-2 px-8 focus:outline-none hover:bg-yellow-300 rounded text-lg" type="button" value="戻る" onclick="window.history.back()" title="1つ前の画面に戻ります。">
+                        <input  id="myButton" class="text-white bg-yellow-400 border-0 py-2 px-8 focus:outline-none hover:bg-yellow-300 rounded text-lg" type="button" value="戻る" onclick="window.history.back()" title="1つ前の画面に戻ります。">
+                        <script type="text/javascript">
+                            document.getElementById("myButton").onclick = function() {
+                                location.href = "{{ route('admin.dashboard') }}";
+                            };
+                        </script>
                     </div>
                     <!-- 戻るボタンここまで -->
                     <!-- 勤怠合計部分 -->

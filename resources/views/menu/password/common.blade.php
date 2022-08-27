@@ -39,7 +39,26 @@
 
             <div class="flex justify-center mt-4">
                 <button class="flex text-white mx-2 bg-green-500 border-0 py-2 px-8 focus:outline-none hover:bg-green-600 rounded text-lg" title="ボタンをクリックすることで、変更が確定します。">変更</button>
-                <input class="flex text-white mx-2 bg-yellow-400 border-0 py-2 px-8 focus:outline-none hover:bg-yellow-300 rounded text-lg" type="button" value="戻る" onclick="window.history.back()" title="1つ前の画面に戻ります。">
+                <!-- 戻るボタン配置 -->
+                <div class="text-right mb-1">
+                    <input id="myButton" class="text-white bg-yellow-400 border-0 py-2 px-8 focus:outline-none hover:bg-yellow-300 rounded text-lg" type="button" value="戻る" title="前のに戻ります。">
+                    <!-- 出退勤画面からのアクセスの場合は、部下一覧に戻る -->
+                    @if (Auth::guard('employee')->check())
+                    <script type="text/javascript">
+                        document.getElementById("myButton").onclick = function() {
+                            location.href = "{{ route('employee.subord') }}";
+                        };
+                    </script>
+                    @elseif (Auth::guard('admin')->check())
+                    <!-- 管理画面からのアクセスの場合は、HOME画面に戻る -->
+                    <script type="text/javascript">
+                        document.getElementById("myButton").onclick = function() {
+                            location.href = "{{ route('admin.dashboard') }}";
+                        };
+                    </script>
+                    @endif
+                </div>
+                <!-- 戻るボタンここまで -->
             </div>
         </section>
     </div>

@@ -95,15 +95,16 @@ class Database
 
     /**
      * 部下配属権限がある社員リストの取得
+     * @param $subord_authority 部下配属権限
      *
      * @var   $list 取得データ
      *
      * @return  array $list
      */
-    public static function getSubordAuthority()
+    public static function getSubordAuthority($subord_authority)
     {
 
-        $list = DB::select('SELECT name,emplo_id from employee where subord_authority = 1 order by emplo_id');
+        $list = DB::select('SELECT name,emplo_id from employee where subord_authority = ? order by emplo_id', [$subord_authority]);
 
         return $list;
     }
@@ -503,6 +504,7 @@ class Database
      * @param $restraint_start_time 始業時間
      * @param $restraint_closing_time　終業時間
      * @param $restraint_total_time 就業時間
+     * @param $short_working 時短フラグ
      *
      * @var   $data 取得データ
      *

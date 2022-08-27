@@ -29,18 +29,21 @@
                     <!-- 月度プルダウン部分ここまで -->
                     <!-- 戻るボタン配置 -->
                     <div class="text-right mb-1">
-                        @if (Auth::guard('employee')->user()->emplo_id == $emplo_id)
-                        <!-- 自分自身の勤怠一覧はdashboardに戻る -->
                         <input id="myButton" class="text-white bg-yellow-400 border-0 py-2 px-8 focus:outline-none hover:bg-yellow-300 rounded text-lg" type="button" value="戻る" title="HOME画面に戻ります。">
-                        <!-- 戻るボタンの遷移先 -->
+                        <!-- 自分自身の勤怠一覧はdashboardに戻る -->
+                        @if (Auth::guard('employee')->user()->emplo_id == $emplo_id)
                         <script type="text/javascript">
                             document.getElementById("myButton").onclick = function() {
                                 location.href = "{{ route('employee.dashboard') }}";
                             };
                         </script>
                         @else
-                        <!-- 部下の勤怠一覧は直前の画面に戻る -->
-                        <input class="text-white bg-yellow-400 border-0 py-2 px-8 focus:outline-none hover:bg-yellow-300 rounded text-lg" type="button" value="戻る" onclick="window.history.back()" title="1つ前の画面に戻ります。">
+                        <!-- 部下の勤怠一覧は部下一覧画面に戻る -->
+                        <script type="text/javascript">
+                            document.getElementById("myButton").onclick = function() {
+                                location.href = "{{ route('employee.subord') }}";
+                            };
+                        </script>
                         @endif
                     </div>
                     <!-- 戻るボタンここまで -->

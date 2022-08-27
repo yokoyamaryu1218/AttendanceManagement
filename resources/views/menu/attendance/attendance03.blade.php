@@ -16,7 +16,7 @@
                     <!-- フラッシュメッセージの表示 -->
                     @include('menu.attendance.validation')
                     <!-- フラッシュメッセージここまで -->
-                    <div>検索期間　：{{$first_day}}～{{$end_day}}</div>
+                    <div class="sm:text-base text-sm">検索期間　：{{$first_day}}～{{$end_day}}</div>
                     <!-- 勤怠一覧の勤怠合計部分 -->
                     @include('menu.attendance.search02')
                     <!-- 勤怠合計部分ここまで -->

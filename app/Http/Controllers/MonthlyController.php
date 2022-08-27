@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\MonthlyRequest;
 use App\Libraries\Database;
 use App\Libraries\Common;
 use App\Libraries\Time;
@@ -309,7 +310,7 @@ class MonthlyController extends Controller
      * @var array $monthly_data 勤怠データ
      * @var array $total_data 期間内の出勤日数、総勤務時間、残業時間の配列
      */
-    public function search(Request $request, $emplo_id, $name)
+    public function search(MonthlyRequest $request, $emplo_id, $name)
     {
         $first_day = $request->first_day;
         $end_day = $request->end_day;
