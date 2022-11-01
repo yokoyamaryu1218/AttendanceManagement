@@ -208,7 +208,7 @@ class Database
         // SQL用
         $dsn = 'mysql:dbname=attendance_management;host=localhost;charset=utf8';
         $user = 'root';
-        $password = 'Yoko4563@';
+        $password = '';
 
         // heroku接続用
         // $dsn = 'pgsql:dbname=dds62840soucsj host=ec2-44-207-126-176.compute-1.amazonaws.com port=5432';
