@@ -24,9 +24,9 @@ https://user-images.githubusercontent.com/97070988/186443548-8f86d7bb-4ebe-4315-
      
 ## URL
 
-　**[こちらのリンクから、出退勤画面に移動できます。](https://attendance-managements.herokuapp.com/)**
+　**[こちらのリンクから、出退勤画面に移動できます。](https://attendance-managements.work/)**
 
-　**[こちらのリンクから、管理用画面に移動できます。](https://attendance-managements.herokuapp.com/admin)**
+　**[こちらのリンクから、管理用画面に移動できます。](https://attendance-managements.work/admin)**
  
 　↓ ログイン情報は以下の通りです。
   
@@ -76,4 +76,5 @@ https://user-images.githubusercontent.com/97070988/186443548-8f86d7bb-4ebe-4315-
 　フロントエンド： HTML・CSS, JavaScript, Bootstrap5, Tailwind CSS v2.0
  
 ## SSL設定について
-　ポートフォリオ公開のため、Herokuで無料公開としておりSSL設定がされていません。
+　AWS(Amazon Web Services)にてSSL設定をした上で、ポートフォリオを公開しております。
+ 
