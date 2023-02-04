@@ -273,7 +273,7 @@ class Time
         $work_time_s    = $work_time_sec - ($work_time_hour * 3600 + $work_time_min * 60);
         $restraint_total_time = $work_time_hour . ':' . $work_time_min . ':' . $work_time_s;
 
-        //退勤打刻時間と就業終業時間を比較する
+        //実働時間と就業時間を比較する
         if (strtotime($achievement_time) > strtotime($restraint_total_time)) {
             $work_time_sec =  strtotime($achievement_time) - strtotime($restraint_total_time);
             $work_time_hour = floor($work_time_sec / 3600);
