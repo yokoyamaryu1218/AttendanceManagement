@@ -297,6 +297,28 @@ class Database
     }
 
     /**
+     * 期間を絞り込んで選択した社員の出勤日数を取得する
+     *
+     * @param $emplo_id 社員番号
+     * @param $ym 年月
+     *
+     * @var   $data 取得データ
+     *
+     * @return  array $data
+     */
+    public static function SearchWorkDays($emplo_id, $first_day, $end_day)
+    {
+        $data = DB::select(
+            "SELECT `date`, `start_time`, `closing_time`, `achievement_time`, 
+        `over_time` FROM `works` WHERE `emplo_id` = ? AND date BETWEEN ? AND ?",
+            [$emplo_id, $first_day, $end_day]
+        );
+
+        return $data;
+    }
+
+
+    /**
      * 選択した社員の総勤務時間・残業時間を取得する
      *
      * @param $cloumns_name カラム名

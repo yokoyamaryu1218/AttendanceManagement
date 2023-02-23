@@ -4,7 +4,7 @@
     <div class="box">
         <form method="POST" action="{{ route('employee.monthly_search',[$emplo_id,$name] )}}" name="monthly_change">
             @csrf
-            指定期間内の出勤日数、<br class="sma">総勤務時間、<br class="sma">残業時間を表示します。</BR>
+            指定期間内の始業時間、<br class="sma">終業時間、<br class="sma">労働時間をExcelシートに出力します。</BR>
             <input type="date" id="first_day" name="first_day" value="{{ old('first_day') }}" required>
             ～ <input type="date" id="end_day" name="end_day" value="{{ old('end_day') }}" required>
             <button class="main_button_style" data-toggle="tooltip" type="submit">

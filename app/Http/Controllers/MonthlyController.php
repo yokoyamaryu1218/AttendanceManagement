@@ -8,6 +8,11 @@ use App\Http\Requests\MonthlyRequest;
 use App\Libraries\Database;
 use App\Libraries\Common;
 use App\Libraries\Time;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 
 // 勤怠一覧のコントローラー
 class MonthlyController extends Controller
@@ -315,41 +320,56 @@ class MonthlyController extends Controller
         $first_day = $request->first_day;
         $end_day = $request->end_day;
 
-        // 指定した期間内の出勤日数、総勤務時間、残業時間を求める
-        try {
-            $total_data = Common::SearchtotalTime($emplo_id, $first_day, $end_day);
-        } catch (Exception $e) {
-            $e->getMessage();
-            if (Auth::guard('employee')->check()) {
-                return redirect()->route('employee.error');
-            } elseif (Auth::guard('admin')->check()) {
-                return redirect()->route('employee.error');
-            };
-        };
+        // Excelへの書き込みテスト
+        $spreadsheet = new Spreadsheet();
+        $inputFileName = '../temp/tmp1.xlsx';
+        $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Xlsx');
+        $spreadsheet = $reader->load($inputFileName);
 
-        if (Auth::guard('employee')->check()) {
-            return view(
-                'menu.attendance.attendance03',
-                compact(
-                    'first_day',
-                    'end_day',
-                    'emplo_id',
-                    'name',
-                    'total_data'
-                )
-            );
-        } elseif (Auth::guard('admin')->check()) {
-            return view(
-                'menu.attendance.attendance03',
-                compact(
-                    'first_day',
-                    'end_day',
-                    'emplo_id',
-                    'name',
-                    'total_data'
-                )
-            );
+        $working_data = Database::SearchWorkDays($emplo_id, $first_day, $end_day);
+        $total_data = Common::SearchtotalTime($emplo_id, $first_day, $end_day);
+
+        $sheet = $spreadsheet->getSheetByName('Sheet1');
+
+        $i = 8;
+        for ($date = $first_day; $date <= $end_day; $date = date('Y-m-d', strtotime($date . '+1 day'))) {
+            $data = array_filter($working_data, function ($item) use ($date) {
+                return $item->date == $date;
+            });
+
+            if (empty($data)) {
+                $timestamp = strtotime($date);
+                $sheet->setCellValue('A' . $i, date('n/j', $timestamp));
+                $sheet->setCellValue('B' . $i, '');
+                $sheet->setCellValue('C' . $i, '');
+                $sheet->setCellValue('D' . $i, '');
+                $sheet->setCellValue('E' . $i, '');
+            } else {
+                $data = reset($data);
+                $timestamp = strtotime($data->date);
+                $sheet->setCellValue('A' . $i, date('n/j', $timestamp));
+                $sheet->setCellValue('B' . $i, substr($data->start_time, 0, 5));
+                $sheet->setCellValue('C' . $i, substr($data->closing_time, 0, 5));
+                $sheet->setCellValue('D' . $i, substr($data->achievement_time, 0, 5));
+                $sheet->setCellValue('E' . $i, substr($data->over_time, 0, 5));
+            }
+
+            $i++;
         }
+        $sheet->setCellValue('F' . 4, $name);
+
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $downloadFileName = 'monthlydate.xlsx';
+        $writer->save($downloadFileName);
+
+        // ファイルをダウンロードする処理
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename="' . basename($inputFileName) . '"');
+        header('Cache-Control: max-age=0');
+
+        $objWriter = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $objWriter->save('php://output');
+        exit;        
     }
 
     /**
