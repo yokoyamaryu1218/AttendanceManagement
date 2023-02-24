@@ -77,6 +77,13 @@ Route::group(['middleware' => 'auth:employee'], function () {
     Route::get('/monthly/search/{id}/{id2}', [MonthlyController::class, 'search'])
         ->name('monthly_search');
 
+    // Excel出力
+    Route::post('/monthly/excel/{id}/{id2}', [MonthlyController::class, 'excel'])
+        ->name('monthly_excel');
+
+    // バリエーションエラーを表示するための記載
+    Route::get('/monthly/excel/{id}/{id2}', [MonthlyController::class, 'excel'])
+        ->name('monthly_excel');
     //　自分自身の勤怠一覧表示に関するルーティングここまで
 
     // 部下の勤怠一覧表示やパスワード変更に関するルーティング

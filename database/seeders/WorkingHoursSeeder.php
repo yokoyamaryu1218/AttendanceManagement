@@ -20,7 +20,7 @@ class WorkingHoursSeeder extends Seeder
         $working_holder = '?,?';
         // @var array working_hoursの挿入データ
         $working_insert_data_list = [
-            ['10:00:00','18:00:00'],
+            ['09:00:00','18:00:00'],
         ];
 
         foreach ($working_insert_data_list as $insert_data) {

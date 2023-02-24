@@ -320,6 +320,63 @@ class MonthlyController extends Controller
         $first_day = $request->first_day;
         $end_day = $request->end_day;
 
+        // 指定した期間内の出勤日数、総勤務時間、残業時間を求める
+        try {
+            $total_data = Common::SearchtotalTime($emplo_id, $first_day, $end_day);
+        } catch (Exception $e) {
+            $e->getMessage();
+            if (Auth::guard('employee')->check()) {
+                return redirect()->route('employee.error');
+            } elseif (Auth::guard('admin')->check()) {
+                return redirect()->route('employee.error');
+            };
+        };
+
+        if (Auth::guard('employee')->check()) {
+            return view(
+                'menu.attendance.attendance03',
+                compact(
+                    'first_day',
+                    'end_day',
+                    'emplo_id',
+                    'name',
+                    'total_data'
+                )
+            );
+        } elseif (Auth::guard('admin')->check()) {
+            return view(
+                'menu.attendance.attendance03',
+                compact(
+                    'first_day',
+                    'end_day',
+                    'emplo_id',
+                    'name',
+                    'total_data'
+                )
+            );
+        }
+    }
+
+
+    /**
+     * プロダウンで選んだ年度の勤怠一覧の表示
+     *
+     * @param \Illuminate\Http\Request\Request $request
+     *
+     * @var string $emplo_id 社員番号
+     * @var string $name 社員名
+     * @var string $ym 選択した年月
+     * @var string $day_count 月の日数
+     * @var App\Libraries\php\Domain\Common $format
+     * @var App\Libraries\php\Domain\Database
+     * @var array $monthly_data 勤怠データ
+     * @var array $total_data 期間内の出勤日数、総勤務時間、残業時間の配列
+     */
+    public function excel(MonthlyRequest $request, $emplo_id, $name)
+    {
+        $first_day = $request->first_day;
+        $end_day = $request->end_day;
+
         // Excelへの書き込みテスト
         $spreadsheet = new Spreadsheet();
         $inputFileName = '../temp/tmp1.xlsx';
@@ -327,7 +384,17 @@ class MonthlyController extends Controller
         $spreadsheet = $reader->load($inputFileName);
 
         $working_data = Database::SearchWorkDays($emplo_id, $first_day, $end_day);
-        $total_data = Common::SearchtotalTime($emplo_id, $first_day, $end_day);
+        $restraint_total_time = Database::getRestraintTime($emplo_id)[0]->restraint_total_time;
+
+        // 残業時間を求める
+        $cloumns_name = "over_time";
+        $total_name = "total_over_time";
+        $total_over_time = Database::SearchTotalWorking($cloumns_name, $total_name, $emplo_id, $first_day, $end_day);
+
+        // 総勤務時間を求める
+        $cloumns_name = "achievement_time";
+        $total_name = "total_achievement_time";
+        $total_achievement_time = Database::SearchTotalWorking($cloumns_name, $total_name, $emplo_id, $first_day, $end_day);
 
         $sheet = $spreadsheet->getSheetByName('Sheet1');
 
@@ -336,6 +403,11 @@ class MonthlyController extends Controller
             $data = array_filter($working_data, function ($item) use ($date) {
                 return $item->date == $date;
             });
+
+            $sheet->getStyle('B' . $i)->getNumberFormat()->setFormatCode('h:mm');
+            $sheet->getStyle('C' . $i)->getNumberFormat()->setFormatCode('h:mm');
+            $sheet->getStyle('D' . $i)->getNumberFormat()->setFormatCode('h:mm');
+            $sheet->getStyle('E' . $i)->getNumberFormat()->setFormatCode('h:mm');
 
             if (empty($data)) {
                 $timestamp = strtotime($date);
@@ -350,7 +422,13 @@ class MonthlyController extends Controller
                 $sheet->setCellValue('A' . $i, date('n/j', $timestamp));
                 $sheet->setCellValue('B' . $i, substr($data->start_time, 0, 5));
                 $sheet->setCellValue('C' . $i, substr($data->closing_time, 0, 5));
-                $sheet->setCellValue('D' . $i, substr($data->achievement_time, 0, 5));
+                if (strtotime($data->achievement_time) > strtotime($restraint_total_time)) {
+                    $achievement_time = $restraint_total_time;
+                    $sheet->setCellValue('D' . $i, substr($achievement_time, 0, 5));
+                } else {
+                    $achievement_time = $data->achievement_time;
+                    $sheet->setCellValue('D' . $i, substr($achievement_time, 0, 5));
+                }
                 $sheet->setCellValue('E' . $i, substr($data->over_time, 0, 5));
             }
 
@@ -359,17 +437,17 @@ class MonthlyController extends Controller
         $sheet->setCellValue('F' . 4, $name);
 
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $downloadFileName = 'monthlydate.xlsx';
+        $downloadFileName = '出勤簿.xlsx';
         $writer->save($downloadFileName);
 
         // ファイルをダウンロードする処理
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment; filename="' . basename($inputFileName) . '"');
+        header('Content-Disposition: attachment; filename="' . basename($downloadFileName) . '"');
         header('Cache-Control: max-age=0');
 
         $objWriter = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $objWriter->save('php://output');
-        exit;        
+        exit;
     }
 
     /**
