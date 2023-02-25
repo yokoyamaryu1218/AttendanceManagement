@@ -121,6 +121,14 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/monthly/search/{id}/{id2}', [MonthlyController::class, 'search'])
         ->name('monthly_search');
 
+    // 勤怠勤怠合計
+    Route::post('/monthly/excel/{id}/{id2}', [MonthlyController::class, 'excel'])
+        ->name('monthly_excel');
+
+    // バリエーションエラーを表示するための記載
+    Route::get('/monthly/excel/{id}/{id2}', [MonthlyController::class, 'excel'])
+        ->name('monthly_excel');
+
     // 選択した従業員の勤怠一覧表示に関するルーティングここまで
 
     // 選択した従業員のパスワード変更に関するルーティング
@@ -161,9 +169,15 @@ Route::group(['middleware' => 'auth:admin'], function () {
     Route::get('/short_worker', [AdminController::class, 'short_worker'])
         ->name('short_worker');
     // 時短社員表示に関するルーティングここまで
-    
+
     // エラーページの表示
     Route::get('/error', [MonthlyController::class, 'errorMsg'])
         ->name('error');
     // エラーページここまで
+
+    Route::get('/delete/{id}/{id2}/{id3}', [MonthlyController::class, 'delete'])
+    ->name('monthly_delete');
+
+    Route::post('/management/emplolist', [AdminController::class, 'employeeListDownload'])
+    ->name('employeeListDownload');
 });

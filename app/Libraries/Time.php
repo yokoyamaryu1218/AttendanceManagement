@@ -21,7 +21,7 @@ class Time
      *
      * @var App\Libraries\php\Domain\Database
      * @var App\Libraries\php\Domain\Time
-     * @var array $restraint_time 就業時間
+     * @var array $restraint_time 所定労働時間
      * @var array $total_time 総勤務時間
      * @var array $rest_time 休憩時間
      * @var array $achievement_time 実績時間
@@ -66,7 +66,7 @@ class Time
      *
      * @var App\Libraries\php\Domain\Database
      * @var App\Libraries\php\Domain\Time
-     * @var array $restraint_time 就業時間
+     * @var array $restraint_time 所定労働時間
      * @var array $total_time 総勤務時間
      * @var array $rest_time 休憩時間
      * @var array $achievement_time 実績時間
@@ -140,7 +140,7 @@ class Time
     }
 
     /**
-     * 就業時間を求める
+     * 所定労働時間を求める
      *
      * @param  int  $restraint_start_time 始業時間
      * @param  int  $restraint_closing_time 終業時間
@@ -149,13 +149,27 @@ class Time
      * @var array $work_time_hour 勤務時間(秒)を3600で割ると、時間を求め、小数点を切り捨てる
      * @var array $work_time_min 勤務時間(秒)から時間を引いた余りを60で割ると、分を求め、小数点を切り捨てる
      * @var array $work_time_s /勤務時間(秒)から時間を引いた余りを60で割ると、分を求め、小数点を切り捨てる
-     * @var array $restraint_total_time 就業時間
+     * @var array $restraint_total_time 所定労働時間
      *
      * @return  array $restraint_total_time
      */
     public static function restraint_total_time($restraint_start_time, $restraint_closing_time)
     {
         $work_time_sec =  strtotime($restraint_closing_time) - strtotime($restraint_start_time);
+        $work_time_hour = floor($work_time_sec / 3600);
+        $work_time_min  = floor(($work_time_sec - ($work_time_hour * 3600)) / 60);
+        $work_time_s    = $work_time_sec - ($work_time_hour * 3600 + $work_time_min * 60);
+        $restraint_total_time = $work_time_hour . ':' . $work_time_min . ':' . $work_time_s;
+
+        if (strtotime($restraint_total_time) >= '8.0') { //8時間以上の場合は1時間
+            $rest_time = '01:00:00';
+        } elseif (strtotime($restraint_total_time) >= '6.0') { //6時間を超える場合は45分
+            $rest_time = '00:45:00';
+        } else {
+            $rest_time = '00:00:00';
+        }
+
+        $work_time_sec =  strtotime($restraint_total_time) - strtotime($rest_time);
         $work_time_hour = floor($work_time_sec / 3600);
         $work_time_min  = floor(($work_time_sec - ($work_time_hour * 3600)) / 60);
         $work_time_s    = $work_time_sec - ($work_time_hour * 3600 + $work_time_min * 60);
@@ -209,7 +223,7 @@ class Time
     {
         if ($total_time >= '8.0') { //8時間以上の場合は1時間
             $rest_time = '01:00:00';
-        } elseif ($total_time > '6.0') { //6時間を超える場合は45分
+        } elseif ($total_time >= '6.0') { //6時間を超える場合は45分
             $rest_time = '00:45:00';
         } else {
             $rest_time = '00:00:00';
@@ -247,7 +261,7 @@ class Time
      * 残業時間を求める
      *
      * @param  int  $achievement_time 実績時間
-     * @param  int  $restraint_total_time 就業時間
+     * @param  int  $restraint_total_time 所定労働時間
      *
      * @var array $work_time_sec 退勤時間から開始時間を引いて、勤務時間(秒)を求める
      * @var array $work_time_hour 勤務時間(秒)を3600で割ると、時間を求め、小数点を切り捨てる
@@ -259,21 +273,7 @@ class Time
      */
     public static function over_time($achievement_time, $restraint_total_time)
     {
-        // if (strtotime($restraint_total_time) >= '8.0') { //8時間以上の場合は1時間
-        //     $rest_time = '01:00:00';
-        // } elseif (strtotime($restraint_total_time) > '6.0') { //6時間を超える場合は45分
-        //     $rest_time = '00:45:00';
-        // } else {
-        //     $rest_time = '00:00:00';
-        // }
-
-        // $work_time_sec =  strtotime($restraint_total_time) - strtotime($rest_time);
-        // $work_time_hour = floor($work_time_sec / 3600);
-        // $work_time_min  = floor(($work_time_sec - ($work_time_hour * 3600)) / 60);
-        // $work_time_s    = $work_time_sec - ($work_time_hour * 3600 + $work_time_min * 60);
-        // $restraint_total_time = $work_time_hour . ':' . $work_time_min . ':' . $work_time_s;
-
-        //実働時間と就業時間を比較する
+        //実働時間と所定労働時間を比較する
         if (strtotime($achievement_time) > strtotime($restraint_total_time)) {
             $work_time_sec =  strtotime($achievement_time) - strtotime($restraint_total_time);
             $work_time_hour = floor($work_time_sec / 3600);

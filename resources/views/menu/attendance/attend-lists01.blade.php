@@ -85,8 +85,17 @@
                             <img src="data:image/png;base64,{{Config::get('base64.pen')}}">
                         </button>
                         <script src="{{ asset('js/modal/topModal.js') }}" defer></script>
-                        @endif
                         <!-- モーダルここまで -->
+                        @if($start_time)
+                        <button type="button" onclick="if(confirm('「{{ date('n', strtotime($ym . '-' . $i)) }}/{{ $format->time_format_dw($ym . '-' . $i) }}」の勤怠情報を削除します。よろしいですか？')) {window.location='{{ route('employee.monthly_delete', [$emplo_id, $name, ($ym . '-' . sprintf('%02d', $i))]) }}';}" title="ボタンをクリックすることで、選択月日の勤怠情報を削除できます。">
+                            <img src="data:image/png;base64,{{Config::get('base64.dust')}}">
+                        </button>
+                        @else
+                        <button title="勤怠情報がないので、削除ボタンは押せません。">
+                            <img src="data:image/png;base64,{{Config::get('base64.dust_none')}}">
+                        </button>
+                        @endif
+                        @endif
                     </td>
                 </tr>
                 <!-- 勤怠の情報表示ここまで -->

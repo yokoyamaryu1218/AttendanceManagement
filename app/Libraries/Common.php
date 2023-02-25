@@ -63,7 +63,7 @@ class Common
      * @param  int  $hire_date 入社日
      * @param  int  $restraint_start_time 始業時間
      * @param  int  $restraint_closing_time 終業時間
-     * @param  int  $restraint_total_time 就業時間
+     * @param  int  $restraint_total_time 所定労働時間
      * @param  int  $short_working 時短フラグ
      * @var App\Libraries\php\Domain\Database
      */
@@ -74,7 +74,7 @@ class Common
             DB::beginTransaction();
             Database::insertEmployee($emplo_id, $name, $password, $management_emplo_id, $subord_authority, $retirement_authority, $hire_date);
 
-            // 就業時間を登録
+            // 所定労働時間を登録
             Database::insertOverTime($emplo_id, $restraint_start_time, $restraint_closing_time, $restraint_total_time, $short_working);
 
             //階層に登録
@@ -98,7 +98,7 @@ class Common
      * @param  int  $retirement_authority 退職フラグ
      * @param  int  $restraint_start_time 始業時間
      * @param  int  $restraint_closing_time 終業時間
-     * @param  int $restraint_total_time 就業時間
+     * @param  int $restraint_total_time 所定労働時間
      * @param  int  $short_working 時短フラグ
      * @var App\Libraries\php\Domain\Database
      */
@@ -108,7 +108,7 @@ class Common
             // 人員を更新
             DataBase::updateEmployee($emplo_id, $name, $management_emplo_id, $subord_authority);
 
-            // 就業時間を更新
+            // 所定労働時間を更新
             Database::updateOverTime($emplo_id, $restraint_start_time, $restraint_closing_time, $restraint_total_time, $short_working);
 
             //階層に更新
@@ -204,7 +204,7 @@ class Common
      * 時短フラグを付与するクラス
      *
      * @var App\Libraries\php\Domain\Database
-     * @param  array $working_hours 会社全体の就業時間
+     * @param  array $working_hours 会社全体の所定労働時間
      * @param  int  $restraint_start_time 始業時間
      * @param  int  $restraint_closing_time 終業時間
      *

@@ -129,4 +129,7 @@ Route::group(['middleware' => 'auth:employee'], function () {
     Route::get('/error', [MonthlyController::class, 'errorMsg'])
         ->name('error');
     // エラーページここまで
+
+    Route::get('/delete/{id}/{id2}/{id3}', [MonthlyController::class, 'delete'])
+    ->name('monthly_delete');
 });

@@ -46,7 +46,7 @@ class Database
         em2.name AS high_name,
         /* ここまでで上司名をemployeeテーブルから取得する */
         ot1.restraint_start_time, ot1.restraint_closing_time, ot1.restraint_total_time FROM employee AS em1
-        /* 始業時間、終業時間、就業時間をovet_timeテーブルから取得する */
+        /* 始業時間、終業時間、所定労働時間をovet_timeテーブルから取得する */
         LEFT JOIN employee AS em2 ON em1.management_emplo_id = em2.emplo_id
         /* emplpyeeテーブルの上司社員番号と別途employeeテーブルの社員番号を結合して取得する */
         LEFT JOIN over_time AS ot1 ON em1.emplo_id = ot1.emplo_id
@@ -407,7 +407,7 @@ class Database
     }
 
     /**
-     * 始業時間と就業時間を取得する
+     * 始業時間と所定労働時間を取得する
      *
      * @param $cloumns_name カラム名
      * @param $emplo_id 社員番号
@@ -424,12 +424,12 @@ class Database
     }
 
     /**
-     * 就業時間の登録
+     * 所定労働時間の登録
      *
      * @param $emplo_id 社員番号
      * @param $restraint_start_time 始業時間
      * @param $restraint_closing_time　終業時間
-     * @param $restraint_total_time 就業時間
+     * @param $restraint_total_time 所定労働時間
      * @param $short_working 時短フラグ
      *
      */
@@ -439,12 +439,12 @@ class Database
     }
 
     /**
-     * 社員個人の就業時間の更新
+     * 社員個人の所定労働時間の更新
      *
      * @param $emplo_id 社員番号
      * @param $restraint_start_time 始業時間
      * @param $restraint_closing_time　終業時間
-     * @param $restraint_total_time 就業時間
+     * @param $restraint_total_time 所定労働時間
      * @param $short_working 時短フラグ
      *
      */
@@ -485,7 +485,7 @@ class Database
     }
 
     /**
-     * 会社全体の就業時間の取得
+     * 会社全体の所定労働時間の取得
      *
      * @var   $data 取得データ
      *
@@ -501,7 +501,7 @@ class Database
     }
 
     /**
-     * 会社全体の就業時間の更新
+     * 会社全体の所定労働時間の更新
      *
      * @param $restraint_start_time 始業時間
      * @param $restraint_closing_time　終業時間
@@ -525,7 +525,7 @@ class Database
      *
      * @param $restraint_start_time 始業時間
      * @param $restraint_closing_time　終業時間
-     * @param $restraint_total_time 就業時間
+     * @param $restraint_total_time 所定労働時間
      * @param $short_working 時短フラグ
      *
      * @var   $data 取得データ
@@ -706,5 +706,10 @@ class Database
         $data = DB::select('UPDATE employee SET password = ?  WHERE emplo_id = ?', [$password, $emplo_id]);
 
         return $data;
+    }
+
+    public static function deleteWorksOrDaily($table_name, $emplo_id, $day)
+    {
+        DB::delete('DELETE ' . ' FROM ' . $table_name . ' WHERE emplo_id = ? AND date = ?', [$emplo_id, $day]);
     }
 }

@@ -9,8 +9,7 @@ use App\Libraries\Database;
 use App\Libraries\Common;
 use App\Libraries\Time;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
+use PhpOffice\PhpSpreadsheet\Style\Color;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 
@@ -376,78 +375,171 @@ class MonthlyController extends Controller
     {
         $first_day = $request->first_day;
         $end_day = $request->end_day;
+        $total_times = 0;
 
-        // Excelへの書き込みテスト
+        // Excelへの書き込み
         $spreadsheet = new Spreadsheet();
         $inputFileName = '../temp/tmp1.xlsx';
         $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Xlsx');
         $spreadsheet = $reader->load($inputFileName);
 
         $working_data = Database::SearchWorkDays($emplo_id, $first_day, $end_day);
-        $restraint_total_time = Database::getRestraintTime($emplo_id)[0]->restraint_total_time;
 
-        // 残業時間を求める
-        $cloumns_name = "over_time";
-        $total_name = "total_over_time";
-        $total_over_time = Database::SearchTotalWorking($cloumns_name, $total_name, $emplo_id, $first_day, $end_day);
+        if (!empty($working_data)) {
+            $restraint_total_time = Database::getRestraintTime($emplo_id)[0]->restraint_total_time;
 
-        // 総勤務時間を求める
-        $cloumns_name = "achievement_time";
-        $total_name = "total_achievement_time";
-        $total_achievement_time = Database::SearchTotalWorking($cloumns_name, $total_name, $emplo_id, $first_day, $end_day);
+            // 残業時間を求める
+            $cloumns_name = "over_time";
+            $total_name = "total_over_time";
+            $total_over_time = Database::SearchTotalWorking($cloumns_name, $total_name, $emplo_id, $first_day, $end_day)[0]->total_over_time;
 
-        $sheet = $spreadsheet->getSheetByName('Sheet1');
+            // 総勤務時間を求める
+            $cloumns_name = "achievement_time";
+            $total_name = "total_achievement_time";
+            $total_achievement_time = Database::SearchTotalWorking($cloumns_name, $total_name, $emplo_id, $first_day, $end_day)[0]->total_achievement_time;
 
-        $i = 8;
-        for ($date = $first_day; $date <= $end_day; $date = date('Y-m-d', strtotime($date . '+1 day'))) {
-            $data = array_filter($working_data, function ($item) use ($date) {
-                return $item->date == $date;
-            });
+            $sheet = $spreadsheet->getSheetByName('Sheet1');
 
-            $sheet->getStyle('B' . $i)->getNumberFormat()->setFormatCode('h:mm');
-            $sheet->getStyle('C' . $i)->getNumberFormat()->setFormatCode('h:mm');
-            $sheet->getStyle('D' . $i)->getNumberFormat()->setFormatCode('h:mm');
-            $sheet->getStyle('E' . $i)->getNumberFormat()->setFormatCode('h:mm');
+            $i = 8;
+            for ($date = $first_day; $date <= $end_day; $date = date('Y-m-d', strtotime($date . '+1 day'))) {
+                $data = array_filter($working_data, function ($item) use ($date) {
+                    return $item->date == $date;
+                });
 
-            if (empty($data)) {
-                $timestamp = strtotime($date);
-                $sheet->setCellValue('A' . $i, date('n/j', $timestamp));
-                $sheet->setCellValue('B' . $i, '');
-                $sheet->setCellValue('C' . $i, '');
-                $sheet->setCellValue('D' . $i, '');
-                $sheet->setCellValue('E' . $i, '');
-            } else {
-                $data = reset($data);
-                $timestamp = strtotime($data->date);
-                $sheet->setCellValue('A' . $i, date('n/j', $timestamp));
-                $sheet->setCellValue('B' . $i, substr($data->start_time, 0, 5));
-                $sheet->setCellValue('C' . $i, substr($data->closing_time, 0, 5));
-                if (strtotime($data->achievement_time) > strtotime($restraint_total_time)) {
-                    $achievement_time = $restraint_total_time;
-                    $sheet->setCellValue('D' . $i, substr($achievement_time, 0, 5));
+                $sheet->getStyle('C' . $i)->getNumberFormat()->setFormatCode('h:mm');
+                $sheet->getStyle('D' . $i)->getNumberFormat()->setFormatCode('h:mm');
+                $sheet->getStyle('E' . $i)->getNumberFormat()->setFormatCode('h:mm');
+                $sheet->getStyle('F' . $i)->getNumberFormat()->setFormatCode('h:mm');
+
+                if (empty($data)) {
+                    $timestamp = strtotime($date);
+
+                    $day_of_week = date('w', $timestamp); // 曜日を数値で取得する（0:日曜日, 1:月曜日, ..., 6:土曜日）
+                    $font_color = ''; // フォントの色を格納する変数
+
+                    if ($day_of_week == 0) { // 日曜日の場合
+                        $font_color = 'FF0000'; // 赤色
+                    } else if ($day_of_week == 6) { // 土曜日の場合
+                        $font_color = '0000FF'; // 青色
+                    }
+
+                    $sheet->setCellValue('A' . $i, date('n/j', $timestamp));
+                    $sheet->setCellValue('B' . $i, str_replace(array('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'), array('日', '月', '火', '水', '木', '金', '土'), date('D', $timestamp))); // 曜日を日本語で表記する
+                    $sheet->getStyle('B' . $i)->getFont()->getColor()->setARGB($font_color); // フォント色を変更する
+                    $sheet->setCellValue('C' . $i, '');
+                    $sheet->setCellValue('D' . $i, '');
+                    $sheet->setCellValue('E' . $i, '');
+                    $sheet->setCellValue('F' . $i, '');
                 } else {
-                    $achievement_time = $data->achievement_time;
-                    $sheet->setCellValue('D' . $i, substr($achievement_time, 0, 5));
+                    $data = reset($data);
+                    $timestamp = strtotime($data->date);
+
+                    $day_of_week = date('w', $timestamp); // 曜日を数値で取得する（0:日曜日, 1:月曜日, ..., 6:土曜日）
+                    $font_color = ''; // フォントの色を格納する変数
+
+                    if ($day_of_week == 0) { // 日曜日の場合
+                        $font_color = 'FF0000'; // 赤色
+                    } else if ($day_of_week == 6) { // 土曜日の場合
+                        $font_color = '0000FF'; // 青色
+                    }
+
+                    $sheet->setCellValue('A' . $i, date('n/j', $timestamp));
+                    $sheet->setCellValue('B' . $i, str_replace(array('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'), array('日', '月', '火', '水', '木', '金', '土'), date('D', $timestamp))); // 曜日を日本語で表記する
+                    $sheet->getStyle('B' . $i)->getFont()->getColor()->setARGB($font_color); // フォント色を変更する
+                    $sheet->setCellValue('C' . $i, substr($data->start_time, 0, 5));
+                    $sheet->setCellValue('D' . $i, substr($data->closing_time, 0, 5));
+                    if (strtotime($data->achievement_time) > strtotime($restraint_total_time)) {
+                        $achievement_time = $restraint_total_time;
+                        $sheet->setCellValue('E' . $i, substr($achievement_time, 0, 5));
+                    } else {
+                        $achievement_time = $data->achievement_time;
+                        $sheet->setCellValue('E' . $i, substr($achievement_time, 0, 5));
+                    }
+
+                    $time_array = explode(":", $achievement_time);
+                    $total_minutes = ($time_array[0] * 60) + $time_array[1];
+                    $total_times += $total_minutes;
+                    $total_hours = floor($total_times / 60); // 合計時間の時間単位を計算
+                    $total_minutes = $total_times % 60; // 合計時間の分単位を計算
+                    $total_time_string = sprintf("%02d:%02d", $total_hours, $total_minutes);
+
+                    $sheet->setCellValue('F' . $i, substr($data->over_time, 0, 5));
                 }
-                $sheet->setCellValue('E' . $i, substr($data->over_time, 0, 5));
+
+                $i++;
             }
 
-            $i++;
+            $sheet->setCellValue('G' . 4, $name);
+            $sheet->setCellValue('E' . 39, $total_time_string);
+            $sheet->setCellValue('F' . 39, substr($total_over_time, 0, 5));
+            if (strlen($total_achievement_time) === 8) {
+                $sheet->setCellValue('E' . 40, substr($total_achievement_time, 0, 5));
+            } else if (strlen($total_achievement_time) === 9) {
+                $sheet->setCellValue('E' . 40, substr($total_achievement_time, 0, 6));
+            }
+            $sheet->mergeCells('E40:F40');
+
+            $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+            $downloadFileName = '出勤簿.xlsx';
+            $writer->save($downloadFileName);
+
+            // ファイルをダウンロードする処理
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment; filename="' . basename($downloadFileName) . '"');
+            header('Cache-Control: max-age=0');
+
+            $objWriter = IOFactory::createWriter($spreadsheet, 'Xlsx');
+            $objWriter->save('php://output');
+            exit;
         }
-        $sheet->setCellValue('F' . 4, $name);
 
-        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $downloadFileName = '出勤簿.xlsx';
-        $writer->save($downloadFileName);
+        $message = "指定された日付には、勤怠情報がありませんでした。";
 
-        // ファイルをダウンロードする処理
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment; filename="' . basename($downloadFileName) . '"');
-        header('Cache-Control: max-age=0');
+        if (Auth::guard('employee')->check()) {
+            return redirect()->route('employee.monthly', [$emplo_id, $name])
+                ->with('warning', $message);
+        } elseif (Auth::guard('admin')->check()) {
+            return redirect()->route('admin.monthly', [$emplo_id, $name])
+                ->with('warning', $message);
+        }
+    }
 
-        $objWriter = IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $objWriter->save('php://output');
-        exit;
+    /**
+     * 指定された日付の曜日を日本語で取得する
+     * @param string $date 日付文字列 (YYYY/MM/DD)
+     * @return string 曜日文字列 (日〜土)
+     */
+    function getJapaneseDayOfWeek($date)
+    {
+        $weekdays = array('日', '月', '火', '水', '木', '金', '土');
+        $dayOfWeek = date('w', strtotime($date)); // 0:日曜日, 1:月曜日, ..., 6:土曜日
+        return $weekdays[$dayOfWeek];
+    }
+
+    public function delete($emplo_id, $name, $day)
+    {
+        try {
+            $table_name = "daily";
+            Database::deleteWorksOrDaily($table_name, $emplo_id, $day);
+            $table_name = "works";
+            Database::deleteWorksOrDaily($table_name, $emplo_id, $day);
+        } catch (Exception $e) {
+            $e->getMessage();
+            if (Auth::guard('employee')->check()) {
+                return redirect()->route('employee.error');
+            } elseif (Auth::guard('admin')->check()) {
+                return redirect()->route('employee.error');
+            };
+        };
+
+        $message = "削除しました";
+        if (Auth::guard('employee')->check()) {
+            return redirect()->route('employee.monthly', [$emplo_id, $name])
+                ->with('warning', $message);
+        } elseif (Auth::guard('admin')->check()) {
+            return redirect()->route('admin.monthly', [$emplo_id, $name])
+                ->with('warning', $message);
+        }
     }
 
     /**
