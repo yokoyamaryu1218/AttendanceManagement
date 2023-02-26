@@ -13,6 +13,12 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Style\Color;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
 
 // 管理者画面用のコントローラー
 class AdminController extends Controller
@@ -555,13 +561,153 @@ class AdminController extends Controller
             $retirement_authority = "1";
         }
 
-        // SELECT em1.emplo_id, em1.name, em1.subord_authority,em2.name AS high_name,ot1.restraint_start_time, ot1.restraint_closing_time, ot1.short_working, em1.hire_date,em1.retirement_date
-        // FROM employee AS em1
-        // LEFT JOIN employee AS em2 ON em1.management_emplo_id = em2.emplo_id
-        // LEFT JOIN over_time AS ot1 ON em1.emplo_id = ot1.emplo_id
-        // ORDER BY em1.emplo_id;
+        // Excelへの書き込み
+        $spreadsheet = new Spreadsheet();
+        $inputFileName = '../temp/tmp2.xlsx';
+        $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Xlsx');
+        $spreadsheet = $reader->load($inputFileName);
+
+        $employee_list = Database::getEmployeeList($retirement_authority);
+
+        // スタイルオブジェクトを作成する
+        $style = array(
+            'alignment' => array(
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            )
+        );
+
+        if (!empty($employee_list)) {
+            $sheet = $spreadsheet->getSheetByName('Sheet1');
+            $i = 4;
+            foreach ($employee_list as $employee) {
+                $sheet->setCellValue('A' . $i, $employee->emplo_id);
+                $sheet->setCellValue('B' . $i, $employee->name);
+                if ($employee->subord_authority === "1") {
+                    $sheet->setCellValue('C' . $i,  "〇");
+                } else {
+                    $sheet->setCellValue('C' . $i,  " ");
+                }
+                // セルのスタイルを設定する
+                $sheet->getStyle('C' . $i)->applyFromArray($style);
+                $sheet->setCellValue('D' . $i, $employee->high_name);
+                $sheet->setCellValue('E' . $i, $employee->restraint_start_time);
+                $sheet->setCellValue('F' . $i, $employee->restraint_closing_time);
+
+                if ($employee->short_working === "1") {
+                    $sheet->setCellValue('G' . $i, "〇");
+                } else {
+                    $sheet->setCellValue('G' . $i, " ");
+                }
+                // セルのスタイルを設定する
+                $sheet->getStyle('G' . $i)->applyFromArray($style);
+
+                $sheet->setCellValue('H' . $i, $employee->hire_date);
+                $sheet->setCellValue('I' . $i, $employee->retirement_date);
+                $i++;
+            }
+            $sheet->setCellValue('I' . 1, date('Y-m-j'));
+
+            $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+            $downloadFileName = '名簿.xlsx';
+            $writer->save($downloadFileName);
+
+            // ファイルをダウンロードする処理
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment; filename="' . basename($downloadFileName) . '"');
+            header('Cache-Control: max-age=0');
+
+            $objWriter = IOFactory::createWriter($spreadsheet, 'Xlsx');
+            $objWriter->save('php://output');
+            exit;
+        }
 
         $message = "社員情報がありませんでした";
         return back()->with('warning', $message);
+    }
+
+    public function templateDownload()
+    {
+        $subord_authority_lists = Database::getSubordName();
+
+        // Excelへの書き込み
+        $spreadsheet = new Spreadsheet();
+        $inputFileName = '../temp/tmp3.xlsx';
+        $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Xlsx');
+        $spreadsheet = $reader->load($inputFileName);
+
+        $sheet = $spreadsheet->getSheetByName('Sheet1');
+
+        // スタイルオブジェクトを作成する
+        $style = array(
+            'alignment' => array(
+                'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
+            )
+        );
+
+        // C4からC100のセルにドロップダウンリストを設定する
+        $validation = $sheet->getDataValidation("C7:C102");
+        $validation->setType(\PhpOffice\PhpSpreadsheet\Cell\DataValidation::TYPE_LIST);
+        $validation->setErrorStyle(\PhpOffice\PhpSpreadsheet\Cell\DataValidation::STYLE_STOP);
+        $validation->setAllowBlank(false);
+        $validation->setShowDropDown(true);
+        $names = array_map(function ($item) {
+            return $item->name;
+        }, $subord_authority_lists);
+        $validation->setFormula1('"' . implode(",", $names) . '"');
+
+        // ドロップダウンリストの選択肢を作成する
+        $choices = ['〇', '　'];
+        $validation = $sheet->getDataValidation("B7:B102");
+        $validation->setType(\PhpOffice\PhpSpreadsheet\Cell\DataValidation::TYPE_LIST);
+        $validation->setErrorStyle(\PhpOffice\PhpSpreadsheet\Cell\DataValidation::STYLE_STOP);
+        $validation->setAllowBlank(false);
+        $validation->setShowDropDown(true);
+        $validation->setFormula1('"' . implode(",", $choices) . '"');
+        $sheet->getStyle('B7:B102')->applyFromArray($style);
+
+        $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $downloadFileName = 'template.xlsx';
+        $writer->save($downloadFileName);
+
+        // ファイルをダウンロードする処理
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename="' . basename($downloadFileName) . '"');
+        header('Cache-Control: max-age=0');
+
+        $objWriter = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $objWriter->save('php://output');
+        exit;
+    }
+
+    public function insertEmplyeeList(Request $request)
+    {
+        $file = request()->file('example');
+        $spreadsheet = IOFactory::load($file->getPathname());
+        $worksheet = $spreadsheet->getActiveSheet();
+        $highestRow = $worksheet->getHighestRow();
+        $highestColumn = $worksheet->getHighestColumn();
+        $rowData = [];
+
+        // 7行目からA～F列の情報を読み取る
+        for ($row = 7; $row <= $highestRow; $row++) {
+            $data = [
+                'A' => $worksheet->getCellByColumnAndRow(1, $row)->getValue(),
+                'B' => $worksheet->getCellByColumnAndRow(2, $row)->getValue(),
+                'C' => $worksheet->getCellByColumnAndRow(3, $row)->getValue(),
+                'D' => $worksheet->getCellByColumnAndRow(4, $row)->getFormattedValue(),
+                'E' => $worksheet->getCellByColumnAndRow(5, $row)->getFormattedValue(),
+                'F' => $worksheet->getCellByColumnAndRow(6, $row)->getValue() ? \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($worksheet->getCellByColumnAndRow(6, $row)->getValue())->format('Y/m/d') : '',
+            ];
+
+            // A～FすべてがNULLの列があったら、情報の読み取りを中断する
+            if (!array_filter($data)) {
+                break;
+            }
+            $rowData[] = $data;
+        }
+
+        // $rowDataには、7行目からA～F列の情報が配列で格納されています。
+        // この情報を使って、必要な処理を行ってください。
+        dd($rowData);
     }
 }

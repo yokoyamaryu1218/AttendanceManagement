@@ -54,12 +54,28 @@
                         @csrf
                         <div class="grid gap-6 mb-12 lg:grid-cols-2">
                             <div>
-                                <button type="submit" class="flex flex-col justify-center items-center mx-auto text-white bg-green-500 border-0 py-2 px-8 focus:outline-none hover:bg-green-600 rounded text-lg" title="ボタンをクリックすることで、登録されます。" style="height: 44px;">
+                                <button type="submit" class="flex flex-col justify-center items-center mx-auto text-white bg-green-500 border-0 py-2 px-8 focus:outline-none hover:bg-green-600 rounded text-lg" title="ボタンをクリックすることで、社員名簿がダウンロードされます。" style="height: 44px;">
                                     ダウンロード
                                 </button>
                             </div>
                             <div>
                                 <input type="checkbox" name="retirement_authority" id="retirement_authority" checked>退職済みの社員を含む
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <dt class="mb-2">・社員一括登録(.xlsx)</dt>
+                <div class="sm:text-base text-sm">
+                    <form method="POST" action="{{ route('admin.insertEmplyeeList') }}" enctype="multipart/form-data">
+                        @csrf
+                        <div class="grid gap-6 mb-12 lg:grid-cols-2">
+                            <div>
+                                <input type="file" name="example" accept=".xlsx">
+                                <button type="submit" class=" text-white bg-green-500 border-0 py-2 px-8 focus:outline-none hover:bg-green-600 rounded text-lg" style="margin-top:5px;" title="ボタンをクリックすることで、登録されます。">登録</button>
+                            </div>
+                            <div>
+                                <a href="{{ route('admin.templateDownload') }}">専用テンプレートダウンロード</a></br></br>
                             </div>
                         </div>
                     </form>

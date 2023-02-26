@@ -712,4 +712,34 @@ class Database
     {
         DB::delete('DELETE ' . ' FROM ' . $table_name . ' WHERE emplo_id = ? AND date = ?', [$emplo_id, $day]);
     }
+
+    public static function getEmployeeList($retirement_authority)
+    {
+        if ($retirement_authority == 1) {
+            $data = DB::select('SELECT em1.emplo_id, em1.name, em1.subord_authority,em2.name AS high_name,ot1.restraint_start_time, ot1.restraint_closing_time, ot1.short_working, em1.hire_date,em1.retirement_date
+            FROM employee AS em1
+            LEFT JOIN employee AS em2 ON em1.management_emplo_id = em2.emplo_id
+            LEFT JOIN over_time AS ot1 ON em1.emplo_id = ot1.emplo_id
+            ORDER BY em1.emplo_id');
+        } else {
+            $data = DB::select('SELECT em1.emplo_id, em1.name, em1.subord_authority,em2.name AS high_name,ot1.restraint_start_time, ot1.restraint_closing_time, ot1.short_working, em1.hire_date,em1.retirement_date
+            FROM employee AS em1
+            LEFT JOIN employee AS em2 ON em1.management_emplo_id = em2.emplo_id
+            LEFT JOIN over_time AS ot1 ON em1.emplo_id = ot1.emplo_id
+            WHERE em1.retirement_authority = 0
+            ORDER BY em1.emplo_id');
+        }
+
+        return $data;
+    }
+
+    public static function getSubordName()
+    {
+
+        $list = DB::select('SELECT name from employee where subord_authority = "1" order by emplo_id');
+
+        return $list;
+    }
 }
+
+

@@ -180,4 +180,10 @@ Route::group(['middleware' => 'auth:admin'], function () {
 
     Route::post('/management/emplolist', [AdminController::class, 'employeeListDownload'])
     ->name('employeeListDownload');
+
+    Route::get('/management/emplatedownload', [AdminController::class, 'templateDownload'])
+    ->name('templateDownload');
+    
+    Route::post('/management/insertemplyeeList', [AdminController::class, 'insertEmplyeeList'])
+    ->name('insertEmplyeeList');
 });
