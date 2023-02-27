@@ -161,9 +161,9 @@ class Time
         $work_time_s    = $work_time_sec - ($work_time_hour * 3600 + $work_time_min * 60);
         $restraint_total_time = $work_time_hour . ':' . $work_time_min . ':' . $work_time_s;
 
-        if (strtotime($restraint_total_time) >= '8.0') { //8時間以上の場合は1時間
+        if (strtotime($restraint_total_time) >= strtotime('8:0:0')) { //8時間以上の場合は1時間
             $rest_time = '01:00:00';
-        } elseif (strtotime($restraint_total_time) >= '6.0') { //6時間を超える場合は45分
+        } elseif (strtotime($restraint_total_time) > strtotime('6:0:0')) { //6時間を超える場合は45分
             $rest_time = '00:45:00';
         } else {
             $rest_time = '00:00:00';
@@ -221,9 +221,9 @@ class Time
      */
     public static function rest_time($total_time)
     {
-        if ($total_time >= '8.0') { //8時間以上の場合は1時間
+        if (strtotime($total_time) >= strtotime('8:0:0')) { //8時間以上の場合は1時間
             $rest_time = '01:00:00';
-        } elseif ($total_time >= '6.0') { //6時間を超える場合は45分
+        } elseif (strtotime($total_time) > strtotime('6:0:0')) { //6時間を超える場合は45分
             $rest_time = '00:45:00';
         } else {
             $rest_time = '00:00:00';

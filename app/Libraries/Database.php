@@ -68,7 +68,6 @@ class Database
      */
     public static function getSearchName($retirement_authority, $search)
     {
-
         $data = DB::select('SELECT emplo_id,name,retirement_authority FROM employee WHERE retirement_authority = ?
         and name like ?', [$retirement_authority, '%' . $search . '%']);
 
@@ -740,6 +739,19 @@ class Database
 
         return $list;
     }
+
+    public static function searchSubordName($name)
+    {
+
+        $id = DB::select('SELECT emplo_id from employee where subord_authority = "1" AND name like ? order by emplo_id', ['%' . $name . '%']);
+
+        return $id;
+    }
+
+    public static function getName($search)
+    {
+        $data = DB::select('SELECT emplo_id,name,retirement_authority FROM employee WHERE name like ?', ['%' . $search . '%']);
+
+        return $data;
+    }
 }
-
-

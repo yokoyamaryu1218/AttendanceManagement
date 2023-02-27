@@ -67,16 +67,17 @@
 
                 <dt class="mb-2">・社員一括登録(.xlsx)</dt>
                 <div class="sm:text-base text-sm">
+                    <dd><a href="{{ route('admin.templateDownload') }}">専用テンプレートダウンロード</a></dd>
+                </div>
+                <div class="sm:text-base text-sm">
                     <form method="POST" action="{{ route('admin.insertEmplyeeList') }}" enctype="multipart/form-data">
                         @csrf
-                        <div class="grid gap-6 mb-12 lg:grid-cols-2">
+                        <div class="grid gap-6 mb-12 lg:grid-cols-3">
                             <div>
                                 <input type="file" name="example" accept=".xlsx">
-                                <button type="submit" class=" text-white bg-green-500 border-0 py-2 px-8 focus:outline-none hover:bg-green-600 rounded text-lg" style="margin-top:5px;" title="ボタンをクリックすることで、登録されます。">登録</button>
                             </div>
-                            <div>
-                                <a href="{{ route('admin.templateDownload') }}">専用テンプレートダウンロード</a></br></br>
-                            </div>
+                            <div></div>
+                            <div><button type="submit" class=" text-white bg-green-500 border-0 py-2 px-8 focus:outline-none hover:bg-green-600 rounded text-lg" style="margin-top:5px;" title="ボタンをクリックすることで、登録されます。">登録</button></div>
                         </div>
                     </form>
                 </div>

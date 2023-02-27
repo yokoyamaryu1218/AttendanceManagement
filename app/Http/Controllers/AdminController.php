@@ -19,6 +19,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
+use DateTime;
 
 // 管理者画面用のコントローラー
 class AdminController extends Controller
@@ -682,32 +683,134 @@ class AdminController extends Controller
     public function insertEmplyeeList(Request $request)
     {
         $file = request()->file('example');
-        $spreadsheet = IOFactory::load($file->getPathname());
-        $worksheet = $spreadsheet->getActiveSheet();
-        $highestRow = $worksheet->getHighestRow();
-        $highestColumn = $worksheet->getHighestColumn();
-        $rowData = [];
+        if (isset($file)) {
+            $extension = $file->getClientOriginalExtension();
+            if ($extension === 'xlsx') {
+                $spreadsheet = IOFactory::load($file->getPathname());
+                $worksheet = $spreadsheet->getActiveSheet();
+                $highestRow = $worksheet->getHighestRow();
+                $highestColumn = $worksheet->getHighestColumn();
+                $rowData = [];
 
-        // 7行目からA～F列の情報を読み取る
-        for ($row = 7; $row <= $highestRow; $row++) {
-            $data = [
-                'A' => $worksheet->getCellByColumnAndRow(1, $row)->getValue(),
-                'B' => $worksheet->getCellByColumnAndRow(2, $row)->getValue(),
-                'C' => $worksheet->getCellByColumnAndRow(3, $row)->getValue(),
-                'D' => $worksheet->getCellByColumnAndRow(4, $row)->getFormattedValue(),
-                'E' => $worksheet->getCellByColumnAndRow(5, $row)->getFormattedValue(),
-                'F' => $worksheet->getCellByColumnAndRow(6, $row)->getValue() ? \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($worksheet->getCellByColumnAndRow(6, $row)->getValue())->format('Y/m/d') : '',
-            ];
+                // 7行目からA～F列の情報を読み取る
+                for ($row = 7; $row <= $highestRow; $row++) {
+                    $data = [
+                        'A' => $worksheet->getCellByColumnAndRow(1, $row)->getValue(),
+                        'B' => $worksheet->getCellByColumnAndRow(2, $row)->getValue(),
+                        'C' => $worksheet->getCellByColumnAndRow(3, $row)->getValue(),
+                        'D' => $worksheet->getCellByColumnAndRow(4, $row)->getFormattedValue(),
+                        'E' => $worksheet->getCellByColumnAndRow(5, $row)->getFormattedValue(),
+                    ];
 
-            // A～FすべてがNULLの列があったら、情報の読み取りを中断する
-            if (!array_filter($data)) {
-                break;
+                    // A～FすべてがNULLの列があったら、情報の読み取りを中断する
+                    if (!array_filter($data)) {
+                        break;
+                    }
+
+                    if (is_numeric($data["A"])) {
+                        $message = "取り込み対象外のExcelシートです。処理を中断します。";
+                        return back()->with('warning', $message);
+                    }
+
+                    $check_name = Database::getName($data["A"]);
+                    if (isset($check_name[0])) {
+                        $message = "$row 列目のA列の名前はすでに登録されています。処理を中断します。";
+                        return back()->with('warning', $message);
+                    }
+
+                    $id = Database::searchSubordName($data["C"]);
+                    if (!empty($id)) {
+                        $data["C"] = $id[0]->emplo_id;
+                    } else {
+                        $message = "$row 列目のC列にプルダウン以外の社員名が入力されています。処理を中断します。";
+                        return back()->with('warning', $message);
+                    }
+
+                    if (!preg_match('/^\d{1,2}:\d{2}$/',  $data["D"]) || !preg_match('/^\d{1,2}:\d{2}$/', $data["E"])) {
+                        $message = "$row 列目のDもしくはE列の入力が不正です。処理を中断します。";
+                        return back()->with('warning', $message);
+                    }
+
+                    $F_value = $worksheet->getCellByColumnAndRow(6, $row)->getValue();
+                    if (is_numeric($F_value)) {
+                        $F_date = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($F_value)->format('Y/m/d');
+                    } else {
+                        $F_date = $F_value;
+                    }
+
+                    if (!DateTime::createFromFormat('Y/m/d', $F_date)) {
+                        $message = "$row 列目のF列の入力が不正です。処理を中断します。";
+                        return back()->with('warning', $message);
+                    } else {
+                        $data['F'] = $worksheet->getCellByColumnAndRow(6, $row)->getValue() ? \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($worksheet->getCellByColumnAndRow(6, $row)->getValue())->format('Y/m/d') : '';
+                    }
+
+                    $rowData[] = $data;
+                }
+
+                if (isset($rowData)) {
+                    $employee_data_list = array();
+                    foreach ($rowData as $data) {
+                        $name = $data["A"];
+                        $password = Hash::make("password123");
+                        $subord_authority = $data["B"] === '〇' ? 1 : 0;
+                        $management_emplo_id = $data["C"];
+                        $restraint_start_time = $data["D"];
+                        $restraint_closing_time = $data["E"];
+                        $restraint_total_time = Time::restraint_total_time($restraint_start_time, $restraint_closing_time);
+                        $retirement_authority = "0";
+                        $hire_date = $data["F"];
+
+                        // 時短フラグ
+                        $short_working = Common::working_hours($restraint_start_time, $restraint_closing_time);
+                        //登録する番号を作成
+                        $id = Database::getID();
+                        $emplo_id = $id[0]->emplo_id + "1";
+
+                        $employee_data = array(
+                            "emplo_id" => $emplo_id,
+                            "name" => $name,
+                            "password" => $password,
+                            "subord_authority" => $subord_authority,
+                            "management_emplo_id" => $management_emplo_id,
+                            "restraint_start_time" => $restraint_start_time,
+                            "restraint_closing_time" => $restraint_closing_time,
+                            "retirement_authority" => $retirement_authority,
+                            "restraint_total_time" => $restraint_total_time,
+                            "hire_date" => $hire_date,
+                            "short_working" => $short_working
+                        );
+
+                        array_push($employee_data_list, $employee_data);
+                    }
+                }
+                foreach ($employee_data_list as $employee_data) {
+                    if (!isset($employee_list[$employee_data["name"]])) {
+                        Common::insertEmployee(
+                            $employee_data["emplo_id"],
+                            $employee_data["name"],
+                            $employee_data["password"],
+                            $employee_data["management_emplo_id"],
+                            $employee_data["subord_authority"],
+                            $employee_data["retirement_authority"],
+                            $employee_data["hire_date"],
+                            $employee_data["restraint_start_time"],
+                            $employee_data["restraint_closing_time"],
+                            $employee_data["restraint_total_time"],
+                            $employee_data["short_working"]
+                        );
+                        $employee_list[$employee_data["name"]] = true;
+                    }
+                }
+
+                $count = count($employee_list);
+                $message = "$count 人の登録が完了しました。";
+                return back()->with('status', $message);
             }
-            $rowData[] = $data;
+            $message = "Excelファイルではありません。";
+            return back()->with('warning', $message);
         }
-
-        // $rowDataには、7行目からA～F列の情報が配列で格納されています。
-        // この情報を使って、必要な処理を行ってください。
-        dd($rowData);
+        $message = "ファイルが選択されていません。";
+        return back()->with('warning', $message);
     }
 }
