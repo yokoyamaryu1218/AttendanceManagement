@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Libraries\Database;
+use App\Libraries\attendanceDatabase;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use App\Rules\PasswordRule;
@@ -56,7 +56,7 @@ class PasswordChangeController extends Controller
      * @var string $name 社員名
      * @var string $password パスワード
      * @var string $password_cofirmation パスワード確認用
-     * @var App\Libraries\php\Domain\Database
+     * @var App\Libraries\php\Domain\attendanceDatabase
      */
     public function store(Request $request)
     {
@@ -71,7 +71,7 @@ class PasswordChangeController extends Controller
 
         // パスワードを保存
         try {
-            Database::subord_updatepassword($password, $emplo_id);
+            attendanceDatabase::subord_updatepassword($password, $emplo_id);
         } catch (Exception $e) {
             $e->getMessage();
             if (Auth::guard('employee')->check()) {

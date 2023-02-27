@@ -7,7 +7,7 @@ use App\Http\Requests\DailyRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Libraries\Time;
 use App\Libraries\Common;
-use App\Libraries\Database;
+use App\Libraries\attendanceDatabase;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 // 従業員側 ホーム画面のコントローラー
@@ -62,7 +62,7 @@ class AttendanceContoroller extends Controller
         $table_name = "daily";
 
         try {
-            $daily_data = Database::getStartTimeOrDaily($cloumns_name, $table_name, $emplo_id, $today);
+            $daily_data = attendanceDatabase::getStartTimeOrDaily($cloumns_name, $table_name, $emplo_id, $today);
         } catch (Exception $e) {
             $e->getMessage();
             return redirect()->route('employee.error');
@@ -70,7 +70,7 @@ class AttendanceContoroller extends Controller
 
         //対象日のデータがあるかどうかチェック
         try {
-            $check_date = Database::checkDate($emplo_id, $today);
+            $check_date = attendanceDatabase::checkDate($emplo_id, $today);
         } catch (Exception $e) {
             $e->getMessage();
             return redirect()->route('employee.error');
@@ -80,7 +80,7 @@ class AttendanceContoroller extends Controller
         $cloumns_name = "start_time";
         $table_name = "works";
         try {
-            $start_time = Database::getStartTimeOrDaily($cloumns_name, $table_name, $emplo_id, $today);
+            $start_time = attendanceDatabase::getStartTimeOrDaily($cloumns_name, $table_name, $emplo_id, $today);
         } catch (Exception $e) {
             $e->getMessage();
             return redirect()->route('employee.error');
@@ -105,7 +105,7 @@ class AttendanceContoroller extends Controller
      * @var string $start_time 出勤時間
      * @var array $message 出勤画面に出すメッセージ
      * @var string $emplo_id 社員番号
-     * @var App\Libraries\php\Domain\Database
+     * @var App\Libraries\php\Domain\attendanceDatabase
      * @var string $check_data 対象日にデータがある場合に取得する
      */
     public function start_time_store()
@@ -117,7 +117,7 @@ class AttendanceContoroller extends Controller
 
         //対象日のデータがあるかどうかチェック
         try {
-            $check_date = Database::checkDate($emplo_id, $today);
+            $check_date = attendanceDatabase::checkDate($emplo_id, $today);
         } catch (Exception $e) {
             $e->getMessage();
             return redirect()->route('employee.error');
@@ -130,7 +130,7 @@ class AttendanceContoroller extends Controller
         } else {
             // 勤務開始時間をデータベースに登録する
             try {
-                Database::insertStartTime($emplo_id, $today, $start_time);
+                attendanceDatabase::insertStartTime($emplo_id, $today, $start_time);
             } catch (Exception $e) {
                 $e->getMessage();
                 return redirect()->route('employee.error');
@@ -147,7 +147,7 @@ class AttendanceContoroller extends Controller
      * @var string $today 今日の日付
      * @var string $closing_time 退勤時間
      * @var string $emplo_id 社員番号
-     * @var App\Libraries\php\Domain\Database
+     * @var App\Libraries\php\Domain\attendanceDatabase
      * @var array $cloumns_name カラム名
      * @var array $table_name テーブル名
      * @var array $start_time 出勤時間
@@ -163,7 +163,7 @@ class AttendanceContoroller extends Controller
         $cloumns_name = "start_time";
         $table_name = "works";
         try {
-            $start_time = Database::getStartTimeOrDaily($cloumns_name, $table_name, $emplo_id, $today);
+            $start_time = attendanceDatabase::getStartTimeOrDaily($cloumns_name, $table_name, $emplo_id, $today);
         } catch (Exception $e) {
             $e->getMessage();
             return redirect()->route('employee.error');
@@ -193,7 +193,7 @@ class AttendanceContoroller extends Controller
      * @var string $emplo_id 社員番号
      * @var string $daily 日報
      * @var string $today 今日の日付
-     * @var App\Libraries\php\Domain\Database
+     * @var App\Libraries\php\Domain\attendanceDatabase
      */
     public function daily_store(DailyRequest $request)
     {
@@ -208,7 +208,7 @@ class AttendanceContoroller extends Controller
         // 日報の登録
         try {
             if (!(is_null($daily))) {
-                Database::insertDaily($emplo_id, $today, $daily);
+                attendanceDatabase::insertDaily($emplo_id, $today, $daily);
             };
         } catch (Exception $e) {
             $e->getMessage();
@@ -228,7 +228,7 @@ class AttendanceContoroller extends Controller
      * @var string $emplo_id 社員番号
      * @var string $daily 日報
      * @var string $today 今日の日付
-     * @var App\Libraries\php\Domain\DataBase
+     * @var App\Libraries\php\Domain\attendanceDataBase
      * @var array $old_daily_data 古い日報
      */
     public function daily_update(DailyRequest $request)
@@ -246,7 +246,7 @@ class AttendanceContoroller extends Controller
         $table_name = "daily";
 
         try {
-            $old_daily_data = Database::getStartTimeOrDaily($cloumns_name, $table_name, $emplo_id, $today);
+            $old_daily_data = attendanceDatabase::getStartTimeOrDaily($cloumns_name, $table_name, $emplo_id, $today);
         } catch (Exception $e) {
             $e->getMessage();
             return redirect()->route('employee.error');
@@ -254,7 +254,7 @@ class AttendanceContoroller extends Controller
 
         // 日報の更新
         try {
-            Database::updateDaily($emplo_id, $today, $daily);
+            attendanceDatabase::updateDaily($emplo_id, $today, $daily);
         } catch (Exception $e) {
             $e->getMessage();
             return redirect()->route('employee.error');
@@ -277,7 +277,7 @@ class AttendanceContoroller extends Controller
      * 部下一覧の表示
      *
      * @var string $emplo_id 社員番号
-     * @var App\Libraries\php\Domain\Database
+     * @var App\Libraries\php\Domain\attendanceDatabase
      * @var array $subord_data 部下情報
      * @var array $retirement_authority 退職フラグ
      */
@@ -289,7 +289,7 @@ class AttendanceContoroller extends Controller
             // 在職者だけ出す
             $retirement_authority = "0";
             try {
-                $subord_data = collect(Database::getSubord($emplo_id, $retirement_authority));
+                $subord_data = collect(attendanceDatabase::getSubord($emplo_id, $retirement_authority));
             } catch (Exception $e) {
                 $e->getMessage();
                 return redirect()->route('employee.error');

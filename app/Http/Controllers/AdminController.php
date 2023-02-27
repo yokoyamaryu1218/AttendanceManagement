@@ -6,7 +6,8 @@ use App\Http\Requests\ManagementRequest;
 use App\Http\Requests\NewPostRequest;
 use App\Http\Requests\UpdateRequest;
 use App\Libraries\Common;
-use App\Libraries\Database;
+use App\Libraries\employeeDatabase;
+use App\Libraries\attendanceDatabase;
 use App\Libraries\Time;
 use App\Models\Employee;
 use Illuminate\Http\Request;
@@ -14,11 +15,7 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
-use PhpOffice\PhpSpreadsheet\Style\Color;
 use PhpOffice\PhpSpreadsheet\IOFactory;
-use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
-use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use PhpOffice\PhpSpreadsheet\Shared\Date;
 use DateTime;
 
 // 管理者画面用のコントローラー
@@ -37,7 +34,7 @@ class AdminController extends Controller
     /**
      * 在職の従業員の表示
      *
-     * @var App\Libraries\php\Domain\Database
+     * @var App\Libraries\php\Domain\employeeDatabase
      * @var array $retirement_authority 退職フラグ
      * @var array $employee_lists 在職者リスト
      * @var array $retirement_lists 退職者リスト
@@ -47,7 +44,7 @@ class AdminController extends Controller
         // 在職者だけを表示するため、退職フラグに0を付与
         try {
             $retirement_authority = "0";
-            $employee_lists = collect(Database::getEmployeeAll($retirement_authority));
+            $employee_lists = collect(employeeDatabase::getEmployeeAll($retirement_authority));
         } catch (Exception $e) {
             $e->getMessage();
             return redirect()->route('admin.error');
@@ -64,7 +61,8 @@ class AdminController extends Controller
         );
         // 退職者がいる場合、退職者一覧のリンクを表示するため、退職者リストも取得する
         try {
-            $retirement_lists = Database::getEmployeeAll("1");
+            $retirement_authority = "1";
+            $retirement_lists = employeeDatabase::getEmployeeAll($retirement_authority);
         } catch (Exception $e) {
             $e->getMessage();
             return redirect()->route('admin.error');
@@ -80,7 +78,7 @@ class AdminController extends Controller
     /**
      * 退職した従業員の表示
      *
-     * @var App\Libraries\php\Domain\Database
+     * @var App\Libraries\php\Domain\employeeDatabase
      * @var array $retirement_authority 退職フラグ
      * @var array $retirement_lists 退職者リスト
      */
@@ -88,7 +86,7 @@ class AdminController extends Controller
     {
         try {
             $retirement_authority = "1";
-            $employee_lists = collect(Database::getEmployeeAll($retirement_authority));
+            $employee_lists = collect(employeeDatabase::getEmployeeAll($retirement_authority));
         } catch (Exception $e) {
             $e->getMessage();
             return redirect()->route('admin.error');
@@ -112,7 +110,7 @@ class AdminController extends Controller
     /**
      * 時短社員の表示
      *
-     * @var App\Libraries\php\Domain\Database
+     * @var App\Libraries\php\Domain\attendanceDatabase
      * @var array $retirement_authority 退職フラグ
      * @var array $short_working 時短フラグ
      * @var array $short_worker_lists 時短社員リスト
@@ -123,7 +121,7 @@ class AdminController extends Controller
         try {
             $retirement_authority = "0";
             $short_working = "1";
-            $short_worker_lists = collect(Database::getshortWorker($retirement_authority, $short_working));
+            $short_worker_lists = collect(attendanceDatabase::getshortWorker($retirement_authority, $short_working));
         } catch (Exception $e) {
             $e->getMessage();
             return redirect()->route('admin.error');
@@ -146,7 +144,7 @@ class AdminController extends Controller
     /**
      * 従業員の新規登録画面の表示
      *
-     * @var App\Libraries\php\Domain\Database
+     * @var App\Libraries\php\Domain\employeeDatabase
      * @var array $subord_authority_lists 部下配属権限がある社員リスト
      */
     public function create()
@@ -154,7 +152,7 @@ class AdminController extends Controller
         // 部下配属権限がある社員リストの取得
         try {
             $subord_authority = "1";
-            $subord_authority_lists = Database::getSubordAuthority($subord_authority);
+            $subord_authority_lists = employeeDatabase::getSubordAuthority($subord_authority);
         } catch (Exception $e) {
             $e->getMessage();
             return redirect()->route('admin.error');
@@ -181,7 +179,7 @@ class AdminController extends Controller
      * @var string $retirement_authority 退職フラグ
      * @var string $short_working 時短フラグ
      * @var array $subord_authority 部下配属権限
-     * @var App\Libraries\php\Domain\Database
+     * @var App\Libraries\php\Domain\employeeDatabase
      * @var string $emplo_id 社員番号
      * @var App\Libraries\php\Domain\Common
      */
@@ -208,7 +206,7 @@ class AdminController extends Controller
         };
 
         //登録する番号を作成
-        $id = Database::getID();
+        $id = employeeDatabase::getID();
         $emplo_id = $id[0]->emplo_id + "1";
 
         // 重複クリック対策
@@ -241,7 +239,7 @@ class AdminController extends Controller
      *
      * @var string $emplo_id 社員番号
      * @var string $retirement_authority 退職フラグ
-     * @var App\Libraries\php\Domain\Database
+     * @var App\Libraries\php\Domain\employeeDatabase
      * @var array $employee_lists 選択した従業員の詳細データ
      * @var array $subord_authority 部下配属権限
      * @var array $subord_authority_lists 部下配属権限がある社員リスト
@@ -250,7 +248,7 @@ class AdminController extends Controller
     {
         // 詳細画面の情報取得
         try {
-            $employee_lists = Database::SelectEmployee($emplo_id, $retirement_authority);
+            $employee_lists = employeeDatabase::SelectEmployee($emplo_id, $retirement_authority);
         } catch (Exception $e) {
             $e->getMessage();
             return redirect()->route('admin.error');
@@ -259,7 +257,7 @@ class AdminController extends Controller
         // 部下配属権限がある社員リストの取得
         try {
             $subord_authority = "1";
-            $subord_authority_lists = Database::getSubordAuthority($subord_authority);
+            $subord_authority_lists = employeeDatabase::getSubordAuthority($subord_authority);
         } catch (Exception $e) {
             $e->getMessage();
             return redirect()->route('admin.error');
@@ -274,7 +272,7 @@ class AdminController extends Controller
     /**
      * 在職の従業員の表示
      *
-     * @var App\Libraries\php\Domain\Database
+     * @var App\Libraries\php\Domain\employeeDatabase
      * @var array $retirement_authority 退職フラグ
      * @var array $employee_lists 在職者リスト
      * @var array $retirement_lists 退職者リスト
@@ -288,9 +286,9 @@ class AdminController extends Controller
 
         try {
             if (is_numeric($request->search)) {
-                $employee_lists = collect(Database::getSearchID($retirement_authority, $request->search));
+                $employee_lists = collect(employeeDatabase::getSearchID($retirement_authority, $request->search));
             } else {
-                $employee_lists = collect(Database::getSearchName($retirement_authority, $request->search));
+                $employee_lists = collect(employeeDatabase::getSearchName($retirement_authority, $request->search));
             }
         } catch (Exception $e) {
             $e->getMessage();
@@ -309,7 +307,8 @@ class AdminController extends Controller
 
         // 退職者がいる場合、退職者一覧のリンクを表示するため、退職者リストも取得する
         try {
-            $retirement_lists = Database::getEmployeeAll("1");
+            $retirement_authority = "1";
+            $retirement_lists = employeeDatabase::getEmployeeAll($retirement_authority);
         } catch (Exception $e) {
             $e->getMessage();
             return redirect()->route('admin.error');
@@ -401,13 +400,13 @@ class AdminController extends Controller
      *
      * @var string $emplo_id 社員番号
      * @var string $retirement_authority 退職フラグ
-     * @var App\Libraries\php\Domain\Database
+     * @var App\Libraries\php\Domain\employeeDatabase
      * @var array $employee_lists 選択した従業員の詳細データ
      */
     public function reinstatement_check($emplo_id, $retirement_authority)
     {
         try {
-            $employee_lists = Database::SelectEmployee($emplo_id, $retirement_authority);
+            $employee_lists = employeeDatabase::SelectEmployee($emplo_id, $retirement_authority);
         } catch (Exception $e) {
             $e->getMessage();
             return redirect()->route('admin.error');
@@ -428,7 +427,7 @@ class AdminController extends Controller
      * @var array $retirement_authority 退職フラグ
      * @var array $retirement_date 退職日
      * @var array $deleted_at 退職処理日
-     * @var App\Libraries\php\Domain\Database
+     * @var App\Libraries\php\Domain\employeeDatabase
      */
     public function reinstatement_action($emplo_id)
     {
@@ -438,7 +437,7 @@ class AdminController extends Controller
         $deleted_at = null;
 
         try {
-            Database::retirementAssignment($retirement_authority, $retirement_date, $deleted_at, $emplo_id);
+            employeeDatabase::retirementAssignment($retirement_authority, $retirement_date, $deleted_at, $emplo_id);
         } catch (Exception $e) {
             $e->getMessage();
             return redirect()->route('admin.error');
@@ -455,14 +454,14 @@ class AdminController extends Controller
      *
      * @var string $emplo_id 社員番号
      * @var string $retirement_authority 退職フラグ
-     * @var App\Libraries\php\Domain\Database
+     * @var App\Libraries\php\Domain\employeeDatabase
      * @var array $employee_lists 選択した従業員の詳細データ
      */
     public function destroy_check($emplo_id, $retirement_authority)
     {
         // 退職処理を行う従業員の情報取得
         try {
-            $employee_lists = Database::SelectEmployee($emplo_id, $retirement_authority);
+            $employee_lists = employeeDatabase::SelectEmployee($emplo_id, $retirement_authority);
         } catch (Exception $e) {
             $e->getMessage();
             return redirect()->route('admin.error');
@@ -482,7 +481,7 @@ class AdminController extends Controller
      * @var string $emplo_id 社員番号
      * @var array $retirement_authority 退職フラグ
      * @var array $retirement_date 退職日
-     * @var App\Libraries\php\Domain\Database
+     * @var App\Libraries\php\Domain\employeeDatabase
      */
     public function destroy(Request $request, $emplo_id)
     {
@@ -492,7 +491,7 @@ class AdminController extends Controller
         $deleted_at = null;
 
         try {
-            Database::retirementAssignment($retirement_authority, $retirement_date, $deleted_at, $emplo_id);
+            employeeDatabase::retirementAssignment($retirement_authority, $retirement_date, $deleted_at, $emplo_id);
 
             // 退職日に日付を付与する
             $user = Employee::find($emplo_id);
@@ -509,7 +508,7 @@ class AdminController extends Controller
     /**
      * 管理画面の表示
      *
-     * @var App\Libraries\php\Domain\Database
+     * @var App\Libraries\php\Domain\attendanceDatabase
      * @var array $working_hours 退職フラグ
      */
     public function management()
@@ -517,7 +516,7 @@ class AdminController extends Controller
         // 管理権限の有無を確認する
         if (Auth::guard('admin')->user()->admin_authority == "1") {
             // 会社全体の所定労働時間の取得
-            $working_hours = Database::Workinghours();
+            $working_hours = attendanceDatabase::Workinghours();
 
             //リダイレクト
             return view('menu.management.management01', compact(
@@ -536,6 +535,7 @@ class AdminController extends Controller
      * @var string $restraint_start_time  始業時間
      * @var string $restraint_closing_time 終業時間
      * @var App\Libraries\php\Domain\Time
+     * @var App\Libraries\php\Domain\attendanceDatabase
      * @var array $restraint_total_time 所定労働時間
      */
     public function update_workinghours(ManagementRequest $request)
@@ -545,9 +545,9 @@ class AdminController extends Controller
         $restraint_closing_time = $request->restraint_closing_time;
         $restraint_total_time = Time::restraint_total_time($restraint_start_time, $restraint_closing_time);
 
-        Database::UpdateWorkinghours($restraint_start_time, $restraint_closing_time);
+        attendanceDatabase::UpdateWorkinghours($restraint_start_time, $restraint_closing_time);
         $short_working = "0";
-        Database::UpdateEmploAll($restraint_start_time, $restraint_closing_time, $restraint_total_time, $short_working);
+        attendanceDatabase::UpdateEmploAll($restraint_start_time, $restraint_closing_time, $restraint_total_time, $short_working);
 
         //リダイレクト
         $message = "変更しました";
@@ -568,7 +568,7 @@ class AdminController extends Controller
         $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Xlsx');
         $spreadsheet = $reader->load($inputFileName);
 
-        $employee_list = Database::getEmployeeList($retirement_authority);
+        $employee_list = employeeDatabase::getEmployeeList($retirement_authority);
 
         // スタイルオブジェクトを作成する
         $style = array(
@@ -628,7 +628,7 @@ class AdminController extends Controller
 
     public function templateDownload()
     {
-        $subord_authority_lists = Database::getSubordName();
+        $subord_authority_lists = employeeDatabase::getSubordName();
 
         // Excelへの書き込み
         $spreadsheet = new Spreadsheet();
@@ -710,15 +710,21 @@ class AdminController extends Controller
                     if (is_numeric($data["A"])) {
                         $message = "取り込み対象外のExcelシートです。処理を中断します。";
                         return back()->with('warning', $message);
-                    }
-
-                    $check_name = Database::getName($data["A"]);
-                    if (isset($check_name[0])) {
-                        $message = "$row 列目のA列の名前はすでに登録されています。処理を中断します。";
+                    } else if (is_null($data["A"])) {
+                        $message = "$row 列目のA列が空欄です。処理を中断します。";
                         return back()->with('warning', $message);
                     }
 
-                    $id = Database::searchSubordName($data["C"]);
+                    $check_name = employeeDatabase::getName($data["A"]);
+                    if (isset($check_name[0])) {
+                        $message = "$row 列目のA列の名前はすでに登録されています。処理を中断します。";
+                        return back()->with('warning', $message);
+                    } else if (!is_null($data["B"]) && $data["B"] !== "〇") {
+                        $message = "$row 列目のB列に〇以外の文字が入力されています。処理を中断します。";
+                        return back()->with('warning', $message);
+                    }
+
+                    $id = employeeDatabase::searchSubordName($data["C"]);
                     if (!empty($id)) {
                         $data["C"] = $id[0]->emplo_id;
                     } else {
@@ -764,7 +770,7 @@ class AdminController extends Controller
                         // 時短フラグ
                         $short_working = Common::working_hours($restraint_start_time, $restraint_closing_time);
                         //登録する番号を作成
-                        $id = Database::getID();
+                        $id = employeeDatabase::getID();
                         $emplo_id = $id[0]->emplo_id + "1";
 
                         $employee_data = array(

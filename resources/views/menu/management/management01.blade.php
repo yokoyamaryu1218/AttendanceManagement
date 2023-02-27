@@ -68,6 +68,7 @@
                 <dt class="mb-2">・社員一括登録(.xlsx)</dt>
                 <div class="sm:text-base text-sm">
                     <dd><a href="{{ route('admin.templateDownload') }}">専用テンプレートダウンロード</a></dd>
+                    <dd>パスワードは「password123」で登録されます。</dd>
                 </div>
                 <div class="sm:text-base text-sm">
                     <form method="POST" action="{{ route('admin.insertEmplyeeList') }}" enctype="multipart/form-data">
