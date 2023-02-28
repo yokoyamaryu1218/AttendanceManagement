@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ManagementRequest;
 use App\Http\Requests\NewPostRequest;
 use App\Http\Requests\UpdateRequest;
+use App\Http\Requests\ExcelImportRequest;
 use App\Libraries\Common;
 use App\Libraries\employeeDatabase;
 use App\Libraries\attendanceDatabase;
@@ -80,7 +81,6 @@ class AdminController extends Controller
      *
      * @var App\Libraries\php\Domain\employeeDatabase
      * @var array $retirement_authority 退職フラグ
-     * @var array $retirement_lists 退職者リスト
      */
     public function retirement(Request $request)
     {
@@ -554,13 +554,17 @@ class AdminController extends Controller
         return back()->with('status', $message);
     }
 
+    /**
+     * 従業員情報をExcelファイルとしてダウンロードする
+     *
+     * @param \Illuminate\Http\Request $request
+     *
+     * @var string $retirement_authority 退職者情報取得フラグ
+     * @var array $employee_list 従業員情報リスト
+     */
     public function employeeListDownload(Request $request)
     {
-        if (is_null($request->retirement_authority)) {
-            $retirement_authority = "0";
-        } elseif ($request->retirement_authority = "on") {
-            $retirement_authority = "1";
-        }
+        $retirement_authority = $request->has('retirement_authority') ? '1' : '0';
 
         // Excelへの書き込み
         $spreadsheet = new Spreadsheet();
@@ -608,8 +612,8 @@ class AdminController extends Controller
             }
             $sheet->setCellValue('I' . 1, date('Y-m-j'));
 
-            $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
             $downloadFileName = '名簿.xlsx';
+            $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
             $writer->save($downloadFileName);
 
             // ファイルをダウンロードする処理
@@ -626,11 +630,15 @@ class AdminController extends Controller
         return back()->with('warning', $message);
     }
 
+    /**
+     * テンプレートファイルのダウンロード
+     *
+     * @var array $subord_authority_lists 部下の名前リスト
+     */
     public function templateDownload()
     {
         $subord_authority_lists = employeeDatabase::getSubordName();
-
-        // Excelへの書き込み
+        // Excelファイルへの書き込み
         $spreadsheet = new Spreadsheet();
         $inputFileName = '../temp/tmp3.xlsx';
         $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Xlsx');
@@ -656,7 +664,7 @@ class AdminController extends Controller
         }, $subord_authority_lists);
         $validation->setFormula1('"' . implode(",", $names) . '"');
 
-        // ドロップダウンリストの選択肢を作成する
+        // B4からB100のセルにドロップダウンリストを設定する
         $choices = ['〇', '　'];
         $validation = $sheet->getDataValidation("B7:B102");
         $validation->setType(\PhpOffice\PhpSpreadsheet\Cell\DataValidation::TYPE_LIST);
@@ -680,8 +688,25 @@ class AdminController extends Controller
         exit;
     }
 
-    public function insertEmplyeeList(Request $request)
+    /**
+     * 従業員情報をExcelファイルとしてダウンロードする
+     *
+     * @param \Illuminate\Http\ExcelImportRequest $request
+     *
+     * @var App\Libraries\php\Domain\attendanceDatabase
+     * @var array $emplo_id 社員ID
+     * @var array $check_name 名前確認用
+     * @var array $high_id 管理者ID
+     * @var App\Libraries\php\Domain\Time
+     * @var array $restraint_total_time 所定労働時間
+     * @var App\Libraries\php\Domain\Common
+     * @var array $short_working 時短フラグ
+     * @var App\Rules\PasswordRule
+     */
+    public function insertEmplyeeList(ExcelImportRequest $request)
     {
+        $emplo_id = employeeDatabase::getID()[0]->emplo_id + 1;
+
         $file = request()->file('example');
         if (isset($file)) {
             $extension = $file->getClientOriginalExtension();
@@ -689,7 +714,6 @@ class AdminController extends Controller
                 $spreadsheet = IOFactory::load($file->getPathname());
                 $worksheet = $spreadsheet->getActiveSheet();
                 $highestRow = $worksheet->getHighestRow();
-                $highestColumn = $worksheet->getHighestColumn();
                 $rowData = [];
 
                 // 7行目からA～F列の情報を読み取る
@@ -724,9 +748,9 @@ class AdminController extends Controller
                         return back()->with('warning', $message);
                     }
 
-                    $id = employeeDatabase::searchSubordName($data["C"]);
-                    if (!empty($id)) {
-                        $data["C"] = $id[0]->emplo_id;
+                    $high_id = employeeDatabase::searchSubordName($data["C"]); //管理者名をもとに管理者IDに置き換える
+                    if (!empty($high_id)) {
+                        $data["C"] = $high_id[0]->emplo_id;
                     } else {
                         $message = "$row 列目のC列にプルダウン以外の社員名が入力されています。処理を中断します。";
                         return back()->with('warning', $message);
@@ -734,6 +758,11 @@ class AdminController extends Controller
 
                     if (!preg_match('/^\d{1,2}:\d{2}$/',  $data["D"]) || !preg_match('/^\d{1,2}:\d{2}$/', $data["E"])) {
                         $message = "$row 列目のDもしくはE列の入力が不正です。処理を中断します。";
+                        return back()->with('warning', $message);
+                    }
+
+                    if (strtotime($data["E"]) <= strtotime($data["D"])) {
+                        $message = "$row 列目について、終業時間は始業時間より後の日時を指定してください";
                         return back()->with('warning', $message);
                     }
 
@@ -758,7 +787,7 @@ class AdminController extends Controller
                     $employee_data_list = array();
                     foreach ($rowData as $data) {
                         $name = $data["A"];
-                        $password = Hash::make("password123");
+                        $password = Hash::make($request->password);
                         $subord_authority = $data["B"] === '〇' ? 1 : 0;
                         $management_emplo_id = $data["C"];
                         $restraint_start_time = $data["D"];
@@ -769,9 +798,6 @@ class AdminController extends Controller
 
                         // 時短フラグ
                         $short_working = Common::working_hours($restraint_start_time, $restraint_closing_time);
-                        //登録する番号を作成
-                        $id = employeeDatabase::getID();
-                        $emplo_id = $id[0]->emplo_id + "1";
 
                         $employee_data = array(
                             "emplo_id" => $emplo_id,
@@ -787,9 +813,11 @@ class AdminController extends Controller
                             "short_working" => $short_working
                         );
 
+                        $emplo_id++;
                         array_push($employee_data_list, $employee_data);
                     }
                 }
+
                 foreach ($employee_data_list as $employee_data) {
                     if (!isset($employee_list[$employee_data["name"]])) {
                         Common::insertEmployee(

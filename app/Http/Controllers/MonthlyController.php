@@ -27,6 +27,7 @@ class MonthlyController extends Controller
      * @var App\Libraries\php\Domain\attendanceDatabase
      * @var array $monthly_data 勤怠データ
      * @var array $total_data 期間内の出勤日数、総勤務時間、残業時間の配列
+     * @var array $viewName bladeの名前
      */
     public function index(Request $request, $emplo_id, $name)
     {
@@ -35,6 +36,7 @@ class MonthlyController extends Controller
         $ym = $format->to_monthly();
         // 月の日数を取得
         $day_count = date('t', strtotime($ym));
+
         // 今月の勤怠一覧を取得
         try {
             $monthly_data = attendanceDatabase::getMonthly($emplo_id, $ym);
@@ -59,27 +61,17 @@ class MonthlyController extends Controller
             };
         };
 
-        if (Auth::guard('employee')->check()) {
-            return view('menu.attendance.attendance01', compact(
-                'monthly_data',
-                'day_count',
-                'emplo_id',
-                'name',
-                'ym',
-                'format',
-                'total_data'
-            ));
-        } elseif (Auth::guard('admin')->check()) {
-            return view('menu.attendance.attendance02', compact(
-                'monthly_data',
-                'day_count',
-                'emplo_id',
-                'name',
-                'ym',
-                'format',
-                'total_data'
-            ));
-        }
+        $viewName = Auth::guard('employee')->check() ? 'menu.attendance.attendance01' : 'menu.attendance.attendance02';
+
+        return view($viewName, compact(
+            'monthly_data',
+            'day_count',
+            'emplo_id',
+            'name',
+            'ym',
+            'format',
+            'total_data'
+        ));
     }
 
     /**
@@ -95,17 +87,13 @@ class MonthlyController extends Controller
      * @var App\Libraries\php\Domain\attendanceDatabase
      * @var array $monthly_data 勤怠データ
      * @var array $total_data 期間内の出勤日数、総勤務時間、残業時間の配列
+     * @var array $viewName bladeの名前
      */
     public function store(Request $request, $emplo_id, $name)
     {
         // プルダウンで選んだ年月と月数の取得
-        if (isset($request->monthly_change)) {
-            $ym = $request->monthly_change;
-            $day_count = date('t', strtotime($ym));
-        } else {
-            $ym = date('Y-m');
-            $day_count = date('t');
-        }
+        $ym = $request->input('monthly_change', date('Y-m'));
+        $day_count = date('t', strtotime($ym));
 
         // 勤怠一覧の取得
         try {
@@ -134,27 +122,17 @@ class MonthlyController extends Controller
         // フォーマットの取得
         $format = new Common();
 
-        if (Auth::guard('employee')->check()) {
-            return view('menu.attendance.attendance01', compact(
-                'monthly_data',
-                'day_count',
-                'name',
-                'emplo_id',
-                'ym',
-                'format',
-                'total_data'
-            ));
-        } elseif (Auth::guard('admin')->check()) {
-            return view('menu.attendance.attendance02', compact(
-                'monthly_data',
-                'day_count',
-                'emplo_id',
-                'name',
-                'ym',
-                'format',
-                'total_data'
-            ));
-        }
+        $viewName = Auth::guard('employee')->check() ? 'menu.attendance.attendance01' : 'menu.attendance.attendance02';
+
+        return view($viewName, compact(
+            'monthly_data',
+            'day_count',
+            'emplo_id',
+            'name',
+            'ym',
+            'format',
+            'total_data'
+        ));
     }
 
     /**
@@ -168,6 +146,7 @@ class MonthlyController extends Controller
      * @var string $start_time 出勤時間
      * @var string $closing_time 退勤時間
      * @var string $daily 日報
+     * @var string $modifierName 更新者名
      * @var App\Libraries\php\Domain\attendanceDatabase
      * @var array $check_date 勤怠データ
      * @var array $cloumns_name カラム名
@@ -187,6 +166,13 @@ class MonthlyController extends Controller
 
         // 重複クリック対策
         $request->session()->regenerateToken();
+
+        // 更新者の名前の取得
+        if (Auth::guard('employee')->check()) {
+            $modifierName = Auth::guard('employee')->user()->name;
+        } elseif (Auth::guard('admin')->check()) {
+            $modifierName = Auth::guard('admin')->user()->name;
+        };
 
         //対象日のデータがあるかどうかチェック
         try {
@@ -254,7 +240,7 @@ class MonthlyController extends Controller
         if ($check_date) {
             // 対象日にデータがある場合は、更新処理を行う
             try {
-                Time::updateTime($emplo_id, $start_time, $closing_time, $target_date);
+                Time::updateTime($emplo_id, $start_time, $closing_time, $target_date, $modifierName);
                 TIme::Daily($emplo_id, $target_date, $daily, $daily_data);
             } catch (Exception $e) {
                 $e->getMessage();
@@ -276,7 +262,7 @@ class MonthlyController extends Controller
         } else {
             // 対象日にデータがない場合は、新規登録処理を行う
             try {
-                Time::insertTime($emplo_id, $start_time, $closing_time, $target_date);
+                Time::insertTime($emplo_id, $start_time, $closing_time, $target_date, $modifierName);
                 Time::Daily($emplo_id, $target_date, $daily, $daily_data);
             } catch (Exception $e) {
                 $e->getMessage();
@@ -328,45 +314,31 @@ class MonthlyController extends Controller
             };
         };
 
-        if (Auth::guard('employee')->check()) {
-            return view(
-                'menu.attendance.attendance03',
-                compact(
-                    'first_day',
-                    'end_day',
-                    'emplo_id',
-                    'name',
-                    'total_data'
-                )
-            );
-        } elseif (Auth::guard('admin')->check()) {
-            return view(
-                'menu.attendance.attendance03',
-                compact(
-                    'first_day',
-                    'end_day',
-                    'emplo_id',
-                    'name',
-                    'total_data'
-                )
-            );
-        }
+        return view(
+            'menu.attendance.attendance03',
+            compact(
+                'first_day',
+                'end_day',
+                'emplo_id',
+                'name',
+                'total_data'
+            )
+        );
     }
 
 
     /**
-     * プロダウンで選んだ年度の勤怠一覧の表示
+     * 選択した期間の勤怠一覧をExcel出力する
      *
-     * @param \Illuminate\Http\Request\Request $request
+     * @param \Illuminate\Http\Request\MonthlyRequest $request
      *
-     * @var string $emplo_id 社員番号
-     * @var string $name 社員名
-     * @var string $ym 選択した年月
-     * @var string $day_count 月の日数
-     * @var App\Libraries\php\Domain\Common $format
+     * @param string $emplo_id 従業員ID
+     * @param string $name 従業員名
      * @var App\Libraries\php\Domain\attendanceDatabase
-     * @var array $monthly_data 勤怠データ
-     * @var array $total_data 期間内の出勤日数、総勤務時間、残業時間の配列
+     * @var array $working_data 選択期間内の労働時間の配列
+     * @var array $total_over_time 残業時間
+     * @var array $total_achievement_time 総勤務時間
+     * 
      */
     public function excel(MonthlyRequest $request, $emplo_id, $name)
     {
@@ -502,24 +474,22 @@ class MonthlyController extends Controller
     }
 
     /**
-     * 指定された日付の曜日を日本語で取得する
-     * @param string $date 日付文字列 (YYYY/MM/DD)
-     * @return string 曜日文字列 (日〜土)
+     * 選択した勤怠情報を削除する
+     *
+     * @param string $emplo_id 従業員ID
+     * @param string $name 従業員名
+     * @param string $day 選択した日付
+     * @var string $table_name テーブル名
+     * @var App\Libraries\php\Domain\attendanceDatabase
+     * 
      */
-    function getJapaneseDayOfWeek($date)
-    {
-        $weekdays = array('日', '月', '火', '水', '木', '金', '土');
-        $dayOfWeek = date('w', strtotime($date)); // 0:日曜日, 1:月曜日, ..., 6:土曜日
-        return $weekdays[$dayOfWeek];
-    }
-
     public function delete($emplo_id, $name, $day)
     {
         try {
             $table_name = "daily";
-            attendanceDatabase::deleteWorksOrDaily($table_name, $emplo_id, $day);
+            attendanceDatabase::deleteWorksANDDaily($table_name, $emplo_id, $day);
             $table_name = "works";
-            attendanceDatabase::deleteWorksOrDaily($table_name, $emplo_id, $day);
+            attendanceDatabase::deleteWorksANDDaily($table_name, $emplo_id, $day);
         } catch (Exception $e) {
             $e->getMessage();
             if (Auth::guard('employee')->check()) {

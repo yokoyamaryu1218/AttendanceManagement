@@ -25,6 +25,11 @@
         <!-- 日報ここまで -->
     </div>
 
+    <div class="relative" style="margin-top:5px;">
+        最終更新日時：<label id="modal_updated" name="modal_updated" title="勤怠情報の最終更新日時が表示されます。"></label></br>
+        最終変更者：<label id="modal_modifier" name="modal_modifier" title="勤怠情報の最終更新者名が表示されます。"></label>
+    </div>
+
     <div class="flex justify-center modal-footer">
         <!-- ボタン配置 -->
         <button class="focus:outline-none flex mx-auto text-white bg-green-500 border-0 py-2 px-8 focus:outline-none hover:bg-green-600 rounded text-lg" title="ボタンをクリックすることで、更新されます。">更新</button>

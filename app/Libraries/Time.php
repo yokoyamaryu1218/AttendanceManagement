@@ -27,7 +27,7 @@ class Time
      * @var array $achievement_time 実績時間
      * @var array $over_time 残業時間
      */
-    public static function insertTime($emplo_id, $start_time, $closing_time, $target_date)
+    public static function insertTime($emplo_id, $start_time, $closing_time, $target_date, $modifier)
     {
         //休憩時間を求めるため、総勤務時間を求める
         $restraint_time = attendanceDatabase::getRestraintTime($emplo_id);
@@ -44,7 +44,7 @@ class Time
 
         // データベースに登録する
         try {
-            attendanceDatabase::insertStartTime($emplo_id, $target_date, $start_time);
+            attendanceDatabase::insertStartTime($emplo_id, $target_date, $start_time, $modifier);
             attendanceDatabase::insertEndTime($closing_time, $rest_time, $achievement_time, $over_time, $emplo_id, $target_date);
         } catch (Exception $e) {
             $e->getMessage();
@@ -72,7 +72,7 @@ class Time
      * @var array $achievement_time 実績時間
      * @var array $over_time 残業時間
      */
-    public static function updateTime($emplo_id, $start_time, $closing_time, $target_date)
+    public static function updateTime($emplo_id, $start_time, $closing_time, $target_date, $modifierName)
     {
         //休憩時間を求めるため、総勤務時間を求める
         $restraint_time = attendanceDatabase::getRestraintTime($emplo_id);
@@ -89,7 +89,7 @@ class Time
 
         // データベースを更新する
         try {
-            attendanceDatabase::updateTime($start_time, $closing_time, $rest_time, $achievement_time, $over_time, $emplo_id, $target_date);
+            attendanceDatabase::updateTime($start_time, $closing_time, $rest_time, $achievement_time, $over_time, $emplo_id, $target_date, $modifierName);
         } catch (Exception $e) {
             $e->getMessage();
             if (Auth::guard('employee')->check()) {

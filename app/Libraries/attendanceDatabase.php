@@ -25,9 +25,9 @@ class attendanceDatabase
     {
         $pdo = Common::connect_db();
 
-        $sql = "SELECT wk1.date, wk1.emplo_id, wk1.start_time, wk1.closing_time,
-        wk1.rest_time, wk1.achievement_time, wk1.over_time,dl1.daily FROM works AS wk1
-        /* ここまでで勤怠日、社員番号、出勤時間、退勤時間、休憩時間、実績時間、残業時間をworksテーブルから取得し、
+        $sql = "SELECT wk1.date, wk1.emplo_id, wk1.start_time, wk1.closing_time, wk1.rest_time,
+        wk1.achievement_time, wk1.over_time,wk1.updated_at,wk1.modifier,dl1.daily FROM works AS wk1
+        /* ここまでで勤怠日、社員番号、出勤時間、退勤時間、休憩時間、実績時間、残業時間、更新者名をworksテーブルから取得し、
         対象日の日報をdailyテーブルから取得する */
         LEFT JOIN daily AS dl1 ON wk1.date = dl1.date AND wk1.emplo_id = dl1.emplo_id
         /* dailyテーブルの日付、社員番号と別途worksテーブルの日付、社員番号を結合して取得する */
@@ -344,9 +344,9 @@ class attendanceDatabase
      *
      * @return  array $data
      */
-    public static function insertStartTime($emplo_id, $today, $start_time)
+    public static function insertStartTime($emplo_id, $today, $start_time, $modifier)
     {
-        $data = DB::select('INSERT INTO works (emplo_id,date,start_time) VALUES (?,?,?)', [$emplo_id, $today, $start_time]);
+        $data = DB::select('INSERT INTO works (emplo_id,date,start_time,modifier) VALUES (?,?,?,?)', [$emplo_id, $today, $start_time, $modifier]);
 
         return $data;
     }
@@ -368,7 +368,7 @@ class attendanceDatabase
     public static function insertEndTime($closing_time, $rest_time, $achievement_time, $over_time, $emplo_id, $target_date)
     {
         $data = DB::select('UPDATE works SET closing_time = ?, rest_time = ?, achievement_time = ?, over_time = ?
-         WHERE emplo_id = ? AND date = ?', [$closing_time, $rest_time, $achievement_time, $over_time, $emplo_id, $target_date]);
+        WHERE emplo_id = ? AND date = ?', [$closing_time, $rest_time, $achievement_time, $over_time, $emplo_id, $target_date]);
 
         return $data;
     }
@@ -410,9 +410,9 @@ class attendanceDatabase
      *
      * @return  array $data
      */
-    public static function updateTime($start_time, $closing_time, $rest_time, $achievement_time, $over_time, $emplo_id, $target_date)
+    public static function updateTime($start_time, $closing_time, $rest_time, $achievement_time, $over_time, $emplo_id, $target_date, $modifierName)
     {
-        $data = DB::select('UPDATE works SET start_time = ?,closing_time = ?, rest_time = ?, achievement_time = ?, over_time = ? WHERE emplo_id = ? AND date = ?', [$start_time, $closing_time, $rest_time, $achievement_time, $over_time, $emplo_id, $target_date]);
+        $data = DB::select('UPDATE works SET start_time = ?,closing_time = ?, rest_time = ?, achievement_time = ?, over_time = ? , modifier = ? WHERE emplo_id = ? AND date = ?', [$start_time, $closing_time, $rest_time, $achievement_time, $over_time, $modifierName, $emplo_id, $target_date]);
 
         return $data;
     }
@@ -499,7 +499,16 @@ class attendanceDatabase
         return $data;
     }
 
-    public static function deleteWorksOrDaily($table_name, $emplo_id, $day)
+    /**
+     * 勤怠情報の削除
+     *
+     * @param $cloumns_name カラム名
+     * @param $table_name テーブル名
+     * @param $day 選択した日付
+     *
+     * @return  array $data
+     */
+    public static function deleteWorksANDDaily($table_name, $emplo_id, $day)
     {
         DB::delete('DELETE ' . ' FROM ' . $table_name . ' WHERE emplo_id = ? AND date = ?', [$emplo_id, $day]);
     }

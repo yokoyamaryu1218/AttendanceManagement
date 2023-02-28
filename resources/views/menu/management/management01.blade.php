@@ -59,30 +59,40 @@
                                 </button>
                             </div>
                             <div>
-                                <input type="checkbox" name="retirement_authority" id="retirement_authority" checked>退職済みの社員を含む
+                                <input type="checkbox" name="retirement_authority" id="retirement_authority" title="チェックが外すと在職中の社員名簿がダウンロードできます。" checked>退職済みの社員を含む
                             </div>
                         </div>
                     </form>
                 </div>
 
-                <dt class="mb-2">・社員一括登録(.xlsx)</dt>
-                <div class="sm:text-base text-sm">
-                    <dd><a href="{{ route('admin.templateDownload') }}">専用テンプレートダウンロード</a></dd>
-                    <dd>パスワードは「password123」で登録されます。</dd>
-                </div>
-                <div class="sm:text-base text-sm">
-                    <form method="POST" action="{{ route('admin.insertEmplyeeList') }}" enctype="multipart/form-data">
-                        @csrf
-                        <div class="grid gap-6 mb-12 lg:grid-cols-3">
+                <div class="grid gap-6 mb-12 lg:grid-cols-2">
+                    <div>
+                        <dt class="mb-2">・社員一括登録(.xlsx)</dt>
+                        <div class="sm:text-base text-sm">
+                            <form method="POST" action="{{ route('admin.insertEmplyeeList') }}" enctype="multipart/form-data"  title="拡張子xlsxファイルを読み取り、社員情報を一括で登録します。">
+                                @csrf
+                                <div>
+                                    <input type="file" name="example" accept=".xlsx">
+                                    <div class="sm:text-base text-sm">
+                                        <dd><a href="{{ route('admin.templateDownload') }}" title="社員一括登録用のExcelテンプレートをダウンロードします。">専用テンプレートダウンロード</a></dd>
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="mb-2"  title="入力したパスワードで社員が一括登録されます。">・パスワード</label>
+                        <div>
                             <div>
-                                <input type="file" name="example" accept=".xlsx">
+                                <input type="password" id="password" name="password" value="{{ old('password') }}" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="●●●●●●●●" required autocomplete="current-password">
+                                <input type="checkbox" id="password-check">パスワードを表示する</br>
+                                <script src="{{ asset('/js/another/auth.js') }}"></script>
+                                <button type="submit" class=" text-white bg-green-500 border-0 py-2 px-8 focus:outline-none hover:bg-green-600 rounded text-lg" style="margin-top:10px;" title="ボタンをクリックすることで、登録されます。">登録</button>
                             </div>
-                            <div></div>
-                            <div><button type="submit" class=" text-white bg-green-500 border-0 py-2 px-8 focus:outline-none hover:bg-green-600 rounded text-lg" style="margin-top:5px;" title="ボタンをクリックすることで、登録されます。">登録</button></div>
                         </div>
+                    </div>
                     </form>
                 </div>
-            </dl>
-
-            <section class="text-gray-600 text-center body-font relative">
+        </div>
+        </dl>
+        <section class="text-gray-600 text-center body-font relative">
 </x-app-layout>

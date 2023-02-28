@@ -3,8 +3,6 @@
 namespace App\Libraries;
 
 use Illuminate\Support\Facades\DB;
-use App\Libraries\commonDatabase;
-use PDO;
 
 /**
  * データベース動作クラス(社員の登録に関する処理)
@@ -110,6 +108,34 @@ class employeeDatabase
     }
 
     /**
+     *  部下配属権限がある社員名の取得（Excel出力用）
+     *
+     * @return  array $list
+     */
+    public static function getSubordName()
+    {
+
+        $list = DB::select('SELECT name from employee where subord_authority = "1" order by emplo_id');
+
+        return $list;
+    }
+
+    /**
+     *  読み込んだExcelシートの部下配属権限のある社員名を社員IDに置き換える
+     *
+     * @param $name 社員名
+     *
+     * @return  array $id
+     */
+    public static function searchSubordName($name)
+    {
+
+        $id = DB::select('SELECT emplo_id from employee where subord_authority = "1" AND name like ? order by emplo_id', ['%' . $name . '%']);
+
+        return $id;
+    }
+
+    /**
      * 最新の社員番号を取得
      *
      * @var   $id ID
@@ -196,6 +222,13 @@ class employeeDatabase
         DB::insert('UPDATE employee SET retirement_authority = ? , retirement_date = ?, deleted_at = ? WHERE emplo_id = ?', [$retirement_authority, $retirement_date, $deleted_at, $emplo_id]);
     }
 
+    /**
+     * 従業員リストの取得（Excel出力用）
+     *
+     * @param $retirement_authority 退職フラグ
+     *
+     * @return  array $data
+     */
     public static function getEmployeeList($retirement_authority)
     {
         if ($retirement_authority == 1) {
@@ -216,22 +249,13 @@ class employeeDatabase
         return $data;
     }
 
-    public static function getSubordName()
-    {
-
-        $list = DB::select('SELECT name from employee where subord_authority = "1" order by emplo_id');
-
-        return $list;
-    }
-
-    public static function searchSubordName($name)
-    {
-
-        $id = DB::select('SELECT emplo_id from employee where subord_authority = "1" AND name like ? order by emplo_id', ['%' . $name . '%']);
-
-        return $id;
-    }
-
+    /**
+     * 読み込んだExcelシートの社員名がDB上にあるか検索をする（完全一致）
+     *
+     * @param $search
+     *
+     * @return  array $data
+     */
     public static function getName($search)
     {
         $data = DB::select('SELECT emplo_id,name,retirement_authority FROM employee WHERE name = ?', [$search]);

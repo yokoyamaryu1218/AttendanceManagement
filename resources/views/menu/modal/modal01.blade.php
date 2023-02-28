@@ -15,6 +15,10 @@
                 <div class="relative">
                     <textarea id="modal_daily" name="modal_daily" class="w-full h-32 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="日報" title="日報の内容を確認できます。ただし、編集はできません。" readonly></textarea>
                 </div>
+                <div class="relative" style="margin-top:5px;">
+                    最終更新日時：<label id="modal_updated" name="modal_updated" title="勤怠情報の最終更新日時が表示されます。"></label></br>
+                    最終変更者：<label id="modal_modifier" name="modal_modifier" title="勤怠情報の最終更新者名が表示されます。"></label>
+                </div>
             </div>
             <!-- 日報の表示ここまで -->
 

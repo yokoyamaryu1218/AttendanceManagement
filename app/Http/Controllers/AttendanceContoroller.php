@@ -105,6 +105,7 @@ class AttendanceContoroller extends Controller
      * @var string $start_time 出勤時間
      * @var array $message 出勤画面に出すメッセージ
      * @var string $emplo_id 社員番号
+     * @var string $modifierName 更新者名
      * @var App\Libraries\php\Domain\attendanceDatabase
      * @var string $check_data 対象日にデータがある場合に取得する
      */
@@ -114,6 +115,9 @@ class AttendanceContoroller extends Controller
         $today = date('Y-m-d');
         $start_time = $_POST['modal_start_time'];
         $emplo_id = Auth::guard('employee')->user()->emplo_id;
+
+        // 更新者の名前の取得
+        $modifierName = Auth::guard('employee')->user()->name;
 
         //対象日のデータがあるかどうかチェック
         try {
@@ -130,7 +134,7 @@ class AttendanceContoroller extends Controller
         } else {
             // 勤務開始時間をデータベースに登録する
             try {
-                attendanceDatabase::insertStartTime($emplo_id, $today, $start_time);
+                attendanceDatabase::insertStartTime($emplo_id, $today, $start_time, $modifierName);
             } catch (Exception $e) {
                 $e->getMessage();
                 return redirect()->route('employee.error');
@@ -147,6 +151,7 @@ class AttendanceContoroller extends Controller
      * @var string $today 今日の日付
      * @var string $closing_time 退勤時間
      * @var string $emplo_id 社員番号
+     * @var string $modifierName 更新者名
      * @var App\Libraries\php\Domain\attendanceDatabase
      * @var array $cloumns_name カラム名
      * @var array $table_name テーブル名
@@ -158,6 +163,9 @@ class AttendanceContoroller extends Controller
         $today = date('Y-m-d');
         $closing_time = $_POST['modal_end_time'];
         $emplo_id = Auth::guard('employee')->user()->emplo_id;
+
+        // 更新者の名前の取得
+        $modifierName = Auth::guard('employee')->user()->name;
 
         // 出勤時間の取得
         $cloumns_name = "start_time";
@@ -172,7 +180,7 @@ class AttendanceContoroller extends Controller
         // 出勤時間が打刻されている場合は新規登録し、未打刻の場合は警告MSGを出す
         if ($start_time) {
             try {
-                Time::updateTime($emplo_id, $start_time[0]->start_time, $closing_time, $today);
+                Time::updateTime($emplo_id, $start_time[0]->start_time, $closing_time, $today, $modifierName);
             } catch (Exception $e) {
                 $e->getMessage();
                 return redirect()->route('employee.error');

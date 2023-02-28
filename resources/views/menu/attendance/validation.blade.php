@@ -21,3 +21,9 @@
     <small>{{ $errors->first('end_day') }}</small>
 </div>
 @endif
+
+@if ($errors->has('password'))
+<div class="alert text-center alert-warning">
+    <small>{{ $errors->first('password') }}</small>
+</div>
+@endif

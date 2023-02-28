@@ -25,6 +25,8 @@
                 $over_time = '';
                 $daily = '';
                 $daily_long = '';
+                $updated_at = '';
+                $modifier = '';
 
                 if (isset($monthly_data[date('Y-m-d', strtotime($ym . '-' . $i))])) {
                     $work = $monthly_data[date('Y-m-d', strtotime($ym . '-' . $i))];
@@ -46,6 +48,12 @@
                     if (nl2br($work['daily'])) {
                         $daily = mb_strimwidth($work['daily'], 0, 40, '...');
                         $daily_long = $work['daily'];
+                    }
+                    if ($work['updated_at']) {
+                        $updated_at = $work['updated_at'];
+                    }
+                    if ($work['modifier']) {
+                        $modifier = $work['modifier'];
                     }
                 }
                 ?>
@@ -73,7 +81,7 @@
                     @endif
                     <td class="bg-gray-100 dark:bg-gray-800">
                         <!-- モーダルここから -->
-                        <button type="button" data-bs-toggle="modal" data-bs-target="#inputModal" data-bs-name="{{ $name }}" data-bs-id="{{ $emplo_id }}" data-bs-day="{{ ($ym . '-' . sprintf('%02d', $i)) }}" data-bs-month="{{ date('n', strtotime($ym . '-' . $i)) }}/{{ $format->time_format_dw($ym . '-' . $i) }}" data-bs-start="{{ $start_time }}" data-bs-closing="{{ $closing_time }}" data-bs-daily="{{ $daily_long }}" title="ボタンをクリックすることで、選択月日の勤怠修正画面を開きます。">
+                        <button type="button" data-bs-toggle="modal" data-bs-target="#inputModal" data-bs-name="{{ $name }}" data-bs-id="{{ $emplo_id }}" data-bs-day="{{ ($ym . '-' . sprintf('%02d', $i)) }}" data-bs-month="{{ date('n', strtotime($ym . '-' . $i)) }}/{{ $format->time_format_dw($ym . '-' . $i) }}" data-bs-start="{{ $start_time }}" data-bs-closing="{{ $closing_time }}" data-bs-daily="{{ $daily_long }}" data-bs-updated="{{ $updated_at }}" data-bs-modifier="{{ $modifier }}" title="ボタンをクリックすることで、選択月日の勤怠修正画面を開きます。">
                             <img src="data:image/png;base64,{{Config::get('base64.pen')}}">
                         </button>
                         <script src="{{ asset('js/modal/TopModal.js') }}" defer></script>
