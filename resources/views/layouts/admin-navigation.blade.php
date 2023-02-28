@@ -93,7 +93,7 @@
                     </x-responsive-nav-link>
                 </div>
 
-                @if (Auth::guard('admin')->user()->admin_authority == "1")\
+                @if (Auth::guard('admin')->user()->admin_authority == "1")
                 <div class="mt-3 space-y-1">
                     <x-responsive-nav-link :href="route('admin.management')">
                         {{ __('管理画面') }}
