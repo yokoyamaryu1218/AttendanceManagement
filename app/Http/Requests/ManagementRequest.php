@@ -35,7 +35,7 @@ class ManagementRequest extends FormRequest
     {
         return [
             'restraint_start_time.required' => '始業時間を指定してください',
-            'restraint_start_time.required' => '終業時間を指定してください',
+            'restraint_closing_time.required' => '終業時間を指定してください',
         ];
     }
 }

@@ -9,11 +9,6 @@
             <!-- フラッシュメッセージの表示 -->
             @include('menu.attendance.validation')
 
-            @if ($errors->has('password'))
-            <div class="alert text-center alert-warning">
-                {{ $errors->first('password') }}
-            </div>
-            @endif
             <!-- フラッシュメッセージここまで -->
             <!-- パスワードを変更する社員の名前 -->
             <div class="mt-4">

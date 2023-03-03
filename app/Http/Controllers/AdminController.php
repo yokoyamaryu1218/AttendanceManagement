@@ -62,8 +62,7 @@ class AdminController extends Controller
         );
         // 退職者がいる場合、退職者一覧のリンクを表示するため、退職者リストも取得する
         try {
-            $retirement_authority = "1";
-            $retirement_lists = employeeDatabase::getEmployeeAll($retirement_authority);
+            $retirement_lists = employeeDatabase::getEmployeeAll("1");
         } catch (Exception $e) {
             $e->getMessage();
             return redirect()->route('admin.error');
@@ -307,8 +306,7 @@ class AdminController extends Controller
 
         // 退職者がいる場合、退職者一覧のリンクを表示するため、退職者リストも取得する
         try {
-            $retirement_authority = "1";
-            $retirement_lists = employeeDatabase::getEmployeeAll($retirement_authority);
+            $retirement_lists = employeeDatabase::getEmployeeAll("1");
         } catch (Exception $e) {
             $e->getMessage();
             return redirect()->route('admin.error');
