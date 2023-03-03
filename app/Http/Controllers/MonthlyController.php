@@ -449,16 +449,19 @@ class MonthlyController extends Controller
             $sheet->mergeCells('E40:F40');
 
             $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-            $downloadFileName = '出勤簿.xlsx';
-            $writer->save($downloadFileName);
-
+            $downloadFileName = '出勤簿_' . date('YmdHis') . '.xlsx';
+            
+            // 一時ファイルに保存する
+            $tempFilePath = tempnam(sys_get_temp_dir(), 'tempSpreadsheet');
+            $writer->save($tempFilePath);
+            
             // ファイルをダウンロードする処理
             header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
             header('Content-Disposition: attachment; filename="' . basename($downloadFileName) . '"');
             header('Cache-Control: max-age=0');
-
-            $objWriter = IOFactory::createWriter($spreadsheet, 'Xlsx');
-            $objWriter->save('php://output');
+            header('Content-Length: ' . filesize($tempFilePath));
+            readfile($tempFilePath);
+            unlink($tempFilePath);
             exit;
         }
 

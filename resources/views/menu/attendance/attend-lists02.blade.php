@@ -84,7 +84,7 @@
                         <button type="button" data-bs-toggle="modal" data-bs-target="#inputModal" data-bs-name="{{ $name }}" data-bs-id="{{ $emplo_id }}" data-bs-day="{{ ($ym . '-' . sprintf('%02d', $i)) }}" data-bs-month="{{ date('n', strtotime($ym . '-' . $i)) }}/{{ $format->time_format_dw($ym . '-' . $i) }}" data-bs-start="{{ $start_time }}" data-bs-closing="{{ $closing_time }}" data-bs-daily="{{ $daily_long }}" data-bs-updated="{{ $updated_at }}" data-bs-modifier="{{ $modifier }}" title="ボタンをクリックすることで、選択月日の勤怠修正画面を開きます。">
                             <img src="data:image/png;base64,{{Config::get('base64.pen')}}">
                         </button>
-                        <script src="{{ asset('js/modal/TopModal.js') }}" defer></script>
+                        <script src="{{ asset('js/modal/topModal.js') }}" defer></script>
                         <!-- モーダルここまで -->
                         @if($start_time)
                         <button type="button" onclick="if(confirm('「{{ date('n', strtotime($ym . '-' . $i)) }}/{{ $format->time_format_dw($ym . '-' . $i) }}」の勤怠情報を削除します。よろしいですか？')) {window.location='{{ route('admin.monthly_delete', [$emplo_id, $name, ($ym . '-' . sprintf('%02d', $i))]) }}';}" title="ボタンをクリックすることで、選択月日の勤怠情報を削除できます。">

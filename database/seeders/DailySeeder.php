@@ -14,27 +14,22 @@ class DailySeeder extends Seeder
      */
     public function run()
     {
-        //@var string dailyのカラム列
-        $daily_cloumns = 'emplo_id,date,daily';
-        //@var string カラム列のホルダー
-        $daily_holder = '?,?,?';
-        // @var array dailyの挿入データ
-        $daily_insert_data_list = [
-            ['1001', '2023/01/01', '出勤しました'],
-            ['1001', '2023/01/07', '出勤しました'],
-            ['1001', '2023/01/08', '出勤しました'],
-            ['1001', '2023/01/11', '暑いです'],
-            ['1001', '2023/01/14', '出勤しました'],
-            ['1001', '2023/01/15', '元気です'],
-            ['1001', '2023/02/01', '出勤しました'],
-            ['1001', '2023/02/02', '出勤しました'],
-            ['1001', '2023/02/03', '出勤しました'],
-            ['1001', '2023/02/10', '暑いです'],
-            ['1001', '2023/02/11', '元気です'],
-        ];
+        // @var array すでに生成されたemplo_idとdateの組み合わせ
+        $used_combinations = [];
+        for ($i = 0; $i < 1000; $i++) {
+            $emplo_id = mt_rand(1000, 1020);
+            $date = date('Y/m/d', mt_rand(strtotime('2023/02/01'), strtotime('2023/04/30')));
+            $phrases = array('出勤しました', '出勤', '無事終了', '天気は晴れ', '天気は雨', '残業なし');
+            $daily = $phrases[array_rand($phrases)];
 
-        foreach ($daily_insert_data_list as $insert_data) {
-            DB::insert('insert into daily (' . $daily_cloumns . ') VALUES (' . $daily_holder . ')', $insert_data);
+            $combination = $emplo_id . '|' . $date;
+            if (in_array($combination, $used_combinations)) {
+                $i--;
+                continue;
+            }
+
+            DB::insert('insert into daily (emplo_id, date, daily) values (?, ?, ?)', [$emplo_id, $date, $daily]);
+            $used_combinations[] = $combination;
         }
     }
 }

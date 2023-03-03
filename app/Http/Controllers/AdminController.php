@@ -614,15 +614,18 @@ class AdminController extends Controller
 
             $downloadFileName = '名簿.xlsx';
             $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
-            $writer->save($downloadFileName);
+
+            // 一時ファイルに保存する
+            $tempFilePath = tempnam(sys_get_temp_dir(), 'tempSpreadsheet');
+            $writer->save($tempFilePath);
 
             // ファイルをダウンロードする処理
             header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
             header('Content-Disposition: attachment; filename="' . basename($downloadFileName) . '"');
             header('Cache-Control: max-age=0');
-
-            $objWriter = IOFactory::createWriter($spreadsheet, 'Xlsx');
-            $objWriter->save('php://output');
+            header('Content-Length: ' . filesize($tempFilePath));
+            readfile($tempFilePath);
+            unlink($tempFilePath);
             exit;
         }
 
@@ -676,15 +679,18 @@ class AdminController extends Controller
 
         $writer = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($spreadsheet, 'Xlsx');
         $downloadFileName = 'template.xlsx';
-        $writer->save($downloadFileName);
+
+        // 一時ファイルに保存する
+        $tempFilePath = tempnam(sys_get_temp_dir(), 'tempSpreadsheet');
+        $writer->save($tempFilePath);
 
         // ファイルをダウンロードする処理
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment; filename="' . basename($downloadFileName) . '"');
         header('Cache-Control: max-age=0');
-
-        $objWriter = IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $objWriter->save('php://output');
+        header('Content-Length: ' . filesize($tempFilePath));
+        readfile($tempFilePath);
+        unlink($tempFilePath);
         exit;
     }
 

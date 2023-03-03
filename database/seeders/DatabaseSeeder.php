@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             EmployeeSeeder::class,
-            // DailySeeder::class,
+            DailySeeder::class,
             WorksSeeder::class,
             HierarchySeeder::class,
             OverTimeSeeder::class,
