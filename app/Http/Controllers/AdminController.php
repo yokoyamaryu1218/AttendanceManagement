@@ -720,7 +720,7 @@ class AdminController extends Controller
                 $highestRow = $worksheet->getHighestRow();
                 $rowData = [];
 
-                // 7行目からA～F列の情報を読み取る
+               // 7行目からA～F列の情報を読み取る
                 for ($row = 7; $row <= $highestRow; $row++) {
                     $data = [
                         'A' => $worksheet->getCellByColumnAndRow(1, $row)->getValue(),
@@ -820,6 +820,11 @@ class AdminController extends Controller
                         $emplo_id++;
                         array_push($employee_data_list, $employee_data);
                     }
+                }
+
+                if (!is_null(!$employee_data_list)) {
+                    $message = "ファイルの読込に失敗しました。処理を中断します。";
+                    return back()->with('warning', $message);
                 }
 
                 foreach ($employee_data_list as $employee_data) {
