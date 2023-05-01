@@ -12,9 +12,9 @@ https://user-images.githubusercontent.com/97070988/186443548-8f86d7bb-4ebe-4315-
     - 本システムは、社員を雇い勤怠管理が必要となった個人事業主の方や、会社規模を拡大し勤務時間の管理・集計の簡略化を目指す小規模企業者を顧客モデルをペルソナとして定義しました。
  
  - **工夫した点**
-    <details><summary>１.社員・部下・人事部門の3者間を想定したシステムで設計しました。</summary>
-    　開発にあたり、社員・部下を抱える社員・統括部門や人事部門の社員の3者間を想定したシステムをしました。</br>
-    　<a href="https://drive.google.com/file/d/143bPEoMrf6qgVqQ6PF_Fgwe8OdsNH4W7">・設計書の要件設計に画像付きでイメージ図を記載しています。（クリックで移動できます。）</a>
+    <details><summary>１. 社員・上司・人事課の3者間を想定したシステムで設計しました。</summary>
+    　開発にあたり、社員とその上司、統括部門や人事課の社員といった3者間を想定したシステムを設計しました。</br>
+    　<a href="https://drive.google.com/file/d/143bPEoMrf6qgVqQ6PF_Fgwe8OdsNH4W7">要件設計書には、画像付きのイメージ図を記載しています。クリックして移動できます。</a>
     </details>
     
     <details><summary>２.上司のみが部下の勤怠の変更を行うことが出来るよう設計しました。</summary>
