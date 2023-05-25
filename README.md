@@ -1,10 +1,12 @@
-https://user-images.githubusercontent.com/97070988/186443548-8f86d7bb-4ebe-4315-9209-6f933577c514.gif
+![top](https://github.com/yokoyamaryu1218/AttendanceManagement/assets/97070988/54a8060f-df34-4621-9eee-277c64bd11ed)
 
 # 勤怠管理を行うシステムです
 
 　WEB上で、出退勤時間の打刻・管理を行うことができるシステムを個人開発しました。
 
 　レスポンシブ対応となっていますので、スマホやタブレットからもご確認いただけます。
+ 
+　**[システムの機能詳細については、説明動画をご覧ください。](https://www.youtube.com/watch?v=8N_AuccRLbU)**
 
 ## 本システムの特徴
 - **本システム開発の顧客モデル**
