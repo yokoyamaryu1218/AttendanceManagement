@@ -15,7 +15,7 @@
     https://docs.google.com/spreadsheets/d/1lQbc0zdYYiIlM0RJAHFU7AwEQJQJr0lP/edit?usp=sharing&ouid=102462271813312213972
 
 - **04.試験項目表.xlsx**
-    - プログラミング、AWSへデプロイ後に行ったテストの項目内容、結果を記載しております。<br>
+    - テストの項目内容、結果を記載しております。<br>
     https://docs.google.com/spreadsheets/d/1jCkkx1HuLpFKOz0tUzZFMx1XWD1v5BGj/edit?usp=sharing&ouid=102462271813312213972
 
 - **05.ログイン用アカウント情報.xlsx**
