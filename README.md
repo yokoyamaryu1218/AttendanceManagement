@@ -43,18 +43,6 @@
     　・データベースから社員名を検索し、既に登録されている場合は登録を中止します。</br>
     　・・Excelファイルに同一名前が登録されている場合は1人分のみ登録されます。</br>
     </details>
-    
-## URL
-
-　**[こちらのリンクから、出退勤画面に移動できます。](https://attendance-managements.work/)**
-
-　**[こちらのリンクから、管理用画面に移動できます。](https://attendance-managements.work/admin)**
- 
-　↓ ログイン情報は以下の通りです。
-  
-　・社員番号（管理者番号）：1001
- 
-　・パスワード：password123
 
 ## 機能一覧
 - **出退勤画面側**
@@ -99,7 +87,4 @@
 　バックエンド　： PHP(8.1.6) , Laravel8  , MySQL
 
 　フロントエンド： HTML・CSS, JavaScript, Bootstrap5, Tailwind CSS v2.0
- 
-## SSL設定について
-　AWS(Amazon Web Services)にてSSL設定をした上で、ポートフォリオを公開しております。
  
